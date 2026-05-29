@@ -64,12 +64,46 @@
             justify-content: flex-end; gap: 4px;
         }
 
-        .nav-links a {
+        .nav-links a,
+        .nav-dropdown-toggle {
             padding: 7px 11px; color: var(--navy);
             font-size: 0.9rem; font-weight: 700;
             border-radius: 6px; transition: background 0.15s;
         }
-        .nav-links a:hover { background: var(--sand); }
+        .nav-links a:hover,
+        .nav-dropdown:hover .nav-dropdown-toggle,
+        .nav-dropdown:focus-within .nav-dropdown-toggle { background: var(--sand); }
+
+        .nav-dropdown { position: relative; }
+
+        .nav-dropdown-toggle {
+            display: inline-flex;
+            align-items: center;
+            cursor: default;
+        }
+
+        .nav-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            min-width: 170px;
+            padding: 6px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--paper);
+            box-shadow: 0 10px 24px rgba(18,48,71,0.14);
+            display: none;
+            z-index: 120;
+        }
+
+        .nav-dropdown:hover .nav-dropdown-menu,
+        .nav-dropdown:focus-within .nav-dropdown-menu { display: grid; gap: 2px; }
+
+        .nav-dropdown-menu a {
+            display: block;
+            white-space: nowrap;
+            text-align: left;
+        }
 
         .site-alert {
             background: var(--sun);
@@ -277,6 +311,37 @@
             color: var(--sun2); font-size: 0.88rem; line-height: 1.6;
         }
 
+        .payment-audience {
+            display: inline-flex;
+            gap: 6px;
+            padding: 5px;
+            margin-bottom: 24px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 6px 20px rgba(18,48,71,0.05);
+        }
+
+        .payment-audience button {
+            min-width: 120px;
+            border: 0;
+            border-radius: 6px;
+            padding: 10px 16px;
+            background: transparent;
+            color: var(--navy);
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 0.95rem;
+        }
+
+        .payment-audience button.active {
+            background: var(--navy);
+            color: white;
+        }
+
+        .payment-panel { display: none; }
+        .payment-panel.active { display: block; }
+
         .refund-policy {
             margin-top: 16px;
             padding: 20px 24px;
@@ -406,6 +471,13 @@
             <a href="#" onclick="showPage('home'); sc('payment'); return false;">Payment</a>
             <a href="#" onclick="showPage('home'); sc('book'); return false;">Book a Ride</a>
             <a href="sms/">SMS Info</a>
+            <div class="nav-dropdown">
+                <span class="nav-dropdown-toggle" tabindex="0">Coming Soon</span>
+                <div class="nav-dropdown-menu">
+                    <a href="off-site/">Off-Site</a>
+                    <a href="app/">App</a>
+                </div>
+            </div>
             <a href="#" onclick="showPage('home'); sc('faqs'); return false;">FAQs</a>
         </div>
     </nav>
@@ -413,7 +485,9 @@
 
 <div class="site-alert" data-site-alert>
     <div class="site-alert-inner">
-        <span>Service will be free through 6/1. For information on how to book a ride, click <a href="#book">here</a>.</span>
+        <span>Service will be free through 6/1. For information on how to book a ride, click <a href="#book">here</a>.
+            <br><br>
+        Operating Daily: 10 A.M - 6:30 P.M</span>
         <button type="button" data-site-alert-close aria-label="Dismiss alert">&times;</button>
     </div>
 </div>
@@ -437,11 +511,17 @@
     <!-- PAYMENT -->
     <section class="sec" id="payment">
         <div class="inner">
+            <div class="payment-audience" role="tablist" aria-label="Choose payment type">
+                <button class="active" type="button" data-payment-tab="renters" aria-selected="true">Renters</button>
+                <button type="button" data-payment-tab="owners" aria-selected="false">Owners</button>
+            </div>
+            <div class="payment-panel active" data-payment-panel="renters">
             <div class="split">
                 <div>
                     <div class="sec-head">
                         <h2>Payment</h2>
-                        <p>Choose the day pass that matches your stay. Each pass gives you unlimited shuttle rides within the resort for that number of days.</p>
+                        <h3>Renters:</h3>
+                        <p><strong>One pass covers your entire group.</strong> Choose the day pass that matches your stay. Upon your first ride request, your pass will be activated and offer unlimited rides during operating hours within the resort for the duration of your pass.</p><br> <em>Make sure both your primary and secondary phone numbers are accurate for verification purposes.</em> <br>
                     </div>
                     <div class="card">
                         <h3>Before You Pay</h3>
@@ -520,6 +600,50 @@
                         </div>
                     </div>
                 </aside>
+            </div>
+            </div>
+            <div class="payment-panel" data-payment-panel="owners">
+            <div class="split">
+                <div>
+                    <div class="sec-head">
+                        <h2>Payment</h2>
+                        <h3>Owners:</h3>
+                        <p>If you would like to register your guests in advance, choose either a custom guest pass or our monthly pass. After purchase, email <strong>support@sunlineshuttle.com</strong> with your guests' phone numbers so we can register them for ride requests.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Before You Pay</h3>
+                        <ul class="info-list">
+                            <li>Select the correct number of days for your stay.</li>
+                            <li>Save your Stripe payment receipt until your stay is complete.</li>
+                            <li>Questions? Call <strong>(850) 808-7959</strong> or email <strong>support@sunlineshuttle.com</strong>.</li>
+                            <li>If you would like to cancel your subscription, please contact <strong>support@sunlineshuttle.com</strong>. Any charges incurred after your cancellation request will be refunded.</li>
+                        </ul>
+                    </div>
+                    <div class="refund-policy">
+                        <h3>Refund Policy</h3>
+                        <p>Transportation passes may be refunded prior to activation or use. Once a pass has been activated or transportation services have been used, refunds are generally not available.</p>
+                        <p>Refund requests related to operational interruptions, extended service suspensions, or billing errors will be reviewed on a case-by-case basis.</p>
+                        <p>Refunds are not generally issued due to weather conditions unless SunLine Shuttle suspends operations for a significant portion of the active pass period.</p>
+                    </div>
+
+                </div>
+                <aside class="payment-box">
+                    <h3>Choose Your Pass</h3>
+                    <p>Pay securely through Stripe. Make sure that your name and phone number(s) are correct to help us easily confirm your payment!</p>
+                    <div class="pass-grid">
+                        <div class="pass-option" style="grid-column: 1 / -1;">
+                            <strong>Custom Guest Pass</strong>
+                            <span class="pass-price">$74.00 + $6.00 / day</span>
+                            <a class="btn btn-primary" href="https://buy.stripe.com/dRm6oI2jZ3pN5S86iN7kc0m" target="_blank" rel="noopener">Pay via Stripe</a>
+                        </div>
+                        <div class="pass-option" style="grid-column: 1 / -1;">
+                            <strong>Monthly Pass</strong>
+                            <span class="pass-price">$150.00</span>
+                            <a class="btn btn-primary" href="https://buy.stripe.com/aFadRaf6L7G3dkA9uZ7kc0n" target="_blank" rel="noopener">Pay via Stripe</a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
             </div>
         </div>
     </section>
@@ -610,6 +734,22 @@
                 <summary>What happens during bad weather?</summary>
                 <p>Service may be delayed or temporarily suspended during severe weather conditions for passenger safety.</p>
             </details>
+            <details>
+                <summary>Why is there a charge for transportation?</summary>
+                <p>Beginning this summer, resort transportation services are being operated by Sunline Shuttle LLC. Our goal is to provide faster, more reliable service with a new air-conditioned vehicle, improved ride-tracking technology, and expanded transportation options off property. Guest passes help support vehicle operation, staffing, maintenance, and continued service improvements.</p>
+            </details>
+            <details>
+                <summary>Are the rates per person or per group?</summary>
+                <p>Per group. When you purchase a pass, you will be prompted to enter a primary and secondary phone number. The owners of these phone numbers are then able to request rides for both themselves and their group for the duration of their pass.</p>
+            </details>
+            <details>
+                <summary>Do I need to purchase my pass before arriving?</summary>
+                <p>No. Passes may be purchased before or during your stay. However, purchasing in advance helps ensure that you will be verified and ready to ride upon your arrival.</p>
+            </details>
+            <details>
+                <summary>How are riders verified?</summary>
+                <p>Passes are linked to the phone numbers provided during purchase. Ride requests must come from one of the two registered phone numbers associated with the pass.</p>
+            </details>
         </div>
     </section>
 
@@ -661,6 +801,8 @@
             <a href="#" onclick="showPage('home'); sc('payment'); return false;">Payment</a><br>
             <a href="#" onclick="showPage('home'); sc('book'); return false;">Book a Ride</a><br>
             <a href="sms/">SMS Info</a><br>
+            <a href="off-site/">Off-Site</a><br>
+            <a href="app/">App</a><br>
             <a href="#" onclick="showPage('home'); sc('faqs'); return false;">FAQs</a><br>
             <a href="#" onclick="showPage('home'); sc('privacy'); return false;">Privacy Policy</a>
         </div>
@@ -684,6 +826,20 @@
             if (el) el.scrollIntoView({behavior: 'smooth'});
         }, 50);
     }
+
+    document.querySelectorAll('[data-payment-tab]').forEach(tab => {
+        tab.addEventListener('click', () => {
+            const type = tab.dataset.paymentTab;
+            document.querySelectorAll('[data-payment-tab]').forEach(btn => {
+                const isActive = btn === tab;
+                btn.classList.toggle('active', isActive);
+                btn.setAttribute('aria-selected', String(isActive));
+            });
+            document.querySelectorAll('[data-payment-panel]').forEach(panel => {
+                panel.classList.toggle('active', panel.dataset.paymentPanel === type);
+            });
+        });
+    });
 
     const siteAlert = document.querySelector('[data-site-alert]');
     if (siteAlert && sessionStorage.getItem('sunlineAlertDismissed') === 'free-rides-2026-05-27') {
