@@ -468,8 +468,8 @@
             <img class="brand-logo" src="sunlineLLC-02.png" alt="Sunline Shuttle LLC">
         </a>
         <div class="nav-links">
-            <a href="#" onclick="showPage('home'); sc('payment'); return false;">Payment</a>
-            <a href="#" onclick="showPage('home'); sc('book'); return false;">Book a Ride</a>
+            <a href="#" onclick="showPage('home', false); sc('payment'); return false;">Payment</a>
+            <a href="#" onclick="showPage('home', false); sc('book'); return false;">Book a Ride</a>
             <a href="sms/">SMS Info</a>
             <div class="nav-dropdown">
                 <span class="nav-dropdown-toggle" tabindex="0">Coming Soon</span>
@@ -478,7 +478,7 @@
                     <a href="app/">App</a>
                 </div>
             </div>
-            <a href="#" onclick="showPage('home'); sc('faqs'); return false;">FAQs</a>
+            <a href="#" onclick="showPage('home', false); sc('faqs'); return false;">FAQs</a>
         </div>
     </nav>
 </header>
@@ -798,13 +798,13 @@
             <span class="footer-copy">Open daily 10:00 AM - 6:30 PM</span>
         </div>
         <div style="line-height:2;font-size:0.88rem">
-            <a href="#" onclick="showPage('home'); sc('payment'); return false;">Payment</a><br>
-            <a href="#" onclick="showPage('home'); sc('book'); return false;">Book a Ride</a><br>
+            <a href="#" onclick="showPage('home', false); sc('payment'); return false;">Payment</a><br>
+            <a href="#" onclick="showPage('home', false); sc('book'); return false;">Book a Ride</a><br>
             <a href="sms/">SMS Info</a><br>
             <a href="off-site/">Off-Site</a><br>
             <a href="app/">App</a><br>
-            <a href="#" onclick="showPage('home'); sc('faqs'); return false;">FAQs</a><br>
-            <a href="#" onclick="showPage('home'); sc('privacy'); return false;">Privacy Policy</a>
+            <a href="#" onclick="showPage('home', false); sc('faqs'); return false;">FAQs</a><br>
+            <a href="#" onclick="showPage('home', false); sc('privacy'); return false;">Privacy Policy</a>
         </div>
     </div>
     <div style="max-width:1120px;margin:20px auto 0;padding-top:18px;border-top:1px solid rgba(255,255,255,0.1);color:#8ab4bc;font-size:0.78rem">
@@ -813,12 +813,12 @@
 </footer>
 
 <script>
-    function showPage(id) {
+    function showPage(id, scrollTop = true) {
         const page = document.getElementById(id);
         if (!page) return;
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         page.classList.add('active');
-        window.scrollTo({top: 0, behavior: 'smooth'});
+        if (scrollTop) window.scrollTo({top: 0, behavior: 'smooth'});
     }
     function sc(id) {
         setTimeout(() => {
