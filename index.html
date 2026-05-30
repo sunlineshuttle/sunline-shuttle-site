@@ -219,6 +219,13 @@
         .btn-outline { border-color: white; color: white; }
         .btn-dark { background: var(--navy); color: white; }
         .btn-teal { background: var(--teal); color: white; }
+        .btn-disabled {
+            background: #d5d9de;
+            color: #5f6872;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .btn-disabled:hover { opacity: 1; transform: none; }
         .btn-block { width: 100%; }
 
         /* SECTIONS */
@@ -512,8 +519,9 @@
     <section class="sec" id="payment">
         <div class="inner">
             <div class="payment-audience" role="tablist" aria-label="Choose payment type">
-                <button class="active" type="button" data-payment-tab="renters" aria-selected="true">Renters</button>
+                <button class="active" type="button" data-payment-tab="renters" aria-selected="true">Renters/Guests</button>
                 <button type="button" data-payment-tab="owners" aria-selected="false">Owners</button>
+                <button type="button" data-payment-tab="one-time" aria-selected="false">One-Way Ride</button>
             </div>
             <div class="payment-panel active" data-payment-panel="renters">
             <div class="split">
@@ -608,7 +616,7 @@
                     <div class="sec-head">
                         <h2>Payment</h2>
                         <h3>Owners:</h3>
-                        <p>As an owner, all rides requested through the phone number you have registered with security will be given free of charge. If you would like to register your guests in advance, choose either a custom guest pass or our monthly pass. After purchase, email <strong>support@sunlineshuttle.com</strong> with your guests' phone numbers so we can register them for ride requests.</p>
+                        <em>If your guests' stay is 10 days or fewer, please refer to the 'Renters/Guests' tab.</em> <br> <br> <p>As an owner, all rides requested through the phone number you have registered with security will be given free of charge. If you would like to register your guests in advance, choose either a custom guest pass or our monthly pass. After purchase, email <strong>support@sunlineshuttle.com</strong> with your guests' phone numbers so we can register them for ride requests.</p>
                     </div>
                     <div class="card">
                         <h3>Before You Pay</h3>
@@ -633,13 +641,56 @@
                     <div class="pass-grid">
                         <div class="pass-option" style="grid-column: 1 / -1;">
                             <strong>Custom Guest Pass</strong>
-                            <span class="pass-price">$74.00 + $6.00 / day</span>
+                            <span class="pass-price">$74.00 (10 days) + $6.00 for each additional day</span>
                             <a class="btn btn-primary" href="https://buy.stripe.com/dRm6oI2jZ3pN5S86iN7kc0m" target="_blank" rel="noopener">Pay via Stripe</a>
                         </div>
                         <div class="pass-option" style="grid-column: 1 / -1;">
                             <strong>Monthly Pass</strong>
                             <span class="pass-price">$150.00</span>
                             <a class="btn btn-primary" href="https://buy.stripe.com/aFadRaf6L7G3dkA9uZ7kc0n" target="_blank" rel="noopener">Pay via Stripe</a>
+                            <strong><em>Best for owners with multiple guests throughout the month.</em></strong>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+            </div>
+            <div class="payment-panel" data-payment-panel="one-time">
+            <div class="split">
+                <div>
+                    <div class="sec-head">
+                        <h2>Payment</h2>
+                        <h3>One-Way Ride:</h3>
+                        <p><strong>Covers your entire group for a single one-way trip.</strong> For guests staying for a short time, or anyone who wants to try the service before purchasing a longer pass, a One-Way Ride is a convenient option.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Before You Pay</h3>
+                        <ul class="info-list">
+                            <li>Confirm your pickup and drop-off are within the resort.</li>
+                            <li>Save your Stripe payment receipt until your ride is complete.</li>
+                            <li>Questions? Call <strong>(850) 808-7959</strong> or email <strong>support@sunlineshuttle.com</strong>.</li>
+                        </ul>
+                    </div>
+                    <div class="refund-policy">
+                        <h3>Refund Policy</h3>
+                        <p>Transportation passes may be refunded prior to activation or use. Once a pass has been activated or transportation services have been used, refunds are generally not available.</p>
+                        <p>Refund requests related to operational interruptions, extended service suspensions, or billing errors will be reviewed on a case-by-case basis.</p>
+                        <p>Refunds are not generally issued due to weather conditions unless SunLine Shuttle suspends operations for a significant portion of the active pass period.</p>
+                    </div>
+
+                </div>
+                <aside class="payment-box">
+                    <h3>Choose Your Pass</h3>
+                    <p>Pay securely through Stripe. Make sure that your name and phone number(s) are correct to help us easily confirm your payment!</p>
+                    <div class="pass-grid">
+                        <div class="pass-option" style="grid-column: 1 / -1;">
+                            <strong>One-Way On-Site</strong>
+                            <span class="pass-price">$3.00</span>
+                            <a class="btn btn-primary" href="#" aria-disabled="true">Pay via Stripe</a>
+                        </div>
+                        <div class="pass-option" style="grid-column: 1 / -1;">
+                            <strong>One-Way Off-Site</strong>
+                            <span class="pass-price">TBD</span>
+                            <span class="btn btn-disabled" aria-disabled="true">Coming Soon</span>
                         </div>
                     </div>
                 </aside>
