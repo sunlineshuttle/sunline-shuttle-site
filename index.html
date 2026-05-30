@@ -228,6 +228,74 @@
         .btn-disabled:hover { opacity: 1; transform: none; }
         .btn-block { width: 100%; }
 
+        .term-tooltip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            padding: 0 0.12em;
+            border-radius: 4px;
+            background: rgba(246,183,60,0.28);
+            border-bottom: 2px dotted currentColor;
+            color: var(--navy);
+            cursor: help;
+            line-height: 1.2;
+        }
+
+        .pass-option strong .term-tooltip,
+        .payment-audience button.active .term-tooltip {
+            color: var(--navy);
+        }
+
+        .term-tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 8px);
+            transform: translateX(-50%);
+            width: max-content;
+            max-width: min(240px, 80vw);
+            padding: 8px 10px;
+            border-radius: 6px;
+            background: var(--navy);
+            color: white;
+            font-size: 0.78rem;
+            font-weight: 800;
+            line-height: 1.35;
+            text-align: center;
+            box-shadow: 0 10px 24px rgba(18,48,71,0.22);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 30;
+        }
+
+        .term-tooltip::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 2px);
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--navy);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 31;
+        }
+
+        .term-tooltip:hover::after,
+        .term-tooltip:hover::before,
+        .term-tooltip:focus::after,
+        .term-tooltip:focus::before {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .term-tooltip:focus {
+            outline: 2px solid var(--sun);
+            outline-offset: 2px;
+        }
+
         /* SECTIONS */
         section { scroll-margin-top: 72px; }
         .sec { padding: 76px 22px; }
@@ -529,7 +597,7 @@
                     <div class="sec-head">
                         <h2>Payment</h2>
                         <h3>Renters:</h3>
-                        <p><strong>One pass covers your entire group.</strong> Choose the day pass that matches your stay. Upon your first ride request, your pass will be activated and offer unlimited rides during operating hours within the resort for the duration of your pass.</p><br> <em>Make sure both your primary and secondary phone numbers are accurate for verification purposes.</em> <br>
+                        <p><strong>One pass covers your entire <span class="term-tooltip" tabindex="0" data-tooltip="Each group is limited to 14 people.">group</span>.</strong> Choose the day pass that matches your stay. Upon your first ride request, your pass will be activated and offer unlimited rides during operating hours within the resort for the duration of your pass.</p><br> <em>Make sure both your primary and secondary phone numbers are accurate for verification purposes.</em> <br>
                     </div>
                     <div class="card">
                         <h3>Before You Pay</h3>
@@ -660,7 +728,7 @@
                     <div class="sec-head">
                         <h2>Payment</h2>
                         <h3>One-Way Ride:</h3>
-                        <p><strong>Covers your entire group for a single one-way trip.</strong> For guests staying for a short time, or anyone who wants to try the service before purchasing a longer pass, a One-Way Ride is a convenient option.</p>
+                        <p><strong>Covers your entire <span class="term-tooltip" tabindex="0" data-tooltip="Each group is limited to 14 people.">group</span> for a single one-way trip.</strong> For guests staying for a short time, or anyone who wants to try the service before purchasing a longer pass, a One-Way Ride is a convenient option.</p>
                     </div>
                     <div class="card">
                         <h3>Before You Pay</h3>
@@ -791,7 +859,7 @@
             </details>
             <details>
                 <summary>Are the rates per person or per group?</summary>
-                <p>Per group. When you purchase a pass, you will be prompted to enter a primary and secondary phone number. The owners of these phone numbers are then able to request rides for both themselves and their group for the duration of their pass.</p>
+                <p>Per <span class="term-tooltip" tabindex="0" data-tooltip="Each group is limited to 14 people.">group</span>. When you purchase a pass, you will be prompted to enter a primary and secondary phone number. The owners of these phone numbers are then able to request rides for both themselves and their group for the duration of their pass.</p>
             </details>
             <details>
                 <summary>Do I need to purchase my pass before arriving?</summary>
