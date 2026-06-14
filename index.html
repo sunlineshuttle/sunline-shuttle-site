@@ -542,15 +542,13 @@
             padding: 30px 26px 26px;
         }
 
-        .bm-close, .bm-pay-back {
-            position: absolute; top: 12px;
+        .bm-close {
+            position: absolute; top: 12px; right: 14px;
             width: 34px; height: 34px; border: 0; border-radius: 50%;
             background: var(--sand); color: var(--navy);
             font-size: 1.2rem; line-height: 1; cursor: pointer;
         }
-        .bm-close { right: 14px; }
-        .bm-pay-back { left: 14px; font-size: 1.1rem; }
-        .bm-close:hover, .bm-pay-back:hover { background: var(--line); }
+        .bm-close:hover { background: var(--line); }
 
         .bm-title { color: var(--navy); font-size: 1.5rem; line-height: 1.15; margin-bottom: 6px; }
         .bm-sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 18px; }
@@ -577,11 +575,6 @@
         }
         .bm-learn[hidden] { display: none; }
         .bm-learn:hover { background: rgba(246,183,60,0.55); }
-        .bm-info {
-            position: absolute; inset: 0; z-index: 5;
-            background: var(--paper); border-radius: 12px;
-            padding: 52px 22px 22px; overflow-y: auto;
-        }
         .bm-info[hidden] { display: none; }
         .bm-info-p { color: var(--muted); font-size: 0.92rem; line-height: 1.6; margin-top: 12px; }
         .bm-info-h3 { color: var(--navy); font-size: 1rem; margin: 18px 0 6px; }
@@ -622,34 +615,13 @@
         .bm-summary-row .lbl { display: block; color: var(--muted); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
         .bm-summary-row .val { display: block; color: var(--navy); font-size: 0.98rem; font-weight: 700; margin-top: 2px; word-break: break-word; }
 
-        /* payment overlay (secondary window on top) */
-        .bm-pay {
-            position: absolute; inset: 0;
-            background: var(--paper);
-            border-radius: 12px;
-            padding: 52px 22px 22px;
-            overflow-y: auto;
-        }
         .bm-pay[hidden] { display: none; }
-
-        .bm-pay-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 16px; }
-        .bm-pay-tab {
-            flex: 1 1 auto; min-width: 90px;
-            border: 1px solid var(--line); border-radius: 6px;
-            padding: 8px 10px; background: white; color: var(--navy);
-            font-weight: 700; font-size: 0.82rem; cursor: pointer;
-        }
-        .bm-pay-tab.active { background: var(--navy); color: white; border-color: var(--navy); }
-        .bm-pay-view { display: none; }
-        .bm-pay-view.active { display: block; }
-
-        .bm-pay .pass-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .bm-pay .pass-option { background: white; border: 1px solid var(--line); }
+        .bm-pay .pass-option { background: white; border: 1px solid var(--line); padding: 11px 14px; gap: 2px; }
         .bm-pay .pass-option:hover { background: var(--sand); }
-        .bm-pay .pass-option strong { color: var(--navy); }
-        .bm-pay .pass-option .pass-price { color: var(--teal2); }
-        .bm-pay .pass-option .btn { margin-top: auto; }
-        @media (max-width: 480px) { .bm-pay .pass-grid { grid-template-columns: 1fr; } }
+        .bm-pay .pass-option strong { color: var(--navy); font-size: 0.92rem; }
+        .bm-pay .pass-option .pass-price { color: var(--teal2); font-size: 1rem; }
+        .bm-pay .bm-pass-desc { font-size: 0.78rem; line-height: 1.3; }
+        .bm-pay .pass-option .btn { margin-top: 6px; min-height: 34px; padding: 6px 12px; font-size: 0.84rem; }
 
         /* payment wizard screens */
         .bm-pay-screen[hidden] { display: none; }
@@ -1152,7 +1124,7 @@
 
         <!-- PAYMENT WIZARD (secondary window, on top) -->
         <div class="bm-pay" id="bmPay" hidden>
-            <button type="button" class="bm-pay-back" id="bmPayBack" aria-label="Back">&larr;</button>
+            <button type="button" class="bm-step-back" id="bmPayBack">&larr; Back</button>
 
             <!-- screen: choose audience (entry) -->
             <div class="bm-pay-screen" data-pay-screen="start">
@@ -1216,7 +1188,7 @@
 
         <!-- OWNER INFO -->
         <div class="bm-info" id="bmOwnerInfo" hidden>
-            <button type="button" class="bm-pay-back" id="bmOwnerInfoClose" aria-label="Back">&larr;</button>
+            <button type="button" class="bm-step-back" id="bmOwnerInfoClose">&larr; Back</button>
             <h2 class="bm-title">Owners</h2>
             <p class="bm-sub"><em>If your guests' stay is 10 days or fewer, please refer to the 'Renters/Guests' tab.</em></p>
             <p class="bm-info-p">As an owner, all rides requested through the phone number you have registered with security will be given free of charge. If you would like to register your guests in advance, choose either a custom guest pass or our monthly pass. After purchase, email <strong>support@sunlineshuttle.com</strong> with your guests' phone numbers so we can register them for ride requests.</p>
@@ -1237,7 +1209,7 @@
 
         <!-- RENTER INFO -->
         <div class="bm-info" id="bmRenterInfo" hidden>
-            <button type="button" class="bm-pay-back" id="bmRenterInfoClose" aria-label="Back">&larr;</button>
+            <button type="button" class="bm-step-back" id="bmRenterInfoClose">&larr; Back</button>
             <h2 class="bm-title">Renters</h2>
             <p class="bm-info-p">One pass allows two phone numbers to request rides for your group. Choose the day pass that matches your stay. Upon your first ride request, your pass will be activated and offer unlimited rides during operating hours within the resort for the duration of your pass.</p>
             <p class="bm-info-p"><em>Make sure both your primary and secondary phone numbers are accurate for verification purposes.</em></p>
@@ -1356,6 +1328,9 @@
         function showStep(name) {
             steps.forEach(s => { s.hidden = (s.dataset.bmStep !== name); });
             payPanel.hidden = true;
+            document.getElementById('bmOwnerInfo').hidden = true;
+            document.getElementById('bmRenterInfo').hidden = true;
+            overlay.scrollTop = 0;
         }
         function digits(v) { return (v || '').replace(/\D/g, ''); }
         function normalize(v) {
@@ -1393,16 +1368,18 @@
         document.getElementById('bmPayBack').addEventListener('click', payBack);
         document.getElementById('bmLearn').addEventListener('click', function () {
             const info = document.getElementById(this.dataset.info === 'owner' ? 'bmOwnerInfo' : 'bmRenterInfo');
-            info.hidden = false; info.scrollTop = 0;
+            payPanel.hidden = true;
+            info.hidden = false;
+            overlay.scrollTop = 0;
         });
         document.getElementById('bmOwnerInfoClose').addEventListener('click', () => {
             document.getElementById('bmOwnerInfo').hidden = true;
+            payPanel.hidden = false;
         });
         document.getElementById('bmRenterInfoClose').addEventListener('click', () => {
             document.getElementById('bmRenterInfo').hidden = true;
+            payPanel.hidden = false;
         });
-        overlay.addEventListener('click', e => { if (e.target === overlay) window.closeBookingModal(); });
-        document.addEventListener('keydown', e => { if (e.key === 'Escape' && !overlay.hidden) window.closeBookingModal(); });
 
         function proceedAfterVerify() {
             const name = (document.getElementById('bmName').value || '').trim();
@@ -1471,10 +1448,13 @@
 
         function showPayScreen(name) {
             payScreens.forEach(s => { s.hidden = (s.dataset.payScreen !== name); });
-            payPanel.scrollTop = 0;
+            overlay.scrollTop = 0;
         }
         function openPayment() {
             const entry = serviceChoice === 'off-site' ? 'renter-days' : 'start';
+            steps.forEach(s => s.hidden = true);
+            document.getElementById('bmOwnerInfo').hidden = true;
+            document.getElementById('bmRenterInfo').hidden = true;
             payHistory = [entry];
             showPayScreen(entry);
             payPanel.hidden = false;
@@ -1485,7 +1465,7 @@
         }
         function payBack() {
             payHistory.pop();
-            if (!payHistory.length) { payPanel.hidden = true; return; }
+            if (!payHistory.length) { showStep('verify'); return; }
             showPayScreen(payHistory[payHistory.length - 1]);
         }
         function clampDays(v) {
@@ -1557,8 +1537,8 @@
             const r = e.target.closest('[data-pay-results]');
             if (r) { buildResults(r.dataset.payResults); payGo('results'); return; }
             if (e.target.closest('a[href*="stripe.com"]')) {
-                payPanel.hidden = true;
                 payHistory = [];
+                showStep('verify');
                 setMsg(verifyMsg, 'Finish your payment in the new tab, then press Verify again.', 'info');
             }
         });
