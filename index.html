@@ -159,52 +159,6 @@
         .page { display: none; }
         .page.active { display: block; }
 
-        /* HERO */
-        .hero {
-            min-height: 78vh;
-            display: flex; align-items: center;
-            background:
-                linear-gradient(rgba(18,48,71,0.52), rgba(18,48,71,0.3)),
-                url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80") center/cover;
-            color: white;
-        }
-
-        .hero-inner {
-            width: 100%; max-width: 1120px;
-            margin: 0 auto;
-            padding: 100px 22px 110px;
-        }
-
-        .eyebrow {
-            font-size: 0.88rem; font-weight: 800;
-            letter-spacing: 0.1em; text-transform: uppercase;
-            color: var(--sun2); margin-bottom: 14px;
-            -webkit-text-stroke: 0.35px rgba(18,48,71,0.75);
-            text-shadow: 0 1px 2px rgba(18,48,71,0.65);
-        }
-
-        h1 {
-            font-size: clamp(2.4rem, 6.5vw, 5rem);
-            line-height: 1.05; max-width: 720px; margin-bottom: 20px;
-            -webkit-text-stroke: 0.6px rgba(18,48,71,0.8);
-            text-shadow: 0 2px 4px rgba(18,48,71,0.7);
-        }
-
-        .hero h2 {
-            -webkit-text-stroke: 0.45px rgba(18,48,71,0.8);
-            text-shadow: 0 2px 4px rgba(18,48,71,0.7);
-        }
-
-        .hero p {
-            font-size: 1.15rem; max-width: 580px;
-            color: rgba(255,255,255,0.85); margin-bottom: 32px;
-            line-height: 1.7;
-            -webkit-text-stroke: 0.25px rgba(18,48,71,0.65);
-            text-shadow: 0 1px 3px rgba(18,48,71,0.7);
-        }
-
-        .actions { display: flex; flex-wrap: wrap; gap: 12px; }
-
         .btn {
             display: inline-flex; align-items: center; justify-content: center;
             min-height: 46px; padding: 11px 22px;
@@ -554,7 +508,162 @@
             .nav-links { justify-content: center; width: 100%; }
             .split, .grid2, .pass-grid, .sms-split { grid-template-columns: 1fr; }
             .sec { padding: 54px 18px; }
+            /* Full-screen Book a Ride landing on phones */
+            #book {
+                min-height: 100vh;
+                min-height: 100dvh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            #book .inner { width: 100%; }
+            #book .sec-head h2 { font-size: 2.2rem; }
+            #book .btn { font-size: 1.05rem; padding: 14px 28px; }
         }
+
+        /* BOOK A RIDE MODAL */
+        .bm-overlay {
+            position: fixed; inset: 0; z-index: 1000;
+            display: flex; align-items: flex-start; justify-content: center;
+            padding: 5vh 16px 16px;
+            background: rgba(18,48,71,0.55);
+            backdrop-filter: blur(3px);
+            overflow-y: auto;
+        }
+        .bm-overlay[hidden] { display: none; }
+
+        .bm-modal {
+            position: relative;
+            width: 100%; max-width: 440px;
+            background: var(--paper);
+            border-radius: 12px;
+            box-shadow: 0 24px 60px rgba(18,48,71,0.35);
+            padding: 30px 26px 26px;
+        }
+
+        .bm-close, .bm-pay-back {
+            position: absolute; top: 12px;
+            width: 34px; height: 34px; border: 0; border-radius: 50%;
+            background: var(--sand); color: var(--navy);
+            font-size: 1.2rem; line-height: 1; cursor: pointer;
+        }
+        .bm-close { right: 14px; }
+        .bm-pay-back { left: 14px; font-size: 1.1rem; }
+        .bm-close:hover, .bm-pay-back:hover { background: var(--line); }
+
+        .bm-title { color: var(--navy); font-size: 1.5rem; line-height: 1.15; margin-bottom: 6px; }
+        .bm-sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 18px; }
+        .bm-label { display: block; color: var(--navy); font-weight: 700; font-size: 0.85rem; margin: 12px 0 5px; }
+        .bm-optional { font-weight: 400; color: var(--muted); font-size: 0.8rem; }
+        .bm-step-back {
+            background: none; border: 0; padding: 0; margin-bottom: 10px;
+            color: var(--teal2); font-weight: 700; font-size: 0.85rem; cursor: pointer;
+        }
+        .bm-step-back:hover { text-decoration: underline; }
+        .bm-seg { display: flex; gap: 8px; }
+        .bm-seg button {
+            flex: 1; padding: 10px 8px; border: 1px solid var(--line); border-radius: 8px;
+            background: white; color: var(--navy); font-weight: 700; font-size: 0.85rem; cursor: pointer;
+        }
+        .bm-seg button.active { background: var(--navy); color: white; border-color: var(--navy); }
+        .bm-input.bm-locked { background: var(--sand); color: var(--navy); font-weight: 700; cursor: not-allowed; }
+        .bm-results-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+        .bm-learn {
+            border: 0; cursor: pointer;
+            background: rgba(246,183,60,0.32); color: var(--navy);
+            font-weight: 800; font-size: 0.74rem; letter-spacing: 0.02em;
+            padding: 3px 9px; border-radius: 999px;
+        }
+        .bm-learn[hidden] { display: none; }
+        .bm-learn:hover { background: rgba(246,183,60,0.55); }
+        .bm-info {
+            position: absolute; inset: 0; z-index: 5;
+            background: var(--paper); border-radius: 12px;
+            padding: 52px 22px 22px; overflow-y: auto;
+        }
+        .bm-info[hidden] { display: none; }
+        .bm-info-p { color: var(--muted); font-size: 0.92rem; line-height: 1.6; margin-top: 12px; }
+        .bm-info-h3 { color: var(--navy); font-size: 1rem; margin: 18px 0 6px; }
+        .bm-info strong { color: var(--navy); }
+        .bm-offpay {
+            display: flex; flex-direction: column; gap: 4px;
+            margin-top: 18px; padding: 14px 16px;
+            border: 1px solid rgba(246,183,60,0.5); border-radius: 8px;
+            background: rgba(246,183,60,0.12);
+        }
+        .bm-offpay strong { color: var(--navy); }
+        .bm-offpay .pass-price { color: var(--teal2); font-weight: 800; font-size: 1.05rem; }
+        .bm-input {
+            width: 100%; padding: 12px 14px; font-size: 1rem;
+            border: 1px solid var(--line); border-radius: 8px;
+            background: white; color: var(--text); font-family: inherit;
+        }
+        .bm-input:focus { outline: 2px solid var(--sun); outline-offset: 1px; border-color: var(--sun); }
+        .bm-step .btn { margin-top: 18px; }
+        .bm-fine { color: var(--muted); font-size: 0.78rem; margin-top: 12px; line-height: 1.5; }
+
+        .bm-msg { margin-top: 14px; padding: 10px 12px; border-radius: 6px; font-size: 0.88rem; line-height: 1.5; }
+        .bm-msg[hidden] { display: none; }
+        .bm-msg-error { background: rgba(192,57,43,0.1); color: #a12626; border-left: 4px solid #c0392b; }
+        .bm-msg-info { background: rgba(246,183,60,0.16); color: var(--navy); border-left: 4px solid var(--sun); }
+        .bm-msg-success { background: rgba(24,169,153,0.12); color: var(--teal2); border-left: 4px solid var(--teal); }
+
+        .bm-check {
+            width: 64px; height: 64px; margin: 4px auto 14px; border-radius: 50%;
+            background: var(--teal); color: white; font-size: 2rem;
+            display: grid; place-items: center;
+        }
+        .bm-step[data-bm-step="success"] { text-align: center; }
+        .bm-step[hidden] { display: none; }
+
+        /* payment overlay (secondary window on top) */
+        .bm-pay {
+            position: absolute; inset: 0;
+            background: var(--paper);
+            border-radius: 12px;
+            padding: 52px 22px 22px;
+            overflow-y: auto;
+        }
+        .bm-pay[hidden] { display: none; }
+
+        .bm-pay-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 16px; }
+        .bm-pay-tab {
+            flex: 1 1 auto; min-width: 90px;
+            border: 1px solid var(--line); border-radius: 6px;
+            padding: 8px 10px; background: white; color: var(--navy);
+            font-weight: 700; font-size: 0.82rem; cursor: pointer;
+        }
+        .bm-pay-tab.active { background: var(--navy); color: white; border-color: var(--navy); }
+        .bm-pay-view { display: none; }
+        .bm-pay-view.active { display: block; }
+
+        .bm-pay .pass-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .bm-pay .pass-option { background: white; border: 1px solid var(--line); }
+        .bm-pay .pass-option:hover { background: var(--sand); }
+        .bm-pay .pass-option strong { color: var(--navy); }
+        .bm-pay .pass-option .pass-price { color: var(--teal2); }
+        .bm-pay .pass-option .btn { margin-top: auto; }
+        @media (max-width: 480px) { .bm-pay .pass-grid { grid-template-columns: 1fr; } }
+
+        /* payment wizard screens */
+        .bm-pay-screen[hidden] { display: none; }
+        .bm-choice { display: grid; gap: 10px; margin-top: 20px; }
+        .bm-choice-btn {
+            width: 100%; text-align: left;
+            padding: 16px 18px; border: 1px solid var(--line); border-radius: 8px;
+            background: white; color: var(--navy); font-weight: 700; font-size: 1rem;
+            cursor: pointer; transition: background 0.15s, border-color 0.15s;
+        }
+        .bm-choice-btn:hover { background: var(--sand); border-color: var(--teal); }
+        .bm-pay-body { display: grid; gap: 10px; margin-top: 6px; }
+        .bm-pass-desc { color: var(--muted); font-size: 0.82rem; line-height: 1.45; }
+        .bm-contact {
+            margin: 16px 0 6px; padding: 16px 18px;
+            background: var(--sand); border: 1px solid var(--line); border-radius: 8px;
+        }
+        .bm-contact p { margin: 4px 0; color: var(--navy); font-size: 0.95rem; }
+        .bm-contact a { color: var(--teal2); font-weight: 700; }
 
     </style>
 </head>
@@ -567,16 +676,8 @@
             <img class="brand-logo" src="sunlineLLC-02.png" alt="Sunline Shuttle LLC">
         </a>
         <div class="nav-links">
-            <a href="#" onclick="showPage('home', false); sc('payment'); return false;">Payment</a>
-            <a href="#" onclick="showPage('home', false); sc('book'); return false;">Book a Ride</a>
+            <a href="#" onclick="openBookingModal(); return false;">Book a Ride</a>
             <a href="sms/">SMS Info</a>
-            <div class="nav-dropdown">
-                <span class="nav-dropdown-toggle" tabindex="0">Coming Soon</span>
-                <div class="nav-dropdown-menu">
-                    <a href="off-site/">Off-Site</a>
-                    <a href="app/">App</a>
-                </div>
-            </div>
             <a href="#" onclick="showPage('home', false); sc('faqs'); return false;">FAQs</a>
         </div>
     </nav>
@@ -584,9 +685,7 @@
 
 <div class="site-alert" data-site-alert>
     <div class="site-alert-inner">
-        <span>Sunline Shuttle LLC is now open for paid service. Click <a href="#payment">here</a> for pass pricing and payment information.
-            <br><br>
-        Operating Daily: 10 A.M - 6:30 P.M</span>
+        <span>Operating Daily: 10 A.M - 6:30 P.M</span>
         <button type="button" data-site-alert-close aria-label="Dismiss alert">&times;</button>
     </div>
 </div>
@@ -594,21 +693,21 @@
 <!-- HOME PAGE -->
 <div class="page active" id="home">
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="hero-inner">
-            <p class="eyebrow">Miramar Beach, FL</p>
-            <h1>Sunline Shuttle LLC</h1>
-            <h2>We can pick you up and drop you off anywhere in the resort!</h2>
-            <p>SunLine Shuttle LLC provides door-to-door transportation services throughout the resort for owners and guests, including pickup coordination, dispatch notifications, arrival updates, and customer support communications.</p>
-
+    <!-- BOOK A RIDE -->
+    <section class="sec sec-band" id="book">
+        <div class="inner" style="text-align:center">
+            <div class="sec-head" style="max-width:560px;margin:0 auto 24px">
+                <h2>Book a Ride</h2>
+                <p>Verify your number and request your ride in a few taps.</p>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="openBookingModal()">Book a Ride</button>
         </div>
     </section>
 
    
 
     <!-- PAYMENT -->
-    <section class="sec" id="payment">
+    <section class="sec" id="payment" hidden aria-hidden="true">
         <div class="inner">
             <div class="payment-audience" role="tablist" aria-label="Choose payment type">
                 <button class="active" type="button" data-payment-tab="renters" aria-selected="true">Renters/Guests</button>
@@ -792,46 +891,16 @@
                         <div class="pass-option" style="grid-column: 1 / -1;">
                             <strong>One-Way On-Site</strong>
                             <span class="pass-price">$3.00</span>
-                            <a class="btn btn-primary" href="https://buy.stripe.com/cNi14obUz0dB2FW36B7kc0o" aria-disabled="true">Pay via Stripe</a>
+                            <a class="btn btn-primary" href="https://buy.stripe.com/cNi14obUz0dB2FW36B7kc0o" target="_blank" rel="noopener">Pay via Stripe</a>
                         </div>
                         <div class="pass-option" style="grid-column: 1 / -1;">
                             <strong>One-Way Off-Site</strong>
-                            <span class="pass-price">TBD</span>
-                            <span class="btn btn-disabled" aria-disabled="true">Coming Soon</span>
+                            <span class="pass-price">$5.00</span>
+                            <a class="btn btn-primary" href="https://buy.stripe.com/bJe9AU6Af5xVcgw22x7kc0p" target="_blank" rel="noopener">Pay via Stripe</a>
                         </div>
                     </div>
                 </aside>
             </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- BOOK A RIDE -->
-    <section class="sec sec-band" id="book">
-        <div class="inner">
-            <div class="split">
-                <div>
-                    <div class="sec-head">
-                        <h2>Book a Ride</h2>
-                    </div>
-                    <div class="steps">
-                        <article class="step card">
-                            <h3>Send your ride details</h3>
-                            <p>Text <strong>(850) 808-7959</strong> with your pick-up and drop-off locations plus the number of people in your party.</p>
-                            <img class="step-example" src="extxt1.png" alt="Example text message requesting a shuttle ride">
-                        </article>
-                        <article class="step card">
-                            <h3>Wait for confirmation</h3>
-                            <p>Once your ride is booked, you will get a confirmation text along with a link to track progress. Finally, once you are next in queue, you will get a second text, notifying you of our imminent arrival!</p>
-                            <img class="step-example" src="extxt2.jpg" alt="Example confirmation and tracking text messages">
-                        </article>
-                        <article class="step card">
-                            <h3>Additional instructions</h3>
-                            <p>Have any additonal instructions that you would like to give to our driver? Reply to the confirmation text that you got from <strong>(844) 510-0179</strong> and we will be happy to accommodate.</p>
-                            <img class="step-example" src="extxt3.jpg" alt="Example confirmation and tracking text messages">
-                        </article>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -908,6 +977,12 @@
                 <summary>How are riders verified?</summary>
                 <p>Passes are linked to the phone numbers provided during purchase. Ride requests must come from one of the two registered phone numbers associated with the pass.</p>
             </details>
+            <details>
+                <summary>What is the refund policy?</summary>
+                <p>Transportation passes may be refunded prior to activation or use. Once a pass has been activated or transportation services have been used, refunds are generally not available.<br><br> 
+                    Refund requests related to operational interruptions, extended service suspensions, or billing errors will be reviewed on a case-by-case basis.<br><br>
+                    Refunds are not generally issued due to weather conditions unless SunLine Shuttle suspends operations for a significant portion of the active pass period.</p>
+            </details>
         </div>
     </section>
 
@@ -981,6 +1056,180 @@
 
 </div><!-- /home -->
 
+<!-- BOOK A RIDE MODAL -->
+<div class="bm-overlay" id="bmOverlay" hidden>
+    <div class="bm-modal" role="dialog" aria-modal="true" aria-labelledby="bmTitle">
+        <button type="button" class="bm-close" id="bmClose" aria-label="Close">&times;</button>
+
+        <!-- STEP: SERVICE CHOICE -->
+        <div class="bm-step" data-bm-step="service">
+            <h2 class="bm-title" id="bmTitle">Book a Ride</h2>
+            <p class="bm-sub">Where are you headed?</p>
+            <div class="bm-choice">
+                <button type="button" class="bm-choice-btn" data-service="on-site">On-site &mdash; within the resort</button>
+                <button type="button" class="bm-choice-btn" data-service="off-site">Grand Boulevard &mdash; leaving/returning to the resort</button>
+            </div>
+            <p style="margin-top:18px;padding:12px 14px;border-radius:8px;background:rgba(246,183,60,0.18);color:var(--navy);font-size:1rem;font-weight:700;line-height:1.5;text-align:center">Visiting Grand Boulevard? View the <a href="https://grandboulevard.com/directory/map/#/" target="_blank" rel="noopener" style="color:var(--teal2);font-weight:800;text-decoration:underline">official interactive map</a>.</p>
+        </div>
+
+        <!-- STEP: VERIFY -->
+        <div class="bm-step" data-bm-step="verify" hidden>
+            <button type="button" class="bm-step-back" data-go="service">&larr; Back</button>
+            <h2 class="bm-title">Verify your number</h2>
+            <p class="bm-sub" id="bmVerifySub">Enter the phone number on your pass to get started.</p>
+            <label class="bm-label" for="bmPhone">Phone number</label>
+            <input class="bm-input" id="bmPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(555) 555-1212">
+            <label class="bm-label" for="bmName">Name <span class="bm-optional">(optional)</span></label>
+            <input class="bm-input" id="bmName" type="text" autocomplete="name" placeholder="Your name">
+            <p class="bm-msg" id="bmVerifyMsg" hidden></p>
+            <button type="button" class="btn btn-primary btn-block" id="bmVerifyBtn">Verify</button>
+            <p class="bm-fine">We use your number only to confirm an active pass. We never share it.</p>
+        </div>
+
+        <!-- STEP: ON-SITE BOOKING -->
+        <div class="bm-step" data-bm-step="booking" hidden>
+            <button type="button" class="bm-step-back" data-go="verify">&larr; Back</button>
+            <h2 class="bm-title">On-site ride</h2>
+            <p class="bm-sub" id="bmOnGreeting">Pick-up and drop-off within the resort.</p>
+            <label class="bm-label" for="bmPickup">Pick-up location</label>
+            <input class="bm-input" id="bmPickup" type="text" placeholder="e.g. Captiva 99">
+            <label class="bm-label" for="bmDropoff">Drop-off location</label>
+            <input class="bm-input" id="bmDropoff" type="text" placeholder="e.g. Beach">
+            <label class="bm-label" for="bmParty">Number in your party</label>
+            <input class="bm-input" id="bmParty" type="number" min="1" max="14" value="1">
+            <p class="bm-msg" id="bmBookMsg" hidden></p>
+            <button type="button" class="btn btn-primary btn-block" id="bmBookBtn">Book a Ride</button>
+        </div>
+
+        <!-- STEP: OFF-SITE BOOKING -->
+        <div class="bm-step" data-bm-step="offsite" hidden>
+            <button type="button" class="bm-step-back" data-go="verify">&larr; Back</button>
+            <h2 class="bm-title">Grand Boulevard ride</h2>
+            <p class="bm-sub" id="bmOffGreeting">A one-way ride to or from the resort.</p>
+
+            <label class="bm-label">Direction</label>
+            <div class="bm-seg" id="bmOffDir">
+                <button type="button" data-dir="leaving" class="active">Leaving the resort</button>
+                <button type="button" data-dir="returning">Returning to resort</button>
+            </div>
+            <p class="bm-fine" id="bmOffHint" style="margin-top:8px">We'll pick you up inside the resort and take you to Grand Boulevard.</p>
+
+            <label class="bm-label" for="bmOffPickup">Pick-up location <span class="bm-optional" id="bmOffPickupNote"></span></label>
+            <input class="bm-input" id="bmOffPickup" type="text" placeholder="e.g. Captiva 99 (your unit)">
+            <label class="bm-label" for="bmOffDropoff">Drop-off location <span class="bm-optional" id="bmOffDropoffNote"></span></label>
+            <input class="bm-input" id="bmOffDropoff" type="text" placeholder="e.g. Captiva 99 (your unit)">
+            <label class="bm-label" for="bmOffParty">Number in your party</label>
+            <input class="bm-input" id="bmOffParty" type="number" min="1" max="14" value="1">
+            <label class="bm-label" for="bmOffTime">Desired pick-up time <span class="bm-optional" id="bmOffTimeNote"></span></label>
+            <input class="bm-input" id="bmOffTime" type="time" min="17:00" max="20:00">
+
+            <p class="bm-msg" id="bmOffMsg" hidden></p>
+            <button type="button" class="btn btn-primary btn-block" id="bmOffBookBtn">Book a Ride</button>
+        </div>
+
+        <!-- STEP: SUCCESS -->
+        <div class="bm-step" data-bm-step="success" hidden>
+            <div class="bm-check">&#10003;</div>
+            <h2 class="bm-title">Ride requested!</h2>
+            <p class="bm-sub">Dispatch has your request. You'll get a confirmation text with a live tracking link shortly.</p>
+            <button type="button" class="btn btn-primary btn-block" id="bmDoneBtn">Done</button>
+        </div>
+
+        <!-- PAYMENT WIZARD (secondary window, on top) -->
+        <div class="bm-pay" id="bmPay" hidden>
+            <button type="button" class="bm-pay-back" id="bmPayBack" aria-label="Back">&larr;</button>
+
+            <!-- screen: choose audience (entry) -->
+            <div class="bm-pay-screen" data-pay-screen="start">
+                <h2 class="bm-title">Let's find your pass</h2>
+                <p class="bm-sub">We couldn't find an active pass for that number. Are you a renter/guest or an owner?</p>
+                <div class="bm-choice">
+                    <button type="button" class="bm-choice-btn" data-pay-go="renter-days">I'm a renter / guest</button>
+                    <button type="button" class="bm-choice-btn" data-pay-go="owner-who">I'm an owner</button>
+                </div>
+            </div>
+
+            <!-- screen: renter, how many days -->
+            <div class="bm-pay-screen" data-pay-screen="renter-days" hidden>
+                <h2 class="bm-title">You don't have an off-site pass</h2>
+                <p class="bm-sub">Enter how many days you'll be staying so we can find your best value.</p>
+                <label class="bm-label" for="bmRenterDays">Number of days</label>
+                <input class="bm-input" id="bmRenterDays" type="number" inputmode="numeric" min="1" max="60" value="3">
+                <button type="button" class="btn btn-primary btn-block" data-pay-results="renter">See my options</button>
+            </div>
+
+            <!-- screen: owner, who is the ride for -->
+            <div class="bm-pay-screen" data-pay-screen="owner-who" hidden>
+                <h2 class="bm-title">Who is the ride for?</h2>
+                <div class="bm-choice">
+                    <button type="button" class="bm-choice-btn" data-pay-go="owner-self">Myself</button>
+                    <button type="button" class="bm-choice-btn" data-pay-go="owner-days">A guest / renter</button>
+                </div>
+            </div>
+
+            <!-- screen: owner self -->
+            <div class="bm-pay-screen" data-pay-screen="owner-self" hidden>
+                <h2 class="bm-title">Let's get you registered</h2>
+                <p class="bm-sub">As an owner, your own rides are free once your number is registered in our system. It looks like this number isn't set up yet &mdash; reach out and we'll get you added.</p>
+                <div class="bm-contact">
+                    <p><strong>Text:</strong> <a href="tel:+18508087959">(850) 808-7959</a></p>
+                    <p><strong>Email:</strong> <a href="mailto:support@sunlineshuttle.com">support@sunlineshuttle.com</a></p>
+                </div>
+                <p class="bm-fine">Once your information is updated, you'll be able to book rides for free using this number.</p>
+            </div>
+
+            <!-- screen: owner, how many days for guests -->
+            <div class="bm-pay-screen" data-pay-screen="owner-days" hidden>
+                <h2 class="bm-title">How many days for your guest(s)?</h2>
+                <p class="bm-sub">Enter how many days you'd like to cover. Hosting guests throughout the month? The monthly pass may be your best bet.</p>
+                <label class="bm-label" for="bmOwnerDays">Number of days</label>
+                <input class="bm-input" id="bmOwnerDays" type="number" inputmode="numeric" min="1" max="60" value="7">
+                <button type="button" class="btn btn-primary btn-block" data-pay-results="owner">See my options</button>
+            </div>
+
+            <!-- screen: results -->
+            <div class="bm-pay-screen" data-pay-screen="results" hidden>
+                <div class="bm-results-head">
+                    <h2 class="bm-title" id="bmResultsTitle">Your pass options</h2>
+                    <button type="button" class="bm-learn" id="bmLearn" hidden>Learn more</button>
+                </div>
+                <p class="bm-sub" id="bmResultsSub"></p>
+                <div class="bm-pay-body" id="bmPayBody"></div>
+                <p class="bm-fine">Your payment opens in a new tab. After paying, come back here and press Verify again &mdash; it can take a minute for a new pass to register.</p>
+            </div>
+        </div>
+
+        <!-- OWNER INFO -->
+        <div class="bm-info" id="bmOwnerInfo" hidden>
+            <button type="button" class="bm-pay-back" id="bmOwnerInfoClose" aria-label="Back">&larr;</button>
+            <h2 class="bm-title">Owners</h2>
+            <p class="bm-sub"><em>If your guests' stay is 10 days or fewer, please refer to the 'Renters/Guests' tab.</em></p>
+            <p class="bm-info-p">As an owner, all rides requested through the phone number you have registered with security will be given free of charge. If you would like to register your guests in advance, choose either a custom guest pass or our monthly pass. After purchase, email <strong>support@sunlineshuttle.com</strong> with your guests' phone numbers so we can register them for ride requests.</p>
+            <h3 class="bm-info-h3">Example Email</h3>
+            <div class="message-template">
+                <p>SunLine,</p>
+                <p>Please set up the following:</p>
+                <p class="message-indent">Renters John and Judy Smith arrive 6/1/26 and depart 6/14/26.</p>
+                <p class="message-indent">Their numbers to request rides are (555) 555-1212 and (555) 555-1213.</p>
+                <p class="message-indent">Guests Bill and Becky Jones arrive 6/20/26 and depart 6/25/26.</p>
+                <p class="message-indent">Their numbers to request rides are (555) 555-3232 and (555) 555-4242.</p>
+                <p>John Jones, Owner, Captiva 99</p>
+                <p>(555) 555-1515</p>
+            </div>
+            <p class="bm-info-p">You will receive confirmation that renters and guests are set up.</p>
+            <p class="bm-info-p">In addition, your renters/guests will get a welcome text and instructions on what they need to do to ride.</p>
+        </div>
+
+        <!-- RENTER INFO -->
+        <div class="bm-info" id="bmRenterInfo" hidden>
+            <button type="button" class="bm-pay-back" id="bmRenterInfoClose" aria-label="Back">&larr;</button>
+            <h2 class="bm-title">Renters</h2>
+            <p class="bm-info-p">One pass allows two phone numbers to request rides for your group. Choose the day pass that matches your stay. Upon your first ride request, your pass will be activated and offer unlimited rides during operating hours within the resort for the duration of your pass.</p>
+            <p class="bm-info-p"><em>Make sure both your primary and secondary phone numbers are accurate for verification purposes.</em></p>
+        </div>
+    </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
     <div class="footer-inner">
@@ -994,11 +1243,8 @@
             <span class="footer-copy">Open daily 10:00 AM - 6:30 PM</span>
         </div>
         <div style="line-height:2;font-size:0.88rem">
-            <a href="#" onclick="showPage('home', false); sc('payment'); return false;">Payment</a><br>
-            <a href="#" onclick="showPage('home', false); sc('book'); return false;">Book a Ride</a><br>
+            <a href="#" onclick="openBookingModal(); return false;">Book a Ride</a><br>
             <a href="sms/">SMS Info</a><br>
-            <a href="off-site/">Off-Site</a><br>
-            <a href="app/">App</a><br>
             <a href="#" onclick="showPage('home', false); sc('faqs'); return false;">FAQs</a><br>
             <a href="#" onclick="showPage('home', false); sc('privacy'); return false;">Privacy Policy</a>
         </div>
@@ -1048,7 +1294,386 @@
     document.querySelector('[data-site-alert-close]')?.addEventListener('click', () => {
         sessionStorage.setItem('sunlineAlertDismissed', 'free-rides-2026-05-27');
         siteAlert.hidden = true;
+        sizeBookSection();
     });
+
+    function sizeBookSection() {
+        const book = document.getElementById('book');
+        if (!book) return;
+        book.style.minHeight = '';
+        if (window.matchMedia('(max-width: 840px)').matches) {
+            const offset = book.getBoundingClientRect().top + window.scrollY;
+            book.style.minHeight = Math.max(360, window.innerHeight - offset) + 'px';
+        }
+    }
+    window.addEventListener('load', sizeBookSection);
+    window.addEventListener('resize', sizeBookSection);
+    window.addEventListener('orientationchange', sizeBookSection);
+    sizeBookSection();
+
+    const SUNLINE_CONFIG = {
+        verifyWebhook: "https://hook.us2.make.com/g9yi8fb7n2lek45dx886bnbrkpcaypgk",
+        verifyOffsiteWebhook: "https://hook.us2.make.com/uzsncyls0np4k5phinsuhc7pybe5u7wv",
+        dispatchWebhook: "https://hook.us2.make.com/67er22nuis6m3wngxar1lmaf4he9d84u",
+        dispatchTextNumber: "(850) 808-7959",
+        maxParty: 14
+    };
+
+    (function () {
+        const overlay = document.getElementById('bmOverlay');
+        if (!overlay) return;
+
+        const steps = overlay.querySelectorAll('[data-bm-step]');
+        const payPanel = document.getElementById('bmPay');
+        const phoneInput = document.getElementById('bmPhone');
+        const verifyBtn = document.getElementById('bmVerifyBtn');
+        const verifyMsg = document.getElementById('bmVerifyMsg');
+        const bookBtn = document.getElementById('bmBookBtn');
+        const bookMsg = document.getElementById('bmBookMsg');
+        let rider = { status: null, name: '' };
+        let serviceChoice = 'on-site';
+        let payHistory = [];
+        let CATALOG = null;
+
+        function showStep(name) {
+            steps.forEach(s => { s.hidden = (s.dataset.bmStep !== name); });
+            payPanel.hidden = true;
+        }
+        function digits(v) { return (v || '').replace(/\D/g, ''); }
+        function normalize(v) {
+            let d = digits(v);
+            if (d.length === 11 && d[0] === '1') d = d.slice(1);
+            return d;
+        }
+        function formatPhone(v) {
+            const d = normalize(v).slice(0, 10);
+            if (d.length <= 3) return d;
+            if (d.length <= 6) return '(' + d.slice(0, 3) + ') ' + d.slice(3);
+            return '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6);
+        }
+        function setMsg(el, text, type) {
+            el.hidden = false;
+            el.textContent = text;
+            el.className = 'bm-msg bm-msg-' + (type || 'info');
+        }
+        function clearMsg(el) { el.hidden = true; el.textContent = ''; }
+
+        phoneInput.addEventListener('input', () => { phoneInput.value = formatPhone(phoneInput.value); });
+
+        window.openBookingModal = function () {
+            overlay.hidden = false;
+            document.body.style.overflow = 'hidden';
+            showStep('service');
+        };
+        window.closeBookingModal = function () {
+            overlay.hidden = true;
+            document.body.style.overflow = '';
+        };
+
+        document.getElementById('bmClose').addEventListener('click', window.closeBookingModal);
+        document.getElementById('bmDoneBtn').addEventListener('click', window.closeBookingModal);
+        document.getElementById('bmPayBack').addEventListener('click', payBack);
+        document.getElementById('bmLearn').addEventListener('click', function () {
+            const info = document.getElementById(this.dataset.info === 'owner' ? 'bmOwnerInfo' : 'bmRenterInfo');
+            info.hidden = false; info.scrollTop = 0;
+        });
+        document.getElementById('bmOwnerInfoClose').addEventListener('click', () => {
+            document.getElementById('bmOwnerInfo').hidden = true;
+        });
+        document.getElementById('bmRenterInfoClose').addEventListener('click', () => {
+            document.getElementById('bmRenterInfo').hidden = true;
+        });
+        overlay.addEventListener('click', e => { if (e.target === overlay) window.closeBookingModal(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && !overlay.hidden) window.closeBookingModal(); });
+
+        function proceedAfterVerify() {
+            const name = (document.getElementById('bmName').value || '').trim();
+            rider = { status: 'verified', name: name };
+            const greet = name ? 'Welcome back, ' + name + '! ' : 'Welcome back! ';
+            if (serviceChoice === 'off-site') {
+                document.getElementById('bmOffGreeting').textContent = greet ;
+                applyOffsiteDirection();
+                showStep('offsite');
+            } else {
+                document.getElementById('bmOnGreeting').textContent = greet + 'Tell us your on-site trip details.';
+                showStep('booking');
+                setTimeout(() => document.getElementById('bmPickup').focus(), 50);
+            }
+        }
+
+        async function handleVerify() {
+            const d = normalize(phoneInput.value);
+            if (d.length !== 10) { setMsg(verifyMsg, 'Please enter a 10-digit phone number.', 'error'); return; }
+            clearMsg(verifyMsg);
+            const webhook = serviceChoice === 'off-site' ? SUNLINE_CONFIG.verifyOffsiteWebhook : SUNLINE_CONFIG.verifyWebhook;
+            verifyBtn.disabled = true; verifyBtn.textContent = 'Verifying…';
+            try {
+                const res = await fetch(webhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ phone: d, phoneFull: '+1' + d })
+                });
+                const data = await res.json().catch(() => ({}));
+                const approved = !!data && (data.approved === true || String(data.approved).toLowerCase() === 'true');
+                if (approved) {
+                    proceedAfterVerify();
+                } else {
+                    openPayment();
+                }
+            } catch (err) {
+                openPayment();
+            } finally {
+                verifyBtn.disabled = false; verifyBtn.textContent = 'Verify';
+            }
+        }
+        verifyBtn.addEventListener('click', handleVerify);
+        phoneInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); handleVerify(); } });
+
+        const payScreens = payPanel.querySelectorAll('[data-pay-screen]');
+
+        function readCatalog() {
+            if (CATALOG) return CATALOG;
+            const read = o => ({
+                price: (o.querySelector('.pass-price')?.textContent || '').trim(),
+                url: o.querySelector('a[href*="stripe.com"]')?.getAttribute('href') || ''
+            });
+            const opts = key => Array.from(document.querySelectorAll('[data-payment-panel="' + key + '"] .pass-option')).map(read);
+            const renters = opts('renters');
+            const owners = opts('owners');
+            const oneTime = opts('one-time');
+            CATALOG = {
+                day: [null].concat(renters.slice(0, 10)),
+                extended: renters[10] || { price: '$74.00 + $6.00/day', url: '' },
+                monthly: owners[1] || { price: '$150.00', url: '' },
+                oneWay: oneTime[0] || { price: '$3.00', url: '' },
+                offSite: oneTime[1] || { price: '$5.00', url: '' }
+            };
+            return CATALOG;
+        }
+
+        function showPayScreen(name) {
+            payScreens.forEach(s => { s.hidden = (s.dataset.payScreen !== name); });
+            payPanel.scrollTop = 0;
+        }
+        function openPayment() {
+            const entry = serviceChoice === 'off-site' ? 'renter-days' : 'start';
+            payHistory = [entry];
+            showPayScreen(entry);
+            payPanel.hidden = false;
+        }
+        function payGo(name) {
+            payHistory.push(name);
+            showPayScreen(name);
+        }
+        function payBack() {
+            payHistory.pop();
+            if (!payHistory.length) { payPanel.hidden = true; return; }
+            showPayScreen(payHistory[payHistory.length - 1]);
+        }
+        function clampDays(v) {
+            let n = parseInt(v, 10);
+            if (!(n >= 1)) n = 1;
+            if (n > 60) n = 60;
+            return n;
+        }
+        function passCard(label, price, url, desc) {
+            const el = document.createElement('div');
+            el.className = 'pass-option';
+            el.innerHTML =
+                '<strong>' + label + '</strong>' +
+                '<span class="pass-price">' + price + '</span>' +
+                (desc ? '<span class="bm-pass-desc">' + desc + '</span>' : '') +
+                '<a class="btn btn-primary" href="' + url + '" target="_blank" rel="noopener">Pay via Stripe</a>';
+            return { url: url, el: el };
+        }
+        function bestValueCard(days, desc, isOwner) {
+            const cat = readCatalog();
+            if (days <= 10) {
+                const p = cat.day[days];
+                return passCard(days + '-Day Pass', p.price, p.url, desc);
+            }
+            const est = 74 + (days - 10) * 6;
+            const label = isOwner ? 'Custom Guest Pass' : days + '-Day Pass (10 days + extra)';
+            const price = cat.extended.price + ' (about $' + est + '.00 for ' + days + ' days)';
+            return passCard(label, price, cat.extended.url, desc);
+        }
+        function buildResults(type) {
+            const cat = readCatalog();
+            const body = document.getElementById('bmPayBody');
+            const title = document.getElementById('bmResultsTitle');
+            const sub = document.getElementById('bmResultsSub');
+            body.innerHTML = '';
+            const learn = document.getElementById('bmLearn');
+            learn.hidden = false;
+            learn.dataset.info = (type === 'owner') ? 'owner' : 'renter';
+            const cards = [];
+            if (type === 'renter') {
+                const days = clampDays(document.getElementById('bmRenterDays').value);
+                title.textContent = 'Your options';
+                sub.textContent = 'For a ' + days + '-day stay, here are your options:';
+                cards.push(bestValueCard(days, 'Covers your whole stay — best value.', false));
+                cards.push(passCard('1-Day Pass', cat.day[1].price, cat.day[1].url, 'Unlimited rides for one day.'));
+                if (serviceChoice === 'off-site') {
+                    cards.push(passCard('One-Way Off-Site Ride', cat.offSite.price, cat.offSite.url, 'A single trip to or from Grand Boulevard for your whole group.'));
+                } else {
+                    cards.push(passCard('One-Way On-Site Ride', cat.oneWay.price, cat.oneWay.url, 'A single on-site trip for your whole group.'));
+                }
+            } else {
+                const days = clampDays(document.getElementById('bmOwnerDays').value);
+                title.textContent = 'Guest pass options';
+                sub.textContent = 'To cover your guest(s) for ' + days + ' day' + (days > 1 ? 's' : '') + ':';
+                cards.push(bestValueCard(days, 'Covers your guest(s) for the full stay.', true));
+                cards.push(passCard('Monthly Pass', cat.monthly.price, cat.monthly.url, 'Best if you host guests throughout the month.'));
+            }
+            const seen = new Set();
+            cards.forEach(c => {
+                if (!c || !c.url || seen.has(c.url)) return;
+                seen.add(c.url);
+                body.appendChild(c.el);
+            });
+        }
+
+        payPanel.addEventListener('click', e => {
+            const go = e.target.closest('[data-pay-go]');
+            if (go) { payGo(go.dataset.payGo); return; }
+            const r = e.target.closest('[data-pay-results]');
+            if (r) { buildResults(r.dataset.payResults); payGo('results'); return; }
+            if (e.target.closest('a[href*="stripe.com"]')) {
+                payPanel.hidden = true;
+                payHistory = [];
+                setMsg(verifyMsg, 'Finish your payment in the new tab, then press Verify again.', 'info');
+            }
+        });
+
+        let offDir = 'leaving';
+        const offMsg = document.getElementById('bmOffMsg');
+        const offBookBtn = document.getElementById('bmOffBookBtn');
+        const offHint = document.getElementById('bmOffHint');
+
+        function goToVerify() {
+            document.getElementById('bmVerifySub').textContent = serviceChoice === 'off-site'
+                ? 'Enter the phone number you used to pay for your off-site ride.'
+                : 'Enter the phone number on your pass to get started.';
+            showStep('verify');
+            setTimeout(() => phoneInput.focus(), 50);
+        }
+        overlay.addEventListener('click', e => {
+            const svc = e.target.closest('[data-service]');
+            if (svc) { serviceChoice = svc.dataset.service; goToVerify(); return; }
+            const go = e.target.closest('[data-go]');
+            if (!go) return;
+            const dest = go.dataset.go;
+            if (dest === 'verify') { goToVerify(); }
+            else if (dest === 'service') { showStep('service'); }
+        });
+
+        const OFFSITE_DEST = 'Grand Boulevard';
+        const COMING_SOON = '(more options coming soon)';
+        function applyOffsiteDirection() {
+            const pin = document.getElementById('bmOffPickup');
+            const din = document.getElementById('bmOffDropoff');
+            const pnote = document.getElementById('bmOffPickupNote');
+            const dnote = document.getElementById('bmOffDropoffNote');
+            document.querySelectorAll('#bmOffDir [data-dir]').forEach(x => x.classList.toggle('active', x.dataset.dir === offDir));
+            if (offDir === 'leaving') {
+                offHint.textContent = "We'll pick you up inside the resort and take you to " + OFFSITE_DEST + ".";
+                pin.readOnly = false; pin.classList.remove('bm-locked'); pnote.textContent = '';
+                pin.placeholder = 'e.g. Captiva 99 (your unit)';
+                if (pin.value === OFFSITE_DEST) pin.value = '';
+                din.value = OFFSITE_DEST; din.readOnly = true; din.classList.add('bm-locked'); dnote.textContent = COMING_SOON;
+            } else {
+                offHint.textContent = "We'll pick you up at " + OFFSITE_DEST + " and bring you back to the resort.";
+                pin.value = OFFSITE_DEST; pin.readOnly = true; pin.classList.add('bm-locked'); pnote.textContent = COMING_SOON;
+                din.readOnly = false; din.classList.remove('bm-locked'); dnote.textContent = '';
+                din.placeholder = 'e.g. Captiva 99 (your unit)';
+                if (din.value === OFFSITE_DEST) din.value = '';
+            }
+            const t = document.getElementById('bmOffTime');
+            t.min = '17:00';
+            t.max = (offDir === 'leaving') ? '20:00' : '21:00';
+            document.getElementById('bmOffTimeNote').textContent =
+                (offDir === 'leaving') ? '(5:00 – 8:00 PM)' : '(5:00 – 9:00 PM)';
+            if (t.value && (t.value < t.min || t.value > t.max)) t.value = '';
+        }
+        document.getElementById('bmOffDir').addEventListener('click', e => {
+            const b = e.target.closest('[data-dir]');
+            if (!b) return;
+            offDir = b.dataset.dir;
+            applyOffsiteDirection();
+        });
+        applyOffsiteDirection();
+
+        function formatTime12(t) {
+            if (!t) return '';
+            const p = t.split(':');
+            let h = parseInt(p[0], 10);
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12; if (h === 0) h = 12;
+            return h + ':' + p[1] + ' ' + ampm;
+        }
+
+        async function submitRide(fields, msgEl, btn) {
+            const d = normalize(phoneInput.value);
+            const name = (document.getElementById('bmName').value || '').trim();
+            const requestedAt = new Date().toLocaleString('en-US', {
+                timeZone: 'America/Chicago',
+                month: 'short', day: 'numeric', year: 'numeric',
+                hour: 'numeric', minute: '2-digit', timeZoneName: 'short'
+            });
+            clearMsg(msgEl);
+            const label = btn.textContent;
+            btn.disabled = true; btn.textContent = 'Sending…';
+            try {
+                const res = await fetch(SUNLINE_CONFIG.dispatchWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(Object.assign({
+                        phone: d,
+                        phoneFull: '+1' + d,
+                        name: name,
+                        riderType: rider.status || '',
+                        requestedAt: requestedAt
+                    }, fields))
+                });
+                if (!res.ok) throw new Error('bad status');
+                showStep('success');
+            } catch (err) {
+                setMsg(msgEl, 'We couldn’t send your request. Please text it to ' + SUNLINE_CONFIG.dispatchTextNumber + '.', 'error');
+            } finally {
+                btn.disabled = false; btn.textContent = label;
+            }
+        }
+
+        function handleBooking() {
+            const pickup = document.getElementById('bmPickup').value.trim();
+            const dropoff = document.getElementById('bmDropoff').value.trim();
+            const party = parseInt(document.getElementById('bmParty').value, 10);
+            if (!pickup || !dropoff) { setMsg(bookMsg, 'Please enter both pick-up and drop-off locations.', 'error'); return; }
+            if (!(party >= 1 && party <= SUNLINE_CONFIG.maxParty)) {
+                setMsg(bookMsg, 'Party size must be between 1 and ' + SUNLINE_CONFIG.maxParty + '.', 'error'); return;
+            }
+            submitRide({ serviceType: 'on-site', direction: '', pickup: pickup, dropoff: dropoff, party: String(party), requestedTime: 'ASAP' }, bookMsg, bookBtn);
+        }
+        bookBtn.addEventListener('click', handleBooking);
+
+        function handleOffsiteBooking() {
+            const pickup = document.getElementById('bmOffPickup').value.trim();
+            const dropoff = document.getElementById('bmOffDropoff').value.trim();
+            const party = parseInt(document.getElementById('bmOffParty').value, 10);
+            const time = document.getElementById('bmOffTime').value;
+            if (!pickup || !dropoff) { setMsg(offMsg, 'Please enter both pick-up and drop-off locations.', 'error'); return; }
+            if (!(party >= 1 && party <= SUNLINE_CONFIG.maxParty)) {
+                setMsg(offMsg, 'Party size must be between 1 and ' + SUNLINE_CONFIG.maxParty + '.', 'error'); return;
+            }
+            if (!time) { setMsg(offMsg, 'Please choose your desired pick-up time.', 'error'); return; }
+            const tEl = document.getElementById('bmOffTime');
+            if (time < tEl.min || time > tEl.max) {
+                setMsg(offMsg, 'Pick-up time must be between ' + formatTime12(tEl.min) + ' and ' + formatTime12(tEl.max) + '.', 'error'); return;
+            }
+            submitRide({ serviceType: 'off-site', direction: offDir, pickup: pickup, dropoff: dropoff, party: String(party), requestedTime: formatTime12(time) }, offMsg, offBookBtn);
+        }
+        offBookBtn.addEventListener('click', handleOffsiteBooking);
+    })();
 </script>
 </body>
 </html>
