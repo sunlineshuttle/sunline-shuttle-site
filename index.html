@@ -616,6 +616,11 @@
         }
         .bm-step[data-bm-step="success"] { text-align: center; }
         .bm-step[hidden] { display: none; }
+        .bm-summary { margin: 6px 0 4px; border: 1px solid var(--line); border-radius: 8px; background: var(--sand); }
+        .bm-summary-row { padding: 10px 14px; }
+        .bm-summary-row + .bm-summary-row { border-top: 1px solid var(--line); }
+        .bm-summary-row .lbl { display: block; color: var(--muted); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
+        .bm-summary-row .val { display: block; color: var(--navy); font-size: 0.98rem; font-weight: 700; margin-top: 2px; word-break: break-word; }
 
         /* payment overlay (secondary window on top) */
         .bm-pay {
@@ -894,9 +899,9 @@
                             <a class="btn btn-primary" href="https://buy.stripe.com/cNi14obUz0dB2FW36B7kc0o" target="_blank" rel="noopener">Pay via Stripe</a>
                         </div>
                         <div class="pass-option" style="grid-column: 1 / -1;">
-                            <strong>One-Way Off-Site</strong>
-                            <span class="pass-price">$5.00</span>
-                            <a class="btn btn-primary" href="https://buy.stripe.com/bJe9AU6Af5xVcgw22x7kc0p" target="_blank" rel="noopener">Pay via Stripe</a>
+                            <strong>Round-Trip Grand Boulevard</strong>
+                            <span class="pass-price">$6.00</span>
+                            <a class="btn btn-primary" href="https://buy.stripe.com/00waEY0bR3pN6Wc36B7kc0q" target="_blank" rel="noopener">Pay via Stripe</a>
                         </div>
                     </div>
                 </aside>
@@ -1127,6 +1132,16 @@
             <button type="button" class="btn btn-primary btn-block" id="bmOffBookBtn">Book a Ride</button>
         </div>
 
+        <!-- STEP: CONFIRM -->
+        <div class="bm-step" data-bm-step="confirm" hidden>
+            <button type="button" class="bm-step-back" id="bmConfirmBack">&larr; Back</button>
+            <h2 class="bm-title">Confirm your ride</h2>
+            <p class="bm-sub">Please review your details before we send your request to dispatch.</p>
+            <div class="bm-summary" id="bmConfirmSummary"></div>
+            <p class="bm-msg" id="bmConfirmMsg" hidden></p>
+            <button type="button" class="btn btn-primary btn-block" id="bmConfirmBtn">Confirm &amp; book</button>
+        </div>
+
         <!-- STEP: SUCCESS -->
         <div class="bm-step" data-bm-step="success" hidden>
             <div class="bm-check">&#10003;</div>
@@ -1330,8 +1345,11 @@
         const verifyMsg = document.getElementById('bmVerifyMsg');
         const bookBtn = document.getElementById('bmBookBtn');
         const bookMsg = document.getElementById('bmBookMsg');
+        const confirmBtn = document.getElementById('bmConfirmBtn');
+        const confirmMsg = document.getElementById('bmConfirmMsg');
         let rider = { status: null, name: '' };
         let serviceChoice = 'on-site';
+        let pendingBooking = null;
         let payHistory = [];
         let CATALOG = null;
 
@@ -1446,7 +1464,7 @@
                 extended: renters[10] || { price: '$74.00 + $6.00/day', url: '' },
                 monthly: owners[1] || { price: '$150.00', url: '' },
                 oneWay: oneTime[0] || { price: '$3.00', url: '' },
-                offSite: oneTime[1] || { price: '$5.00', url: '' }
+                offSite: oneTime[1] || { price: '$6.00', url: 'https://buy.stripe.com/00waEY0bR3pN6Wc36B7kc0q' }
             };
             return CATALOG;
         }
@@ -1514,7 +1532,7 @@
                 cards.push(bestValueCard(days, 'Covers your whole stay — best value.', false));
                 cards.push(passCard('1-Day Pass', cat.day[1].price, cat.day[1].url, 'Unlimited rides for one day.'));
                 if (serviceChoice === 'off-site') {
-                    cards.push(passCard('One-Way Off-Site Ride', cat.offSite.price, cat.offSite.url, 'A single trip to or from Grand Boulevard for your whole group.'));
+                    cards.push(passCard('Round-Trip Grand Boulevard', cat.offSite.price, cat.offSite.url, 'Round trip to and from Grand Boulevard for your whole group.'));
                 } else {
                     cards.push(passCard('One-Way On-Site Ride', cat.oneWay.price, cat.oneWay.url, 'A single on-site trip for your whole group.'));
                 }
@@ -1652,7 +1670,7 @@
             if (!(party >= 1 && party <= SUNLINE_CONFIG.maxParty)) {
                 setMsg(bookMsg, 'Party size must be between 1 and ' + SUNLINE_CONFIG.maxParty + '.', 'error'); return;
             }
-            submitRide({ serviceType: 'on-site', direction: '', pickup: pickup, dropoff: dropoff, party: String(party), requestedTime: 'ASAP' }, bookMsg, bookBtn);
+            showConfirm({ serviceType: 'on-site', direction: '', pickup: pickup, dropoff: dropoff, party: String(party), requestedTime: 'ASAP' }, 'booking');
         }
         bookBtn.addEventListener('click', handleBooking);
 
@@ -1670,9 +1688,39 @@
             if (time < tEl.min || time > tEl.max) {
                 setMsg(offMsg, 'Pick-up time must be between ' + formatTime12(tEl.min) + ' and ' + formatTime12(tEl.max) + '.', 'error'); return;
             }
-            submitRide({ serviceType: 'off-site', direction: offDir, pickup: pickup, dropoff: dropoff, party: String(party), requestedTime: formatTime12(time) }, offMsg, offBookBtn);
+            showConfirm({ serviceType: 'off-site', direction: offDir, pickup: pickup, dropoff: dropoff, party: String(party), requestedTime: formatTime12(time) }, 'offsite');
         }
         offBookBtn.addEventListener('click', handleOffsiteBooking);
+
+        function showConfirm(fields, backStep) {
+            pendingBooking = { fields: fields, backStep: backStep };
+            const c = document.getElementById('bmConfirmSummary');
+            c.innerHTML = '';
+            const row = (label, value) => {
+                const d = document.createElement('div'); d.className = 'bm-summary-row';
+                const l = document.createElement('span'); l.className = 'lbl'; l.textContent = label;
+                const v = document.createElement('span'); v.className = 'val'; v.textContent = value;
+                d.appendChild(l); d.appendChild(v); c.appendChild(d);
+            };
+            row('Pick-up', fields.pickup);
+            row('Drop-off', fields.dropoff);
+            const n = parseInt(fields.party, 10);
+            row('Group size', fields.party + (n === 1 ? ' person' : ' people'));
+            if (fields.serviceType === 'off-site') {
+                row('Direction', fields.direction === 'returning' ? 'Returning to the resort' : 'Leaving the resort');
+                row('Pick-up time', fields.requestedTime);
+            } else {
+                row('Pick-up time', 'As soon as possible');
+            }
+            clearMsg(confirmMsg);
+            showStep('confirm');
+        }
+        confirmBtn.addEventListener('click', () => {
+            if (pendingBooking) submitRide(pendingBooking.fields, confirmMsg, confirmBtn);
+        });
+        document.getElementById('bmConfirmBack').addEventListener('click', () => {
+            showStep(pendingBooking ? pendingBooking.backStep : 'service');
+        });
     })();
 </script>
 </body>
