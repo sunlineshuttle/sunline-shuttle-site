@@ -662,7 +662,7 @@
 
 <div class="site-alert" data-site-alert>
     <div class="site-alert-inner">
-        <span>Operating Daily: 10 A.M - 9 P.M</span>
+        <span>Operating Daily: 10 A.M - 8 P.M</span>
         <button type="button" data-site-alert-close aria-label="Dismiss alert">&times;</button>
     </div>
 </div>
@@ -894,13 +894,13 @@
                     <div class="card">
                         <table style="width:100%;border-collapse:collapse;">
                             <tbody>
-                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Monday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 9:00 PM</td></tr>
-                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Tuesday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 9:00 PM</td></tr>
-                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Wednesday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 9:00 PM</td></tr>
-                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Thursday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 9:00 PM</td></tr>
-                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Friday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 9:00 PM</td></tr>
-                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Saturday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 9:00 PM</td></tr>
-                                <tr><td style="padding:10px 0;color:var(--muted)">Sunday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);text-align:right">10:00 AM - 9:00 PM</td></tr>
+                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Monday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 8:00 PM</td></tr>
+                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Tuesday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 8:00 PM</td></tr>
+                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Wednesday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 8:00 PM</td></tr>
+                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Thursday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 8:00 PM</td></tr>
+                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Friday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 8:00 PM</td></tr>
+                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Saturday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 8:00 PM</td></tr>
+                                <tr><td style="padding:10px 0;color:var(--muted)">Sunday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);text-align:right">10:00 AM - 8:00 PM</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1179,6 +1179,7 @@
                 <div class="bm-results-head">
                     <h2 class="bm-title" id="bmResultsTitle">Your pass options</h2>
                     <button type="button" class="bm-learn" id="bmLearn" hidden>Learn more</button>
+                    <button type="button" class="bm-learn" id="bmHours" hidden>Hours</button>
                 </div>
                 <p class="bm-sub" id="bmResultsSub"></p>
                 <div class="bm-pay-body" id="bmPayBody"></div>
@@ -1214,6 +1215,22 @@
             <p class="bm-info-p">One pass allows two phone numbers to request rides for your group. Choose the day pass that matches your stay. Upon your first ride request, your pass will be activated and offer unlimited rides during operating hours within the resort for the duration of your pass.</p>
             <p class="bm-info-p"><em>Make sure both your primary and secondary phone numbers are accurate for verification purposes.</em></p>
         </div>
+
+        <!-- OFF-SITE INFO -->
+        <div class="bm-info" id="bmOffsiteInfo" hidden>
+            <button type="button" class="bm-step-back" id="bmOffsiteInfoClose">&larr; Back</button>
+            <h2 class="bm-title">Round-Trip Grand Boulevard</h2>
+            <p class="bm-info-p">One $6 booking covers your whole group, round trip.</p>
+            <p class="bm-info-p">We'll pick you up at your resort and take you to Grand Boulevard. When you're ready to head back, just request your return pickup the same way &mdash; no need to lock in a return time when you book.</p>
+            <p class="bm-info-p">After you pay, come back and verify your number to request your pickup. Grand Boulevard is currently our only off-site stop &mdash; more coming soon. Groups up to 14.</p>
+        </div>
+
+        <!-- HOURS INFO -->
+        <div class="bm-info" id="bmHoursInfo" hidden>
+            <button type="button" class="bm-step-back" id="bmHoursInfoClose">&larr; Back</button>
+            <h2 class="bm-title">Pickup windows (evenings)</h2>
+            <p class="bm-info-p" style="margin-top:4px">To Grand Boulevard &mdash; 5:00&ndash;8:00 PM<br>Back to the resort &mdash; 5:00&ndash;9:00 PM</p>
+        </div>
     </div>
 </div>
 
@@ -1227,7 +1244,7 @@
         <div style="line-height:1.9">
             <span style="color:#d9edf0">(850) 808-7959</span><br>
             <a href="mailto:support@sunlineshuttle.com">support@sunlineshuttle.com</a><br>
-            <span class="footer-copy">Open daily 10:00 AM - 9:00 PM</span>
+            <span class="footer-copy">Open daily 10:00 AM - 8:00 PM</span>
         </div>
         <div style="line-height:2;font-size:0.88rem">
             <a href="#" onclick="openBookingModal(); return false;">Book a Ride</a><br>
@@ -1328,8 +1345,7 @@
         function showStep(name) {
             steps.forEach(s => { s.hidden = (s.dataset.bmStep !== name); });
             payPanel.hidden = true;
-            document.getElementById('bmOwnerInfo').hidden = true;
-            document.getElementById('bmRenterInfo').hidden = true;
+            document.querySelectorAll('.bm-info').forEach(p => p.hidden = true);
             overlay.scrollTop = 0;
         }
         function digits(v) { return (v || '').replace(/\D/g, ''); }
@@ -1367,18 +1383,22 @@
         document.getElementById('bmDoneBtn').addEventListener('click', window.closeBookingModal);
         document.getElementById('bmPayBack').addEventListener('click', payBack);
         document.getElementById('bmLearn').addEventListener('click', function () {
-            const info = document.getElementById(this.dataset.info === 'owner' ? 'bmOwnerInfo' : 'bmRenterInfo');
+            const map = { owner: 'bmOwnerInfo', offsite: 'bmOffsiteInfo' };
+            const info = document.getElementById(map[this.dataset.info] || 'bmRenterInfo');
             payPanel.hidden = true;
             info.hidden = false;
             overlay.scrollTop = 0;
         });
-        document.getElementById('bmOwnerInfoClose').addEventListener('click', () => {
-            document.getElementById('bmOwnerInfo').hidden = true;
-            payPanel.hidden = false;
+        document.getElementById('bmHours').addEventListener('click', function () {
+            payPanel.hidden = true;
+            document.getElementById('bmHoursInfo').hidden = false;
+            overlay.scrollTop = 0;
         });
-        document.getElementById('bmRenterInfoClose').addEventListener('click', () => {
-            document.getElementById('bmRenterInfo').hidden = true;
-            payPanel.hidden = false;
+        ['bmOwnerInfoClose', 'bmRenterInfoClose', 'bmOffsiteInfoClose', 'bmHoursInfoClose'].forEach(id => {
+            document.getElementById(id).addEventListener('click', () => {
+                document.getElementById(id).closest('.bm-info').hidden = true;
+                payPanel.hidden = false;
+            });
         });
 
         function proceedAfterVerify() {
@@ -1451,13 +1471,17 @@
             overlay.scrollTop = 0;
         }
         function openPayment() {
-            const entry = serviceChoice === 'off-site' ? 'renter-days' : 'start';
             steps.forEach(s => s.hidden = true);
-            document.getElementById('bmOwnerInfo').hidden = true;
-            document.getElementById('bmRenterInfo').hidden = true;
-            payHistory = [entry];
-            showPayScreen(entry);
+            document.querySelectorAll('.bm-info').forEach(p => p.hidden = true);
             payPanel.hidden = false;
+            if (serviceChoice === 'off-site') {
+                buildResults('offsite');
+                payHistory = ['results'];
+                showPayScreen('results');
+            } else {
+                payHistory = ['start'];
+                showPayScreen('start');
+            }
         }
         function payGo(name) {
             payHistory.push(name);
@@ -1502,21 +1526,23 @@
             const sub = document.getElementById('bmResultsSub');
             body.innerHTML = '';
             const learn = document.getElementById('bmLearn');
-            learn.hidden = false;
-            learn.dataset.info = (type === 'owner') ? 'owner' : 'renter';
+            document.getElementById('bmHours').hidden = (type !== 'offsite');
             const cards = [];
-            if (type === 'renter') {
+            if (type === 'offsite') {
+                learn.hidden = false; learn.dataset.info = 'offsite';
+                title.textContent = 'Grand Boulevard round trip';
+                sub.textContent = "We couldn't find an active pass for that number — here's your ride:";
+                cards.push(passCard('Round-Trip Grand Boulevard', cat.offSite.price, cat.offSite.url, 'Round trip to and from Grand Boulevard for your whole group.'));
+            } else if (type === 'renter') {
+                learn.hidden = false; learn.dataset.info = 'renter';
                 const days = clampDays(document.getElementById('bmRenterDays').value);
                 title.textContent = 'Your options';
                 sub.textContent = 'For a ' + days + '-day stay, here are your options:';
                 cards.push(bestValueCard(days, 'Covers your whole stay — best value.', false));
                 cards.push(passCard('1-Day Pass', cat.day[1].price, cat.day[1].url, 'Unlimited rides for one day.'));
-                if (serviceChoice === 'off-site') {
-                    cards.push(passCard('Round-Trip Grand Boulevard', cat.offSite.price, cat.offSite.url, 'Round trip to and from Grand Boulevard for your whole group.'));
-                } else {
-                    cards.push(passCard('One-Way On-Site Ride', cat.oneWay.price, cat.oneWay.url, 'A single on-site trip for your whole group.'));
-                }
+                cards.push(passCard('One-Way On-Site Ride', cat.oneWay.price, cat.oneWay.url, 'A single on-site trip for your whole group.'));
             } else {
+                learn.hidden = false; learn.dataset.info = 'owner';
                 const days = clampDays(document.getElementById('bmOwnerDays').value);
                 title.textContent = 'Guest pass options';
                 sub.textContent = 'To cover your guest(s) for ' + days + ' day' + (days > 1 ? 's' : '') + ':';
