@@ -602,6 +602,12 @@
         .bm-sponsor[hidden] { display: none; }
         .bm-skip { display: block; width: 100%; margin-top: 10px; padding: 8px; background: none; border: 0; color: var(--teal2); font-weight: 700; font-size: 0.9rem; cursor: pointer; }
         .bm-skip:hover { text-decoration: underline; }
+        .bm-ac-wrap { position: relative; }
+        .bm-ac-list { position: absolute; top: calc(100% + 2px); left: 0; right: 0; z-index: 30; background: white; border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 8px 20px rgba(18,48,71,0.16); max-height: 240px; overflow-y: auto; }
+        .bm-ac-list[hidden] { display: none; }
+        .bm-ac-item { padding: 11px 12px; font-size: 0.92rem; color: var(--navy); cursor: pointer; }
+        .bm-ac-item + .bm-ac-item { border-top: 1px solid var(--line); }
+        .bm-ac-item:hover, .bm-ac-item.active { background: var(--sand); }
 
         .bm-msg { margin-top: 14px; padding: 10px 12px; border-radius: 6px; font-size: 0.88rem; line-height: 1.5; }
         .bm-msg[hidden] { display: none; }
@@ -1067,8 +1073,6 @@
 <div class="bm-overlay" id="bmOverlay" hidden>
     <div class="bm-modal" role="dialog" aria-modal="true" aria-labelledby="bmTitle">
         <button type="button" class="bm-close" id="bmClose" aria-label="Close">&times;</button>
-        <datalist id="bmLocations"></datalist>
-        <datalist id="bmResidences"></datalist>
 
         <!-- STEP: SERVICE CHOICE -->
         <div class="bm-step" data-bm-step="service">
@@ -1114,9 +1118,9 @@
             <p class="bm-sub" id="bmOnGreeting">Pick-up and drop-off within the resort.</p>
             <p class="bm-sponsor" id="bmOnSponsor" hidden></p>
             <label class="bm-label" for="bmPickup">Pick-up location</label>
-            <input class="bm-input" id="bmPickup" type="text" list="bmLocations" autocomplete="off" placeholder="Start typing your unit or a location">
+            <input class="bm-input" id="bmPickup" type="text" autocomplete="off" placeholder="Start typing your unit or a location">
             <label class="bm-label" for="bmDropoff">Drop-off location</label>
-            <input class="bm-input" id="bmDropoff" type="text" list="bmLocations" autocomplete="off" placeholder="Start typing a location">
+            <input class="bm-input" id="bmDropoff" type="text" autocomplete="off" placeholder="Start typing a location">
             <label class="bm-label" for="bmParty">Number in your party</label>
             <input class="bm-input" id="bmParty" type="number" min="1" max="14" value="1">
             <p class="bm-msg" id="bmBookMsg" hidden></p>
@@ -1138,9 +1142,9 @@
             <p class="bm-fine" id="bmOffHint" style="margin-top:8px">We'll pick you up inside the resort and take you to Grand Boulevard.</p>
 
             <label class="bm-label" for="bmOffPickup">Pick-up location <span class="bm-optional" id="bmOffPickupNote"></span></label>
-            <input class="bm-input" id="bmOffPickup" type="text" list="bmLocations" autocomplete="off" placeholder="e.g. Captiva 99 (your unit)">
+            <input class="bm-input" id="bmOffPickup" type="text" autocomplete="off" placeholder="e.g. Captiva 99 (your unit)">
             <label class="bm-label" for="bmOffDropoff">Drop-off location <span class="bm-optional" id="bmOffDropoffNote"></span></label>
-            <input class="bm-input" id="bmOffDropoff" type="text" list="bmLocations" autocomplete="off" placeholder="e.g. Captiva 99 (your unit)">
+            <input class="bm-input" id="bmOffDropoff" type="text" autocomplete="off" placeholder="e.g. Captiva 99 (your unit)">
             <label class="bm-label" for="bmOffParty">Number in your party</label>
             <input class="bm-input" id="bmOffParty" type="number" min="1" max="14" value="1">
             <label class="bm-label" for="bmOffTime">Desired pick-up time <span class="bm-optional" id="bmOffTimeNote"></span></label>
@@ -1224,7 +1228,7 @@
                 <label class="bm-label" for="bmRegName">Full name</label>
                 <input class="bm-input" id="bmRegName" type="text" autocomplete="name" placeholder="Your full name">
                 <label class="bm-label" for="bmRegUnit">Your unit / building</label>
-                <input class="bm-input" id="bmRegUnit" type="text" list="bmResidences" autocomplete="off" placeholder="Start typing your unit or building">
+                <input class="bm-input" id="bmRegUnit" type="text" autocomplete="off" placeholder="Start typing your unit or building">
                 <label class="bm-label" for="bmRegRoom" id="bmRegRoomLabel" hidden>Room / unit number</label>
                 <input class="bm-input" id="bmRegRoom" type="text" inputmode="numeric" placeholder="e.g. 1502" hidden>
                 <label class="bm-label" for="bmRegPhone">Phone number</label>
@@ -1412,7 +1416,7 @@
 
         // Resort locations for autocomplete
         const HIGH_RISES = ['Summit', 'Beach Manor', 'Tides'];
-        const AMENITIES = ['Blue Dunes Grill', 'Ocean Club', 'Racquet Club / Clubhouse', 'Club Pool', 'Guest Services / Guest Registration'];
+        const AMENITIES = ['Beach Access', 'Blue Dunes Grill', 'Ocean Club', 'Racquet Club / Clubhouse', 'Club Pool', 'Guest Services / Guest Registration'];
         const TENNIS = [];
         for (let i = 1; i <= 65; i++) {
             const street = i <= 10 ? 'Wimbledon Ct' : (i <= 49 ? 'Forest Hill Dr' : 'Kensington Ln');
@@ -1426,12 +1430,54 @@
         const CAPTIVA = ['Captiva Pool'].concat([19, 23, 24, 28, 29, 32, 33, 36, 39, 43, 47, 53, 67, 75, 89, 95, 111, 117, 140, 144, 148, 152].map(n => 'Captiva ' + n));
         const LOCATIONS = HIGH_RISES.concat(AMENITIES, TENNIS, GRAND_VILLA, SIERRA, CAPTIVA);
         const RESIDENCES = HIGH_RISES.concat(TENNIS, GRAND_VILLA.filter(s => s !== 'Grand Villa Pool'), SIERRA, CAPTIVA.filter(s => s !== 'Captiva Pool'));
-        function fillDatalist(id, items) {
-            const dl = document.getElementById(id);
-            if (dl) dl.innerHTML = items.map(v => '<option value="' + v.replace(/"/g, '&quot;') + '"></option>').join('');
+        function attachAutocomplete(input, items, onChoose) {
+            const wrap = document.createElement('div');
+            wrap.className = 'bm-ac-wrap';
+            input.parentNode.insertBefore(wrap, input);
+            wrap.appendChild(input);
+            const list = document.createElement('div');
+            list.className = 'bm-ac-list';
+            list.hidden = true;
+            wrap.appendChild(list);
+            let matches = [], active = -1;
+            const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+            function close() { list.hidden = true; list.innerHTML = ''; matches = []; active = -1; }
+            function highlight() {
+                Array.from(list.children).forEach((c, i) => c.classList.toggle('active', i === active));
+                if (active >= 0 && list.children[active]) list.children[active].scrollIntoView({ block: 'nearest' });
+            }
+            function choose(val) { input.value = val; close(); if (onChoose) onChoose(); input.focus(); }
+            function render() {
+                if (input.readOnly) { close(); return; }
+                const q = input.value.trim().toLowerCase();
+                matches = q ? items.filter(it => it.toLowerCase().indexOf(q) !== -1).slice(0, 8) : [];
+                active = -1;
+                if (!matches.length) { close(); return; }
+                list.innerHTML = matches.map(m => '<div class="bm-ac-item">' + esc(m) + '</div>').join('');
+                list.hidden = false;
+            }
+            input.addEventListener('input', render);
+            input.addEventListener('keydown', e => {
+                if (list.hidden) return;
+                if (e.key === 'ArrowDown') { e.preventDefault(); active = Math.min(active + 1, matches.length - 1); highlight(); }
+                else if (e.key === 'ArrowUp') { e.preventDefault(); active = Math.max(active - 1, 0); highlight(); }
+                else if (e.key === 'Enter' && active >= 0) { e.preventDefault(); choose(matches[active]); }
+                else if (e.key === 'Escape') { close(); }
+            });
+            list.addEventListener('pointerdown', e => {
+                const item = e.target.closest('.bm-ac-item');
+                if (!item) return;
+                e.preventDefault();
+                choose(matches[Array.prototype.indexOf.call(list.children, item)]);
+            });
+            input.addEventListener('blur', () => setTimeout(close, 150));
         }
-        fillDatalist('bmLocations', LOCATIONS);
-        fillDatalist('bmResidences', RESIDENCES);
+        ['bmPickup', 'bmDropoff', 'bmOffPickup', 'bmOffDropoff'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) attachAutocomplete(el, LOCATIONS);
+        });
+        const regUnitEl = document.getElementById('bmRegUnit');
+        if (regUnitEl) attachAutocomplete(regUnitEl, RESIDENCES, function () { updateRegRoom(); });
         function isHighRise(v) { return HIGH_RISES.indexOf((v || '').trim()) !== -1; }
 
         const steps = overlay.querySelectorAll('[data-bm-step]');
