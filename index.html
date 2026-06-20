@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sunline Shuttle LLC | Beach Resort Shuttle Service</title>
     <meta name="description" content="Sunline Shuttle LLC provides door-to-door shuttle rides for resort guests - beach trips, dinner rides, resort transfers, and more.">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <style>
         :root {
             --navy: #123047;
@@ -595,6 +598,10 @@
         .bm-input:focus { outline: 2px solid var(--sun); outline-offset: 1px; border-color: var(--sun); }
         .bm-step .btn { margin-top: 18px; }
         .bm-fine { color: var(--muted); font-size: 0.78rem; margin-top: 12px; line-height: 1.5; }
+        .bm-sponsor { margin: 0 0 14px; padding: 9px 12px; border-radius: 8px; background: rgba(24,169,153,0.12); color: var(--teal2); border-left: 4px solid var(--teal); font-size: 0.88rem; font-weight: 700; line-height: 1.4; }
+        .bm-sponsor[hidden] { display: none; }
+        .bm-skip { display: block; width: 100%; margin-top: 10px; padding: 8px; background: none; border: 0; color: var(--teal2); font-weight: 700; font-size: 0.9rem; cursor: pointer; }
+        .bm-skip:hover { text-decoration: underline; }
 
         .bm-msg { margin-top: 14px; padding: 10px 12px; border-radius: 6px; font-size: 0.88rem; line-height: 1.5; }
         .bm-msg[hidden] { display: none; }
@@ -642,6 +649,31 @@
         .bm-contact p { margin: 4px 0; color: var(--navy); font-size: 0.95rem; }
         .bm-contact a { color: var(--teal2); font-weight: 700; }
 
+        /* dispatch (admin) panel */
+        .bm-modal.is-dispatch { max-width: 600px; }
+        .bm-disp-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+        .bm-disp-status { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 0.8rem; font-weight: 600; margin: 2px 0 0; }
+        .bm-disp-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); display: inline-block; flex: none; }
+        .bm-disp-dot.is-live { background: var(--teal); animation: bmPulse 2s infinite; }
+        @keyframes bmPulse { 0% { box-shadow: 0 0 0 0 rgba(24,169,153,0.5); } 70% { box-shadow: 0 0 0 7px rgba(24,169,153,0); } 100% { box-shadow: 0 0 0 0 rgba(24,169,153,0); } }
+        .bm-disp-controls { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+        .bm-disp-toggle { border: 1px solid var(--line); background: white; color: var(--navy); font-weight: 700; font-size: 0.8rem; padding: 7px 12px; border-radius: 999px; cursor: pointer; }
+        .bm-disp-toggle:hover { background: var(--sand); }
+        .bm-disp-toggle[disabled] { opacity: 0.5; cursor: default; }
+        .bm-disp-list { display: flex; flex-direction: column; gap: 10px; max-height: 62vh; overflow-y: auto; }
+        .bm-ride { border: 1px solid var(--line); border-radius: 10px; background: white; padding: 12px 14px; }
+        .bm-ride.is-new { border-color: var(--sun); animation: bmFlash 1.4s ease-out 3; }
+        @keyframes bmFlash { 0%, 100% { background: rgba(246,183,60,0.12); } 50% { background: rgba(246,183,60,0.45); } }
+        .bm-ride-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+        .bm-ride-badge { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.03em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; color: white; flex: none; }
+        .bm-ride-badge.on { background: var(--teal2); }
+        .bm-ride-badge.off { background: var(--blue); }
+        .bm-ride-time { color: var(--muted); font-size: 0.76rem; font-weight: 600; text-align: right; }
+        .bm-ride-route { color: var(--navy); font-weight: 800; font-size: 1.05rem; line-height: 1.3; word-break: break-word; }
+        .bm-ride-arrow { color: var(--teal); }
+        .bm-ride-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 6px; color: var(--muted); font-size: 0.85rem; font-weight: 600; }
+        .bm-ride-meta a { color: var(--teal2); font-weight: 700; }
+
     </style>
 </head>
 <body>
@@ -655,6 +687,7 @@
         <div class="nav-links">
             <a href="#" onclick="openBookingModal(); return false;">Book a Ride</a>
             <a href="sms/">SMS Info</a>
+            <a href="pricing/">Pricing</a>
             <a href="#" onclick="showPage('home', false); sc('faqs'); return false;">FAQs</a>
         </div>
     </nav>
@@ -695,7 +728,7 @@
             <div class="split">
                 <div>
                     <div class="sec-head">
-                        <h2>Payment</h2>
+                        <h2>Pricing</h2>
                         <h3>Renters:</h3>
                         <p><strong>One pass allows two phone numbers to request rides for your <span class="term-tooltip" tabindex="0" data-tooltip="Each group is limited to 14 people.">group</span>.</strong> Choose the day pass that matches your stay. Upon your first ride request, your pass will be activated and offer unlimited rides during operating hours within the resort for the duration of your pass.</p><br> <em>Make sure both your primary and secondary phone numbers are accurate for verification purposes.</em> <br>
                     </div>
@@ -782,7 +815,7 @@
             <div class="split">
                 <div>
                     <div class="sec-head">
-                        <h2>Payment</h2>
+                        <h2>Pricing</h2>
                         <h3>Owners:</h3>
                         <em>If your guests' stay is 10 days or fewer, please refer to the 'Renters/Guests' tab.</em> <br> <br> <p>As an owner, all rides requested through the phone number you have registered with security will be given free of charge. If you would like to register your guests in advance, choose either a custom guest pass or our monthly pass. After purchase, email <strong>support@sunlineshuttle.com</strong> with your guests' phone numbers so we can register them for ride requests.</p>
                         <div class="card owner-example">
@@ -841,7 +874,7 @@
             <div class="split">
                 <div>
                     <div class="sec-head">
-                        <h2>Payment</h2>
+                        <h2>Pricing</h2>
                         <h3>One-Way Ride:</h3>
                         <p><strong>Covers your entire <span class="term-tooltip" tabindex="0" data-tooltip="Each group is limited to 14 people.">group</span> for a single one-way trip.</strong> For guests staying for a short time, or anyone who wants to try the service before purchasing a longer pass, a One-Way Ride is a convenient option.</p>
                     </div>
@@ -1022,9 +1055,6 @@
                     <p>As always, message and data rates may apply for any messages sent to you from us and to us from you. Message frequency will vary based on communication needs. If you have any questions about your text plan or data plan, it is best to contact your wireless provider.</p>
                 </div>
                 <div class="card">
-                    <p>As always, message and data rates may apply for any messages sent to you from us and to us from you. Message frequency will vary based on communication needs. If you have any questions about your text plan or data plan, it is best to contact your wireless provider.</p>
-                </div>
-                <div class="card">
                     <p>If you have any questions regarding privacy, please read our privacy policy at <u><a href="#privacy">https://sunlineshuttle.com/#privacy</a></u>. </p>
                 </div>
             </div>
@@ -1037,6 +1067,8 @@
 <div class="bm-overlay" id="bmOverlay" hidden>
     <div class="bm-modal" role="dialog" aria-modal="true" aria-labelledby="bmTitle">
         <button type="button" class="bm-close" id="bmClose" aria-label="Close">&times;</button>
+        <datalist id="bmLocations"></datalist>
+        <datalist id="bmResidences"></datalist>
 
         <!-- STEP: SERVICE CHOICE -->
         <div class="bm-step" data-bm-step="service">
@@ -1063,15 +1095,28 @@
             <p class="bm-fine">We use your number only to confirm an active pass. We never share it.</p>
         </div>
 
+        <!-- STEP: ADD SECONDARY NUMBER (Gibson, optional) -->
+        <div class="bm-step" data-bm-step="secondary" hidden>
+            <button type="button" class="bm-step-back" data-go="verify">&larr; Back</button>
+            <h2 class="bm-title">Add a second number?</h2>
+            <p class="bm-sub">Optional — add one more phone number for your group so a second person can request rides on this account. You can skip and add it later.</p>
+            <label class="bm-label" for="bmSecPhone">Second phone number <span class="bm-optional">(optional)</span></label>
+            <input class="bm-input" id="bmSecPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(555) 555-1212">
+            <p class="bm-msg" id="bmSecMsg" hidden></p>
+            <button type="button" class="btn btn-primary btn-block" id="bmSecSaveBtn">Save &amp; continue</button>
+            <button type="button" class="bm-skip" id="bmSecSkipBtn">Skip for now</button>
+        </div>
+
         <!-- STEP: ON-SITE BOOKING -->
         <div class="bm-step" data-bm-step="booking" hidden>
             <button type="button" class="bm-step-back" data-go="verify">&larr; Back</button>
             <h2 class="bm-title">On-site ride</h2>
             <p class="bm-sub" id="bmOnGreeting">Pick-up and drop-off within the resort.</p>
+            <p class="bm-sponsor" id="bmOnSponsor" hidden></p>
             <label class="bm-label" for="bmPickup">Pick-up location</label>
-            <input class="bm-input" id="bmPickup" type="text" placeholder="e.g. Captiva 99">
+            <input class="bm-input" id="bmPickup" type="text" list="bmLocations" autocomplete="off" placeholder="Start typing your unit or a location">
             <label class="bm-label" for="bmDropoff">Drop-off location</label>
-            <input class="bm-input" id="bmDropoff" type="text" placeholder="e.g. Beach">
+            <input class="bm-input" id="bmDropoff" type="text" list="bmLocations" autocomplete="off" placeholder="Start typing a location">
             <label class="bm-label" for="bmParty">Number in your party</label>
             <input class="bm-input" id="bmParty" type="number" min="1" max="14" value="1">
             <p class="bm-msg" id="bmBookMsg" hidden></p>
@@ -1083,6 +1128,7 @@
             <button type="button" class="bm-step-back" data-go="verify">&larr; Back</button>
             <h2 class="bm-title">Grand Boulevard ride</h2>
             <p class="bm-sub" id="bmOffGreeting">A one-way ride to or from the resort.</p>
+            <p class="bm-sponsor" id="bmOffSponsor" hidden></p>
 
             <label class="bm-label">Direction</label>
             <div class="bm-seg" id="bmOffDir">
@@ -1092,9 +1138,9 @@
             <p class="bm-fine" id="bmOffHint" style="margin-top:8px">We'll pick you up inside the resort and take you to Grand Boulevard.</p>
 
             <label class="bm-label" for="bmOffPickup">Pick-up location <span class="bm-optional" id="bmOffPickupNote"></span></label>
-            <input class="bm-input" id="bmOffPickup" type="text" placeholder="e.g. Captiva 99 (your unit)">
+            <input class="bm-input" id="bmOffPickup" type="text" list="bmLocations" autocomplete="off" placeholder="e.g. Captiva 99 (your unit)">
             <label class="bm-label" for="bmOffDropoff">Drop-off location <span class="bm-optional" id="bmOffDropoffNote"></span></label>
-            <input class="bm-input" id="bmOffDropoff" type="text" placeholder="e.g. Captiva 99 (your unit)">
+            <input class="bm-input" id="bmOffDropoff" type="text" list="bmLocations" autocomplete="off" placeholder="e.g. Captiva 99 (your unit)">
             <label class="bm-label" for="bmOffParty">Number in your party</label>
             <input class="bm-input" id="bmOffParty" type="number" min="1" max="14" value="1">
             <label class="bm-label" for="bmOffTime">Desired pick-up time <span class="bm-optional" id="bmOffTimeNote"></span></label>
@@ -1120,6 +1166,23 @@
             <h2 class="bm-title">Ride requested!</h2>
             <p class="bm-sub">Dispatch has your request. You'll get a confirmation text with a live tracking link shortly.</p>
             <button type="button" class="btn btn-primary btn-block" id="bmDoneBtn">Done</button>
+        </div>
+
+        <!-- STEP: DISPATCH (admin) -->
+        <div class="bm-step bm-dispatch" data-bm-step="dispatch" hidden>
+            <div class="bm-disp-head">
+                <div>
+                    <h2 class="bm-title" style="margin-bottom:0">Dispatch</h2>
+                    <p class="bm-disp-status"><span class="bm-disp-dot" id="bmDispDot"></span><span id="bmDispStatus">Connecting…</span></p>
+                </div>
+            </div>
+            <div class="bm-disp-controls">
+                <button type="button" class="bm-disp-toggle" id="bmDispSound" aria-pressed="true">&#128276; Sound on</button>
+                <button type="button" class="bm-disp-toggle" id="bmDispNotify">&#128277; Enable alerts</button>
+                <button type="button" class="bm-disp-toggle" id="bmDispTest">Test ding</button>
+            </div>
+            <div class="bm-disp-list" id="bmDispList"></div>
+            <p class="bm-fine" id="bmDispEmpty">No ride requests yet. New requests appear here automatically, with a sound alert and a desktop notification.</p>
         </div>
 
         <!-- PAYMENT WIZARD (secondary window, on top) -->
@@ -1157,12 +1220,26 @@
             <!-- screen: owner self -->
             <div class="bm-pay-screen" data-pay-screen="owner-self" hidden>
                 <h2 class="bm-title">Let's get you registered</h2>
-                <p class="bm-sub">As an owner, your own rides are free once your number is registered in our system. It looks like this number isn't set up yet &mdash; reach out and we'll get you added.</p>
-                <div class="bm-contact">
-                    <p><strong>Text:</strong> <a href="tel:+18508087959">(850) 808-7959</a></p>
-                    <p><strong>Email:</strong> <a href="mailto:support@sunlineshuttle.com">support@sunlineshuttle.com</a></p>
-                </div>
-                <p class="bm-fine">Once your information is updated, you'll be able to book rides for free using this number.</p>
+                <p class="bm-sub">As an owner, your own rides are free once your number is in our system. Register below and you'll be set up to book.</p>
+                <label class="bm-label" for="bmRegName">Full name</label>
+                <input class="bm-input" id="bmRegName" type="text" autocomplete="name" placeholder="Your full name">
+                <label class="bm-label" for="bmRegUnit">Your unit / building</label>
+                <input class="bm-input" id="bmRegUnit" type="text" list="bmResidences" autocomplete="off" placeholder="Start typing your unit or building">
+                <label class="bm-label" for="bmRegRoom" id="bmRegRoomLabel" hidden>Room / unit number</label>
+                <input class="bm-input" id="bmRegRoom" type="text" inputmode="numeric" placeholder="e.g. 1502" hidden>
+                <label class="bm-label" for="bmRegPhone">Phone number</label>
+                <input class="bm-input" id="bmRegPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(555) 555-1212">
+                <p class="bm-msg" id="bmRegMsg" hidden></p>
+                <button type="button" class="btn btn-primary btn-block" id="bmRegBtn">Register</button>
+                <p class="bm-fine">Prefer to register by text or email? Reach us at <a href="tel:+18508087959">(850) 808-7959</a> or <a href="mailto:support@sunlineshuttle.com">support@sunlineshuttle.com</a>.</p>
+            </div>
+
+            <!-- screen: owner registered (success) -->
+            <div class="bm-pay-screen" data-pay-screen="owner-registered" hidden style="text-align:center">
+                <div class="bm-check">&#10003;</div>
+                <h2 class="bm-title">You're registered!</h2>
+                <p class="bm-sub" id="bmRegDone">You're all set. Verify your number to start booking your free owner rides.</p>
+                <button type="button" class="btn btn-primary btn-block" id="bmRegVerifyBtn">Verify my number</button>
             </div>
 
             <!-- screen: owner, how many days for guests -->
@@ -1249,6 +1326,7 @@
         <div style="line-height:2;font-size:0.88rem">
             <a href="#" onclick="openBookingModal(); return false;">Book a Ride</a><br>
             <a href="sms/">SMS Info</a><br>
+            <a href="pricing/">Pricing</a><br>
             <a href="#" onclick="showPage('home', false); sc('faqs'); return false;">FAQs</a><br>
             <a href="#" onclick="showPage('home', false); sc('privacy'); return false;">Privacy Policy</a>
         </div>
@@ -1319,13 +1397,42 @@
         verifyWebhook: "https://hook.us2.make.com/g9yi8fb7n2lek45dx886bnbrkpcaypgk",
         verifyOffsiteWebhook: "https://hook.us2.make.com/uzsncyls0np4k5phinsuhc7pybe5u7wv",
         dispatchWebhook: "https://hook.us2.make.com/67er22nuis6m3wngxar1lmaf4he9d84u",
+        dispatchFeedWebhook: "",
+        secondarySaveWebhook: "https://hook.us2.make.com/nc54xhbabra2gqdkn3xjavodbflcsg4u",
+        ownerRegisterWebhook: "https://hook.us2.make.com/64igletr4cr5vfm2udly1bitj293qs7u",
         dispatchTextNumber: "(850) 808-7959",
-        maxParty: 14
+        maxParty: 14,
+        adminNumbers: ["0000000000"]
     };
 
     (function () {
         const overlay = document.getElementById('bmOverlay');
         if (!overlay) return;
+        const modal = overlay.querySelector('.bm-modal');
+
+        // Resort locations for autocomplete
+        const HIGH_RISES = ['Summit', 'Beach Manor', 'Tides'];
+        const AMENITIES = ['Blue Dunes Grill', 'Ocean Club', 'Racquet Club / Clubhouse', 'Club Pool', 'Guest Services / Guest Registration'];
+        const TENNIS = [];
+        for (let i = 1; i <= 65; i++) {
+            const street = i <= 10 ? 'Wimbledon Ct' : (i <= 49 ? 'Forest Hill Dr' : 'Kensington Ln');
+            TENNIS.push('Tennis Villa ' + i + ' – ' + street);
+        }
+        const GRAND_VILLA = ['Grand Villa Pool']
+            .concat([19, 35, 44, 47, 54, 57].map(n => 'Grand Villa – Paradise Dr ' + n))
+            .concat([5, 11, 23, 33, 43, 53].map(n => 'Grand Villa – Palm Ridge Rd ' + n))
+            .concat([31, 47, 48].map(n => 'Grand Villa – Beach Breeze Ln ' + n));
+        const SIERRA = [11, 19, 27, 35, 43, 51, 56, 59, 66, 69, 75, 76, 79, 80, 81, 82].map(n => 'Sierra Dunes ' + n);
+        const CAPTIVA = ['Captiva Pool'].concat([19, 23, 24, 28, 29, 32, 33, 36, 39, 43, 47, 53, 67, 75, 89, 95, 111, 117, 140, 144, 148, 152].map(n => 'Captiva ' + n));
+        const LOCATIONS = HIGH_RISES.concat(AMENITIES, TENNIS, GRAND_VILLA, SIERRA, CAPTIVA);
+        const RESIDENCES = HIGH_RISES.concat(TENNIS, GRAND_VILLA.filter(s => s !== 'Grand Villa Pool'), SIERRA, CAPTIVA.filter(s => s !== 'Captiva Pool'));
+        function fillDatalist(id, items) {
+            const dl = document.getElementById(id);
+            if (dl) dl.innerHTML = items.map(v => '<option value="' + v.replace(/"/g, '&quot;') + '"></option>').join('');
+        }
+        fillDatalist('bmLocations', LOCATIONS);
+        fillDatalist('bmResidences', RESIDENCES);
+        function isHighRise(v) { return HIGH_RISES.indexOf((v || '').trim()) !== -1; }
 
         const steps = overlay.querySelectorAll('[data-bm-step]');
         const payPanel = document.getElementById('bmPay');
@@ -1338,6 +1445,7 @@
         const confirmMsg = document.getElementById('bmConfirmMsg');
         let rider = { status: null, name: '' };
         let serviceChoice = 'on-site';
+        let secondaryPrompted = false;
         let pendingBooking = null;
         let payHistory = [];
         let CATALOG = null;
@@ -1372,11 +1480,13 @@
         window.openBookingModal = function () {
             overlay.hidden = false;
             document.body.style.overflow = 'hidden';
+            secondaryPrompted = false;
             showStep('service');
         };
         window.closeBookingModal = function () {
             overlay.hidden = true;
             document.body.style.overflow = '';
+            stopDispatch();
         };
 
         document.getElementById('bmClose').addEventListener('click', window.closeBookingModal);
@@ -1401,23 +1511,55 @@
             });
         });
 
-        function proceedAfterVerify() {
-            const name = (document.getElementById('bmName').value || '').trim();
-            rider = { status: 'verified', name: name };
-            const greet = name ? 'Welcome back, ' + name + '! ' : 'Welcome back! ';
+        function readRiderClass(data) {
+            const cls = String((data && data.riderClass) || '').toLowerCase().replace(/[^a-z]/g, '');
+            const gibson = cls === 'gibson' || cls === 'rmc' || cls === 'gibsonbeachrentals';
+            const company = (data && data.company) ? String(data.company) : (gibson ? 'Gibson Beach Rentals' : '');
+            return { gibson: gibson, company: company };
+        }
+        function applySponsor(id) {
+            const el = document.getElementById(id);
+            if (rider && rider.company) { el.textContent = '🎟️ Your rides are covered by ' + rider.company + '.'; el.hidden = false; }
+            else { el.hidden = true; el.textContent = ''; }
+        }
+
+        function readNeedsSecondary(data) {
+            return !!data && (data.needsSecondary === true || String(data.needsSecondary).toLowerCase() === 'true');
+        }
+
+        function goToBookingStep() {
+            const greet = rider.name ? 'Welcome back, ' + rider.name + '! ' : 'Welcome back! ';
             if (serviceChoice === 'off-site') {
-                document.getElementById('bmOffGreeting').textContent = greet ;
+                document.getElementById('bmOffGreeting').textContent = greet;
+                applySponsor('bmOffSponsor');
                 applyOffsiteDirection();
                 showStep('offsite');
             } else {
                 document.getElementById('bmOnGreeting').textContent = greet + 'Tell us your on-site trip details.';
+                applySponsor('bmOnSponsor');
                 showStep('booking');
                 setTimeout(() => document.getElementById('bmPickup').focus(), 50);
             }
         }
 
+        function proceedAfterVerify(data) {
+            const name = (document.getElementById('bmName').value || '').trim();
+            const info = readRiderClass(data);
+            rider = { status: 'verified', name: name, class: info.gibson ? 'gibson' : '', company: info.company };
+            if (rider.class === 'gibson' && readNeedsSecondary(data) && !secondaryPrompted) {
+                secondaryPrompted = true;
+                clearMsg(secMsg);
+                secPhoneInput.value = '';
+                showStep('secondary');
+                setTimeout(() => secPhoneInput.focus(), 50);
+                return;
+            }
+            goToBookingStep();
+        }
+
         async function handleVerify() {
             const d = normalize(phoneInput.value);
+            if ((SUNLINE_CONFIG.adminNumbers || []).indexOf(d) !== -1) { clearMsg(verifyMsg); openDispatch(); return; }
             if (d.length !== 10) { setMsg(verifyMsg, 'Please enter a 10-digit phone number.', 'error'); return; }
             clearMsg(verifyMsg);
             const webhook = serviceChoice === 'off-site' ? SUNLINE_CONFIG.verifyOffsiteWebhook : SUNLINE_CONFIG.verifyWebhook;
@@ -1431,7 +1573,7 @@
                 const data = await res.json().catch(() => ({}));
                 const approved = !!data && (data.approved === true || String(data.approved).toLowerCase() === 'true');
                 if (approved) {
-                    proceedAfterVerify();
+                    proceedAfterVerify(data);
                 } else {
                     openPayment();
                 }
@@ -1443,6 +1585,35 @@
         }
         verifyBtn.addEventListener('click', handleVerify);
         phoneInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); handleVerify(); } });
+
+        const secPhoneInput = document.getElementById('bmSecPhone');
+        const secMsg = document.getElementById('bmSecMsg');
+        const secSaveBtn = document.getElementById('bmSecSaveBtn');
+        secPhoneInput.addEventListener('input', () => { secPhoneInput.value = formatPhone(secPhoneInput.value); });
+
+        async function saveSecondary() {
+            const sec = normalize(secPhoneInput.value);
+            if (!sec) { clearMsg(secMsg); goToBookingStep(); return; }
+            if (sec.length !== 10) { setMsg(secMsg, 'Please enter a 10-digit phone number, or tap Skip.', 'error'); return; }
+            const primary = normalize(phoneInput.value);
+            if (sec === primary) { setMsg(secMsg, "That's your primary number — enter a different second number, or tap Skip.", 'error'); return; }
+            clearMsg(secMsg);
+            secSaveBtn.disabled = true; secSaveBtn.textContent = 'Saving…';
+            if (SUNLINE_CONFIG.secondarySaveWebhook) {
+                try {
+                    await fetch(SUNLINE_CONFIG.secondarySaveWebhook, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({ phone: primary, phoneFull: '+1' + primary, secondary: sec, secondaryFull: '+1' + sec })
+                    });
+                } catch (err) { /* best-effort save; proceed regardless */ }
+            }
+            secSaveBtn.disabled = false; secSaveBtn.textContent = 'Save & continue';
+            goToBookingStep();
+        }
+        secSaveBtn.addEventListener('click', saveSecondary);
+        secPhoneInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); saveSecondary(); } });
+        document.getElementById('bmSecSkipBtn').addEventListener('click', () => { clearMsg(secMsg); goToBookingStep(); });
 
         const payScreens = payPanel.querySelectorAll('[data-pay-screen]');
 
@@ -1484,6 +1655,7 @@
             }
         }
         function payGo(name) {
+            if (name === 'owner-self') { regPhoneInput.value = formatPhone(phoneInput.value); updateRegRoom(); }
             payHistory.push(name);
             showPayScreen(name);
         }
@@ -1492,6 +1664,71 @@
             if (!payHistory.length) { showStep('verify'); return; }
             showPayScreen(payHistory[payHistory.length - 1]);
         }
+
+        const regBtn = document.getElementById('bmRegBtn');
+        const regMsg = document.getElementById('bmRegMsg');
+        const regPhoneInput = document.getElementById('bmRegPhone');
+        const regUnitInput = document.getElementById('bmRegUnit');
+        const regRoomInput = document.getElementById('bmRegRoom');
+        const regRoomLabel = document.getElementById('bmRegRoomLabel');
+        regPhoneInput.addEventListener('input', () => { regPhoneInput.value = formatPhone(regPhoneInput.value); });
+        function updateRegRoom() {
+            const show = isHighRise(regUnitInput.value);
+            regRoomInput.hidden = !show;
+            regRoomLabel.hidden = !show;
+            if (!show) regRoomInput.value = '';
+        }
+        regUnitInput.addEventListener('input', updateRegRoom);
+
+        async function handleRegister() {
+            const name = document.getElementById('bmRegName').value.trim();
+            let unit = regUnitInput.value.trim();
+            const ph = normalize(regPhoneInput.value);
+            if (!name) { setMsg(regMsg, 'Please enter your name.', 'error'); return; }
+            if (!unit) { setMsg(regMsg, 'Please enter your unit or building.', 'error'); return; }
+            if (isHighRise(unit)) {
+                const room = regRoomInput.value.trim();
+                if (!room) { setMsg(regMsg, 'Please enter your room / unit number.', 'error'); return; }
+                unit = unit + ' ' + room;
+            }
+            if (ph.length !== 10) { setMsg(regMsg, 'Please enter a 10-digit phone number.', 'error'); return; }
+            if (!SUNLINE_CONFIG.ownerRegisterWebhook) {
+                setMsg(regMsg, 'Online registration isn’t available yet. Please text us at ' + SUNLINE_CONFIG.dispatchTextNumber + '.', 'error'); return;
+            }
+            clearMsg(regMsg);
+            const registeredAt = new Date().toLocaleString('en-US', {
+                timeZone: 'America/Chicago', month: 'short', day: 'numeric', year: 'numeric',
+                hour: 'numeric', minute: '2-digit', timeZoneName: 'short'
+            });
+            regBtn.disabled = true; regBtn.textContent = 'Registering…';
+            try {
+                const res = await fetch(SUNLINE_CONFIG.ownerRegisterWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ name: name, unit: unit, phone: ph, phoneFull: '+1' + ph, source: 'web', registeredAt: registeredAt })
+                });
+                if (!res.ok) throw new Error('bad status');
+                const data = await res.json().catch(() => ({}));
+                const reg = data && data.registered;
+                const rejected = reg === false || String(reg).toLowerCase() === 'false';
+                if (rejected) {
+                    setMsg(regMsg, (data && data.message) ? data.message : 'We couldn’t verify your details — double-check your unit, or text us at ' + SUNLINE_CONFIG.dispatchTextNumber + '.', 'error');
+                    return;
+                }
+                document.getElementById('bmRegDone').textContent = 'You’re all set, ' + name.split(' ')[0] + '! Verify your number to start booking your free owner rides.';
+                payGo('owner-registered');
+            } catch (err) {
+                setMsg(regMsg, 'We couldn’t complete your registration. Please try again, or text us at ' + SUNLINE_CONFIG.dispatchTextNumber + '.', 'error');
+            } finally {
+                regBtn.disabled = false; regBtn.textContent = 'Register';
+            }
+        }
+        regBtn.addEventListener('click', handleRegister);
+        document.getElementById('bmRegVerifyBtn').addEventListener('click', () => {
+            phoneInput.value = formatPhone(regPhoneInput.value);
+            showStep('verify');
+            setTimeout(() => phoneInput.focus(), 50);
+        });
         function clampDays(v) {
             let n = parseInt(v, 10);
             if (!(n >= 1)) n = 1;
@@ -1593,6 +1830,20 @@
 
         const OFFSITE_DEST = 'Grand Boulevard';
         const COMING_SOON = '(more options coming soon)';
+        let offWindows = [['17:00', '20:00']];
+        function isGibsonRider() { return !!(rider && rider.class === 'gibson'); }
+        function offsiteWindows(direction, gibson) {
+            if (gibson) {
+                return direction === 'leaving' ? [['11:30', '14:00'], ['17:00', '20:00']] : [['12:00', '21:00']];
+            }
+            return direction === 'leaving' ? [['17:00', '20:00']] : [['17:00', '21:00']];
+        }
+        function windowsLabel(wins) {
+            return wins.map(w => formatTime12(w[0]) + ' – ' + formatTime12(w[1])).join(' or ');
+        }
+        function timeInWindows(t, wins) {
+            return wins.some(w => t >= w[0] && t <= w[1]);
+        }
         function applyOffsiteDirection() {
             const pin = document.getElementById('bmOffPickup');
             const din = document.getElementById('bmOffDropoff');
@@ -1613,11 +1864,11 @@
                 if (din.value === OFFSITE_DEST) din.value = '';
             }
             const t = document.getElementById('bmOffTime');
-            t.min = '17:00';
-            t.max = (offDir === 'leaving') ? '20:00' : '21:00';
-            document.getElementById('bmOffTimeNote').textContent =
-                (offDir === 'leaving') ? '(5:00 – 8:00 PM)' : '(5:00 – 9:00 PM)';
-            if (t.value && (t.value < t.min || t.value > t.max)) t.value = '';
+            offWindows = offsiteWindows(offDir, isGibsonRider());
+            t.min = offWindows[0][0];
+            t.max = offWindows[offWindows.length - 1][1];
+            document.getElementById('bmOffTimeNote').textContent = '(' + windowsLabel(offWindows) + ')';
+            if (t.value && !timeInWindows(t.value, offWindows)) t.value = '';
         }
         document.getElementById('bmOffDir').addEventListener('click', e => {
             const b = e.target.closest('[data-dir]');
@@ -1656,6 +1907,7 @@
                         phoneFull: '+1' + d,
                         name: name,
                         riderType: rider.status || '',
+                        company: rider.company || '',
                         requestedAt: requestedAt
                     }, fields))
                 });
@@ -1690,9 +1942,8 @@
                 setMsg(offMsg, 'Party size must be between 1 and ' + SUNLINE_CONFIG.maxParty + '.', 'error'); return;
             }
             if (!time) { setMsg(offMsg, 'Please choose your desired pick-up time.', 'error'); return; }
-            const tEl = document.getElementById('bmOffTime');
-            if (time < tEl.min || time > tEl.max) {
-                setMsg(offMsg, 'Pick-up time must be between ' + formatTime12(tEl.min) + ' and ' + formatTime12(tEl.max) + '.', 'error'); return;
+            if (!timeInWindows(time, offWindows)) {
+                setMsg(offMsg, 'Pick-up time must be within ' + windowsLabel(offWindows) + '.', 'error'); return;
             }
             showConfirm({ serviceType: 'off-site', direction: offDir, pickup: pickup, dropoff: dropoff, party: String(party), requestedTime: formatTime12(time) }, 'offsite');
         }
@@ -1726,6 +1977,201 @@
         });
         document.getElementById('bmConfirmBack').addEventListener('click', () => {
             showStep(pendingBooking ? pendingBooking.backStep : 'service');
+        });
+
+        /* ---- DISPATCH (admin) ---- */
+        const baseTitle = document.title;
+        let dispatchTimer = null;
+        let dispatchSeen = new Set();
+        let dispatchPrimed = false;
+        let soundOn = true;
+        let notifyOn = false;
+        let unseenCount = 0;
+        let audioCtx = null;
+        let wakeLock = null;
+
+        function esc(s) {
+            return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+        }
+        function rideId(r) {
+            if (r.id != null && r.id !== '') return String(r.id);
+            return [r.requestedAt, r.phone, r.pickup, r.dropoff, r.requestedTime].join('|');
+        }
+        function nowTime() {
+            return new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        }
+
+        function ensureAudio() {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+            } catch (e) { audioCtx = null; }
+        }
+        function beep(freq, start, dur, vol) {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.type = 'sine'; o.frequency.value = freq;
+            o.connect(g); g.connect(audioCtx.destination);
+            const t = audioCtx.currentTime + start;
+            g.gain.setValueAtTime(0.0001, t);
+            g.gain.exponentialRampToValueAtTime(vol, t + 0.02);
+            g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+            o.start(t); o.stop(t + dur + 0.03);
+        }
+        function playDing() {
+            ensureAudio();
+            if (!audioCtx) return;
+            beep(988, 0, 0.25, 0.6);
+            beep(1319, 0.18, 0.3, 0.6);
+            beep(988, 0.42, 0.25, 0.6);
+            beep(1319, 0.6, 0.5, 0.6);
+        }
+
+        function requestWake() {
+            try { if ('wakeLock' in navigator) navigator.wakeLock.request('screen').then(w => { wakeLock = w; }).catch(() => {}); } catch (e) {}
+        }
+        function releaseWake() {
+            try { if (wakeLock) { wakeLock.release(); wakeLock = null; } } catch (e) {}
+        }
+
+        function updateTitle() { document.title = unseenCount > 0 ? '(' + unseenCount + ') ' + baseTitle : baseTitle; }
+        function updateNotifyBtn() {
+            const b = document.getElementById('bmDispNotify');
+            if (!('Notification' in window)) { b.textContent = 'Alerts unsupported'; b.disabled = true; return; }
+            if (Notification.permission === 'granted') { b.textContent = '🔔 Alerts on'; notifyOn = true; }
+            else if (Notification.permission === 'denied') { b.textContent = 'Alerts blocked'; notifyOn = false; }
+            else { b.textContent = '🔕 Enable alerts'; notifyOn = false; }
+        }
+        function setDispStatus(text, live) {
+            document.getElementById('bmDispStatus').textContent = text;
+            document.getElementById('bmDispDot').className = 'bm-disp-dot' + (live ? ' is-live' : '');
+        }
+
+        function labelService(r) {
+            const svc = (r.serviceType || '').toLowerCase();
+            if (svc === 'off-site') return 'Off-site ' + ((r.direction || '').toLowerCase() === 'returning' ? '(returning)' : '(leaving)');
+            return 'On-site';
+        }
+        function rideSummary(r) {
+            const n = parseInt(r.party, 10);
+            const party = (r.party || '?') + (n === 1 ? ' person' : ' people');
+            return (r.pickup || '?') + ' → ' + (r.dropoff || '?') + ' · ' + party + ' · ' + (r.requestedTime || 'ASAP');
+        }
+
+        function renderDispatch(rides, newIds) {
+            const list = document.getElementById('bmDispList');
+            const empty = document.getElementById('bmDispEmpty');
+            list.innerHTML = '';
+            if (!rides.length) { empty.hidden = false; return; }
+            empty.hidden = true;
+            rides.forEach(r => {
+                const id = rideId(r);
+                const svc = (r.serviceType || '').toLowerCase();
+                const dir = (r.direction || '').toLowerCase();
+                let badge = svc === 'off-site' ? 'Off-site' : 'On-site';
+                if (svc === 'off-site') badge += dir === 'returning' ? ' · Returning' : ' · Leaving';
+                const phone = (r.phone || '').replace(/\D/g, '');
+                const phoneFmt = phone.length === 10 ? '(' + phone.slice(0, 3) + ') ' + phone.slice(3, 6) + '-' + phone.slice(6) : (r.phone || '');
+                const n = parseInt(r.party, 10);
+                const party = (r.party || '?') + (n === 1 ? ' person' : ' people');
+                const card = document.createElement('div');
+                card.className = 'bm-ride' + (newIds.has(id) ? ' is-new' : '');
+                card.innerHTML =
+                    '<div class="bm-ride-top">'
+                    + '<span class="bm-ride-badge ' + (svc === 'off-site' ? 'off' : 'on') + '">' + esc(badge) + '</span>'
+                    + '<span class="bm-ride-time">' + esc(r.requestedAt || '') + '</span>'
+                    + '</div>'
+                    + '<div class="bm-ride-route">' + esc(r.pickup || '?') + ' <span class="bm-ride-arrow">→</span> ' + esc(r.dropoff || '?') + '</div>'
+                    + '<div class="bm-ride-meta">'
+                    + '<span>' + esc(party) + '</span>'
+                    + '<span>Pickup: ' + esc(r.requestedTime || 'ASAP') + '</span>'
+                    + (phone ? '<a href="tel:+1' + esc(phone) + '">' + esc(phoneFmt) + '</a>' : '')
+                    + (r.name ? '<span>' + esc(r.name) + '</span>' : '')
+                    + '</div>';
+                list.appendChild(card);
+            });
+        }
+
+        function alertNewRides(newRides) {
+            if (soundOn) playDing();
+            if (notifyOn && 'Notification' in window && Notification.permission === 'granted') {
+                newRides.forEach(r => {
+                    try {
+                        const note = new Notification('New ride request — ' + labelService(r), {
+                            body: rideSummary(r) + (r.name ? '\n' + r.name : ''),
+                            tag: rideId(r),
+                            requireInteraction: true
+                        });
+                        note.onclick = () => { window.focus(); note.close(); };
+                    } catch (e) {}
+                });
+            }
+            if (document.hidden) { unseenCount += newRides.length; updateTitle(); }
+        }
+
+        function handleDispatchData(rides) {
+            const newIds = new Set();
+            rides.forEach(r => { const id = rideId(r); if (!dispatchSeen.has(id)) newIds.add(id); });
+            renderDispatch(rides, dispatchPrimed ? newIds : new Set());
+            if (dispatchPrimed && newIds.size) {
+                alertNewRides(rides.filter(r => newIds.has(rideId(r))));
+            }
+            rides.forEach(r => dispatchSeen.add(rideId(r)));
+            dispatchPrimed = true;
+        }
+
+        async function pollDispatch() {
+            const base = SUNLINE_CONFIG.dispatchFeedWebhook;
+            if (!base) { setDispStatus('No feed URL configured yet', false); return; }
+            const url = base + (base.indexOf('?') > -1 ? '&' : '?') + 't=' + Date.now();
+            try {
+                const res = await fetch(url, { method: 'GET', cache: 'no-store' });
+                if (!res.ok) throw new Error('bad status');
+                let data = await res.json();
+                if (!Array.isArray(data)) data = (data && Array.isArray(data.rides)) ? data.rides : [];
+                handleDispatchData(data);
+                setDispStatus('Live · updated ' + nowTime(), true);
+            } catch (err) {
+                setDispStatus('Connection issue — retrying…', false);
+            }
+        }
+
+        function openDispatch() {
+            ensureAudio();
+            modal.classList.add('is-dispatch');
+            showStep('dispatch');
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission().then(updateNotifyBtn).catch(() => {});
+            }
+            updateNotifyBtn();
+            requestWake();
+            dispatchSeen = new Set();
+            dispatchPrimed = false;
+            setDispStatus('Connecting…', false);
+            pollDispatch();
+            if (dispatchTimer) clearInterval(dispatchTimer);
+            dispatchTimer = setInterval(pollDispatch, 12000);
+        }
+        function stopDispatch() {
+            if (dispatchTimer) { clearInterval(dispatchTimer); dispatchTimer = null; }
+            modal.classList.remove('is-dispatch');
+            releaseWake();
+            unseenCount = 0; updateTitle();
+        }
+
+        document.getElementById('bmDispSound').addEventListener('click', function () {
+            soundOn = !soundOn;
+            this.setAttribute('aria-pressed', String(soundOn));
+            this.textContent = soundOn ? '🔔 Sound on' : '🔇 Sound off';
+            if (soundOn) { ensureAudio(); playDing(); }
+        });
+        document.getElementById('bmDispTest').addEventListener('click', () => { ensureAudio(); playDing(); });
+        document.getElementById('bmDispNotify').addEventListener('click', () => {
+            if (!('Notification' in window)) return;
+            Notification.requestPermission().then(updateNotifyBtn).catch(() => {});
+        });
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) { unseenCount = 0; updateTitle(); if (dispatchTimer) requestWake(); }
         });
     })();
 </script>
