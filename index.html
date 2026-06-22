@@ -608,6 +608,10 @@
         .bm-ac-item { padding: 11px 12px; font-size: 0.92rem; color: var(--navy); cursor: pointer; }
         .bm-ac-item + .bm-ac-item { border-top: 1px solid var(--line); }
         .bm-ac-item:hover, .bm-ac-item.active { background: var(--sand); }
+        .bm-locpick { display: flex; flex-direction: column; gap: 8px; }
+        .bm-locpick[hidden] { display: none; }
+        .bm-loc-unit[hidden] { display: none; }
+        select.bm-input { appearance: auto; -webkit-appearance: menulist; }
 
         .bm-msg { margin-top: 14px; padding: 10px 12px; border-radius: 6px; font-size: 0.88rem; line-height: 1.5; }
         .bm-msg[hidden] { display: none; }
@@ -622,6 +626,47 @@
         }
         .bm-step[data-bm-step="success"] { text-align: center; }
         .bm-step[hidden] { display: none; }
+
+        /* divider + Grand Boulevard promo header above the ad */
+        .bm-ad-divider { border: 0; border-top: 1px solid var(--line); margin: 18px -26px 16px; }
+        .bm-ad-head { margin: 0 0 14px; }
+        .bm-ad-headline { margin: 0 0 9px; color: var(--navy); font-size: 0.95rem; font-weight: 800; line-height: 1.3; }
+        .bm-ad-sched { margin-top: 9px; display: flex; flex-direction: column; gap: 2px; }
+        .bm-ad-sched strong { color: var(--navy); font-size: 0.74rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
+        .bm-ad-sched span { color: var(--muted); font-size: 0.9rem; }
+        .bm-ad-sched span b { color: var(--navy); font-weight: 700; }
+
+        /* rolling ads on the success screen */
+        .bm-ad { position: relative; margin: 8px -26px -26px; }
+        .bm-ad[hidden] { display: none; }
+        .bm-ad-card { display: block; text-decoration: none; cursor: pointer; }
+        .bm-ad-card.is-static { cursor: default; }
+        .bm-ad-nav {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 34px; height: 34px; padding: 0; border: 0; border-radius: 50%;
+            background: rgba(18,48,71,0.42); color: #fff; font-size: 1.5rem; line-height: 1;
+            display: grid; place-items: center; cursor: pointer; transition: background 0.15s;
+        }
+        .bm-ad-nav:hover { background: rgba(18,48,71,0.7); }
+        .bm-ad-nav[hidden] { display: none; }
+        .bm-ad-prev { left: 10px; }
+        .bm-ad-next { right: 10px; }
+        .bm-ad-img {
+            display: block; width: 100%; aspect-ratio: 4 / 5;
+            object-fit: cover; background: var(--sand);
+            border-radius: 0 0 12px 12px;
+        }
+        .bm-ad-dots {
+            position: absolute; left: 50%; transform: translateX(-50%); bottom: 12px;
+            display: flex; gap: 7px; padding: 6px 10px; border-radius: 999px;
+            background: rgba(18,48,71,0.38);
+        }
+        .bm-ad-dots[hidden] { display: none; }
+        .bm-ad-dot {
+            width: 7px; height: 7px; border-radius: 50%; padding: 0;
+            border: 0; background: rgba(255,255,255,0.55); cursor: pointer; transition: background 0.15s, width 0.15s;
+        }
+        .bm-ad-dot.is-active { background: #fff; width: 18px; border-radius: 999px; }
         .bm-summary { margin: 6px 0 4px; border: 1px solid var(--line); border-radius: 8px; background: var(--sand); }
         .bm-summary-row { padding: 10px 14px; }
         .bm-summary-row + .bm-summary-row { border-top: 1px solid var(--line); }
@@ -1117,10 +1162,17 @@
             <h2 class="bm-title">On-site ride</h2>
             <p class="bm-sub" id="bmOnGreeting">Pick-up and drop-off within the resort.</p>
             <p class="bm-sponsor" id="bmOnSponsor" hidden></p>
-            <label class="bm-label" for="bmPickup">Pick-up location</label>
-            <input class="bm-input" id="bmPickup" type="text" autocomplete="off" placeholder="Start typing your unit or a location">
-            <label class="bm-label" for="bmDropoff">Drop-off location</label>
-            <input class="bm-input" id="bmDropoff" type="text" autocomplete="off" placeholder="Start typing a location">
+            <label class="bm-label" for="bmPickupPlace">Pick-up location</label>
+            <div class="bm-locpick">
+                <select class="bm-input bm-loc-place" id="bmPickupPlace"></select>
+                <select class="bm-input bm-loc-unit" id="bmPickupUnit" hidden></select>
+            </div>
+            <label class="bm-label" for="bmDropoffPlace">Drop-off location</label>
+            <div class="bm-locpick">
+                <select class="bm-input bm-loc-place" id="bmDropoffPlace"></select>
+                <select class="bm-input bm-loc-unit" id="bmDropoffUnit" hidden></select>
+            </div>
+            <p class="bm-fine" style="margin-top:8px">Don't see your spot? Text us at (850) 808-7959.</p>
             <label class="bm-label" for="bmParty">Number in your party</label>
             <input class="bm-input" id="bmParty" type="number" min="1" max="14" value="1">
             <p class="bm-msg" id="bmBookMsg" hidden></p>
@@ -1141,14 +1193,22 @@
             </div>
             <p class="bm-fine" id="bmOffHint" style="margin-top:8px">We'll pick you up inside the resort and take you to Grand Boulevard.</p>
 
-            <label class="bm-label" for="bmOffPickup">Pick-up location <span class="bm-optional" id="bmOffPickupNote"></span></label>
-            <input class="bm-input" id="bmOffPickup" type="text" autocomplete="off" placeholder="e.g. Captiva 99 (your unit)">
-            <label class="bm-label" for="bmOffDropoff">Drop-off location <span class="bm-optional" id="bmOffDropoffNote"></span></label>
-            <input class="bm-input" id="bmOffDropoff" type="text" autocomplete="off" placeholder="e.g. Captiva 99 (your unit)">
+            <label class="bm-label" for="bmOffPickupPlace">Pick-up location <span class="bm-optional" id="bmOffPickupNote"></span></label>
+            <div class="bm-locpick" id="bmOffPickupWrap">
+                <select class="bm-input bm-loc-place" id="bmOffPickupPlace"></select>
+                <select class="bm-input bm-loc-unit" id="bmOffPickupUnit" hidden></select>
+            </div>
+            <div class="bm-input bm-locked" id="bmOffPickupGB" hidden>Grand Boulevard</div>
+            <label class="bm-label" for="bmOffDropoffPlace">Drop-off location <span class="bm-optional" id="bmOffDropoffNote"></span></label>
+            <div class="bm-locpick" id="bmOffDropoffWrap">
+                <select class="bm-input bm-loc-place" id="bmOffDropoffPlace"></select>
+                <select class="bm-input bm-loc-unit" id="bmOffDropoffUnit" hidden></select>
+            </div>
+            <div class="bm-input bm-locked" id="bmOffDropoffGB" hidden>Grand Boulevard</div>
             <label class="bm-label" for="bmOffParty">Number in your party</label>
             <input class="bm-input" id="bmOffParty" type="number" min="1" max="14" value="1">
-            <label class="bm-label" for="bmOffTime">Desired pick-up time <span class="bm-optional" id="bmOffTimeNote"></span></label>
-            <input class="bm-input" id="bmOffTime" type="time" min="17:00" max="20:00">
+            <label class="bm-label" for="bmOffTime">Desired pick-up time</label>
+            <select class="bm-input" id="bmOffTime"></select>
 
             <p class="bm-msg" id="bmOffMsg" hidden></p>
             <button type="button" class="btn btn-primary btn-block" id="bmOffBookBtn">Book a Ride</button>
@@ -1166,10 +1226,30 @@
 
         <!-- STEP: SUCCESS -->
         <div class="bm-step" data-bm-step="success" hidden>
-            <div class="bm-check">&#10003;</div>
             <h2 class="bm-title">Ride requested!</h2>
             <p class="bm-sub">Dispatch has your request. You'll get a confirmation text with a live tracking link shortly.</p>
-            <button type="button" class="btn btn-primary btn-block" id="bmDoneBtn">Done</button>
+
+            <hr class="bm-ad-divider">
+
+            <!-- Grand Boulevard promo -->
+            <div class="bm-ad-head">
+                <p class="bm-ad-headline">Dining, shopping, and so much more at Grand Boulevard!</p>
+                <div class="bm-ad-sched">
+                    <strong>Rides available at the top of every hour</strong>
+                    <span><b>To Grand Boulevard:</b> 5:00, 6:00, 7:00 8:00 P.M</span>
+                    <span><b>Back to the Resort:</b> ~5:15, ~6:15, ~7:15, ~8:15, ~9:00 P.M</span>
+                </div>
+            </div>
+
+            <!-- Rolling ad -->
+            <div class="bm-ad" id="bmAd" hidden>
+                <a class="bm-ad-card" id="bmAdLink" target="_blank" rel="noopener">
+                    <img class="bm-ad-img" id="bmAdImg" alt="">
+                </a>
+                <button type="button" class="bm-ad-nav bm-ad-prev" id="bmAdPrev" aria-label="Previous ad" hidden>&#8249;</button>
+                <button type="button" class="bm-ad-nav bm-ad-next" id="bmAdNext" aria-label="Next ad" hidden>&#8250;</button>
+                <div class="bm-ad-dots" id="bmAdDots"></div>
+            </div>
         </div>
 
         <!-- STEP: DISPATCH (admin) -->
@@ -1309,8 +1389,8 @@
         <!-- HOURS INFO -->
         <div class="bm-info" id="bmHoursInfo" hidden>
             <button type="button" class="bm-step-back" id="bmHoursInfoClose">&larr; Back</button>
-            <h2 class="bm-title">Pickup windows (evenings)</h2>
-            <p class="bm-info-p" style="margin-top:4px">To Grand Boulevard &mdash; 5:00&ndash;8:00 PM<br>Back to the resort &mdash; 5:00&ndash;9:00 PM</p>
+            <h2 class="bm-title">Pickup windows <br>(Top of every hour)</h2>
+            <p class="bm-info-p" style="margin-top:4px">To Grand Boulevard &mdash;5:00, 6:00, 7:00 and 8:00 PM<br>Back to the resort &mdash; ~5:15, ~6:15, ~7:15, ~8:15, ~9:00 PM</p>
         </div>
     </div>
 </div>
@@ -1409,6 +1489,37 @@
         adminNumbers: ["0000000000"]
     };
 
+    // Event ads run before the standard ads. Each shows until its showUntil time
+    // (Central) passes, then the next one takes over. Images are 800x1000 in /ads.
+    const SUNLINE_EVENT_ADS = [
+        {
+            img: "ads/event-big-blvd-bash.svg",
+            url: "https://grandboulevard.com/event/big-blvd-bash-summer-dance-party/2026-06-23/",
+            alt: "Big BLVD Bash Summer Dance Party, free live music at Grand Park, Tue June 23, 6-8 PM",
+            showUntil: "2026-06-23T20:00:00-05:00"
+        },
+        {
+            img: "ads/event-bands-on-blvd.svg",
+            url: "https://grandboulevard.com/event/bands-on-the-blvd-summer-music-series/2026-06-25/",
+            alt: "Bands on the BLVD Summer Music Series, free live music at Grand Park, Thu June 25, 6-8 PM",
+            showUntil: "2026-06-25T20:00:00-05:00"
+        }
+    ];
+
+    // Standard ads, shown after the current event ad.
+    const SUNLINE_ADS = [
+        {
+            img: "ads/grand-boulevard-restaurants.svg",
+            url: "https://grandboulevard.com/directory/?_directory_categories=restaurants",
+            alt: "Dine at Grand Boulevard — browse all restaurants"
+        },
+        {
+            img: "ads/grand-boulevard-shops.svg",
+            url: "https://grandboulevard.com/directory/?_directory_categories=retail",
+            alt: "Shop at Grand Boulevard — browse all stores"
+        }
+    ];
+
     (function () {
         const overlay = document.getElementById('bmOverlay');
         if (!overlay) return;
@@ -1472,13 +1583,64 @@
             });
             input.addEventListener('blur', () => setTimeout(close, 150));
         }
-        ['bmPickup', 'bmDropoff', 'bmOffPickup', 'bmOffDropoff'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) attachAutocomplete(el, LOCATIONS);
-        });
         const regUnitEl = document.getElementById('bmRegUnit');
         if (regUnitEl) attachAutocomplete(regUnitEl, RESIDENCES, function () { updateRegRoom(); });
         function isHighRise(v) { return HIGH_RISES.indexOf((v || '').trim()) !== -1; }
+
+        // Two-step location pickers (place -> unit) for on-site + off-site
+        const PLACE_GROUPS = [
+            ['Common', [['Beach', 'Beach Access'], ['Racquet Club / Clubhouse', 'Racquet Club / Clubhouse'], ['Club Pool', 'Club Pool']]],
+            ['High-rises', [['Summit', 'Summit'], ['Tides', 'Tides'], ['Beach Manor', 'Beach Manor']]],
+            ['Villas — pick unit next', [['Tennis Villa', '@tennis'], ['Grand Villa', '@grand'], ['Sierra Dunes', '@sierra'], ['Captiva', '@captiva']]],
+            ['Other', [['Blue Dunes Grill', 'Blue Dunes Grill'], ['Ocean Club', 'Ocean Club'], ['Guest Services / Guest Registration', 'Guest Services / Guest Registration']]]
+        ];
+        function communityUnits(key) {
+            const arr = key === '@tennis' ? TENNIS : key === '@grand' ? GRAND_VILLA : key === '@sierra' ? SIERRA : key === '@captiva' ? CAPTIVA : [];
+            return arr.map(function (full) {
+                let short = full;
+                if (key === '@grand') short = full.replace(/^Grand Villa\s*[–-]?\s*/, '');
+                else if (key === '@tennis') short = full.replace(/^Tennis Villa\s*/, '');
+                else if (key === '@sierra') short = full.replace(/^Sierra Dunes\s*/, '');
+                else short = full.replace(/^Captiva\s*/, '');
+                return [full, short || full];
+            });
+        }
+        function makePicker(placeId, unitId, placeholder) {
+            const placeSel = document.getElementById(placeId);
+            const unitSel = document.getElementById(unitId);
+            if (!placeSel || !unitSel) return { read: function () { return ''; }, reset: function () {} };
+            let html = '<option value="">' + escHtml(placeholder) + '</option>';
+            PLACE_GROUPS.forEach(function (g) {
+                html += '<optgroup label="' + escHtml(g[0]) + '">';
+                g[1].forEach(function (it) { html += '<option value="' + escHtml(it[1]) + '">' + escHtml(it[0]) + '</option>'; });
+                html += '</optgroup>';
+            });
+            placeSel.innerHTML = html;
+            function syncUnit() {
+                const v = placeSel.value;
+                if (v && v.charAt(0) === '@') {
+                    unitSel.innerHTML = '<option value="">Choose unit…</option>' + communityUnits(v).map(function (u) { return '<option value="' + escHtml(u[0]) + '">' + escHtml(u[1]) + '</option>'; }).join('');
+                    unitSel.hidden = false;
+                } else {
+                    unitSel.hidden = true; unitSel.innerHTML = '';
+                }
+            }
+            placeSel.addEventListener('change', syncUnit);
+            return {
+                read: function () {
+                    const v = placeSel.value;
+                    if (!v) return '';
+                    if (v.charAt(0) === '@') return unitSel.value || '';
+                    return v;
+                },
+                reset: function () { placeSel.value = ''; unitSel.hidden = true; unitSel.innerHTML = ''; }
+            };
+        }
+        const pickupPicker = makePicker('bmPickupPlace', 'bmPickupUnit', 'Choose pick-up…');
+        const dropoffPicker = makePicker('bmDropoffPlace', 'bmDropoffUnit', 'Choose drop-off…');
+        const offPickupPicker = makePicker('bmOffPickupPlace', 'bmOffPickupUnit', 'Choose location…');
+        const offDropoffPicker = makePicker('bmOffDropoffPlace', 'bmOffDropoffUnit', 'Choose location…');
+        function escHtml(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 
         const steps = overlay.querySelectorAll('[data-bm-step]');
         const payPanel = document.getElementById('bmPay');
@@ -1501,7 +1663,94 @@
             payPanel.hidden = true;
             document.querySelectorAll('.bm-info').forEach(p => p.hidden = true);
             overlay.scrollTop = 0;
+            if (name === 'success') startAds(); else stopAds();
         }
+
+        /* ---- Rolling ads (success screen) ---- */
+        const adEls = {
+            wrap: document.getElementById('bmAd'),
+            link: document.getElementById('bmAdLink'),
+            img: document.getElementById('bmAdImg'),
+            dots: document.getElementById('bmAdDots'),
+            prev: document.getElementById('bmAdPrev'),
+            next: document.getElementById('bmAdNext')
+        };
+        let adTimer = null, adIndex = 0, activeAds = [];
+        const AD_INTERVAL = 6000;
+
+        // Current event ad (if any), then the standard ads.
+        function buildAds() {
+            const now = Date.now();
+            const live = SUNLINE_EVENT_ADS.filter(e => {
+                const t = new Date(e.showUntil).getTime();
+                return isNaN(t) || now < t;
+            });
+            return (live.length ? [live[0]] : []).concat(SUNLINE_ADS);
+        }
+
+        function goAd(delta) {
+            const n = activeAds.length;
+            if (!n) return;
+            renderAd((adIndex + delta + n) % n);
+            restartAdTimer();
+        }
+        adEls.prev.addEventListener('click', function (e) { e.preventDefault(); goAd(-1); });
+        adEls.next.addEventListener('click', function (e) { e.preventDefault(); goAd(1); });
+
+        function renderAd(i) {
+            const ad = activeAds[i];
+            if (!ad) return;
+            adIndex = i;
+            adEls.img.src = ad.img || '';
+            adEls.img.alt = ad.alt || '';
+            const clickable = !!ad.url && ad.url !== '#';
+            if (clickable) {
+                adEls.link.setAttribute('href', ad.url);
+                adEls.link.classList.remove('is-static');
+            } else {
+                adEls.link.removeAttribute('href');
+                adEls.link.classList.add('is-static');
+            }
+            Array.prototype.forEach.call(adEls.dots.children, (d, di) => {
+                d.classList.toggle('is-active', di === i);
+            });
+        }
+
+        function startAds() {
+            stopAds();
+            activeAds = buildAds();
+            if (!adEls.wrap || !activeAds.length) { if (adEls.wrap) adEls.wrap.hidden = true; return; }
+            adEls.wrap.hidden = false;
+            // Build dots once per open
+            adEls.dots.innerHTML = '';
+            const many = activeAds.length > 1;
+            adEls.dots.hidden = !many;
+            adEls.prev.hidden = !many;
+            adEls.next.hidden = !many;
+            if (many) {
+                activeAds.forEach((ad, i) => {
+                    const dot = document.createElement('button');
+                    dot.type = 'button';
+                    dot.className = 'bm-ad-dot';
+                    dot.setAttribute('aria-label', 'Show ad ' + (i + 1));
+                    dot.addEventListener('click', () => { renderAd(i); restartAdTimer(); });
+                    adEls.dots.appendChild(dot);
+                });
+            }
+            renderAd(Math.floor(Math.random() * activeAds.length));
+            restartAdTimer();
+        }
+
+        function restartAdTimer() {
+            if (adTimer) clearInterval(adTimer);
+            if (activeAds.length > 1) {
+                adTimer = setInterval(() => {
+                    renderAd((adIndex + 1) % activeAds.length);
+                }, AD_INTERVAL);
+            }
+        }
+
+        function stopAds() { if (adTimer) { clearInterval(adTimer); adTimer = null; } }
         function digits(v) { return (v || '').replace(/\D/g, ''); }
         function normalize(v) {
             let d = digits(v);
@@ -1533,10 +1782,10 @@
             overlay.hidden = true;
             document.body.style.overflow = '';
             stopDispatch();
+            stopAds();
         };
 
         document.getElementById('bmClose').addEventListener('click', window.closeBookingModal);
-        document.getElementById('bmDoneBtn').addEventListener('click', window.closeBookingModal);
         document.getElementById('bmPayBack').addEventListener('click', payBack);
         document.getElementById('bmLearn').addEventListener('click', function () {
             const map = { owner: 'bmOwnerInfo', offsite: 'bmOffsiteInfo' };
@@ -1584,7 +1833,7 @@
                 document.getElementById('bmOnGreeting').textContent = greet + 'Tell us your on-site trip details.';
                 applySponsor('bmOnSponsor');
                 showStep('booking');
-                setTimeout(() => document.getElementById('bmPickup').focus(), 50);
+                pickupPicker.reset(); dropoffPicker.reset();
             }
         }
 
@@ -1814,7 +2063,7 @@
             if (type === 'offsite') {
                 learn.hidden = false; learn.dataset.info = 'offsite';
                 title.textContent = 'Grand Boulevard round trip';
-                sub.textContent = "We couldn't find an active pass for that number — here's your ride:";
+                sub.textContent = "We couldn't find an active pass for that number. To purchase a pass, please see below:";
                 cards.push(passCard('Round-Trip Grand Boulevard', cat.offSite.price, cat.offSite.url, 'Round trip to and from Grand Boulevard for your whole group.'));
             } else if (type === 'renter') {
                 learn.hidden = false; learn.dataset.info = 'renter';
@@ -1876,45 +2125,46 @@
 
         const OFFSITE_DEST = 'Grand Boulevard';
         const COMING_SOON = '(more options coming soon)';
-        let offWindows = [['17:00', '20:00']];
-        function isGibsonRider() { return !!(rider && rider.class === 'gibson'); }
-        function offsiteWindows(direction, gibson) {
-            if (gibson) {
-                return direction === 'leaving' ? [['11:30', '14:00'], ['17:00', '20:00']] : [['12:00', '21:00']];
+        // Pick-up times by direction. Should match the schedule on the success screen.
+        const OFFSITE_TIMES = {
+            standard: {
+                leaving:   ['17:00', '18:00', '19:00', '20:00'],           // resort -> Grand Boulevard
+                returning: ['17:10', '18:10', '19:10', '20:10', '21:00']   // Grand Boulevard -> resort
+            },
+            // Gibson Beach Rentals: top of the hour, 12 PM to 9 PM.
+            gibson: {
+                leaving:   ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'],
+                returning: ['12:10', '13:10', '14:10', '15:10', '16:10', '17:10', '18:10', '19:10', '20:10', '21:00']
             }
-            return direction === 'leaving' ? [['17:00', '20:00']] : [['17:00', '21:00']];
-        }
-        function windowsLabel(wins) {
-            return wins.map(w => formatTime12(w[0]) + ' – ' + formatTime12(w[1])).join(' or ');
-        }
-        function timeInWindows(t, wins) {
-            return wins.some(w => t >= w[0] && t <= w[1]);
+        };
+        function isGibsonRider() { return !!(rider && rider.class === 'gibson'); }
+        function fillOffsiteTimes() {
+            const sel = document.getElementById('bmOffTime');
+            const set = isGibsonRider() ? OFFSITE_TIMES.gibson : OFFSITE_TIMES.standard;
+            const times = set[offDir] || [];
+            const prev = sel.value;
+            sel.innerHTML = '<option value="" disabled selected>Select a time…</option>' +
+                times.map(x => '<option value="' + x + '">' + formatTime12(x) + '</option>').join('');
+            if (prev && times.indexOf(prev) !== -1) sel.value = prev;
         }
         function applyOffsiteDirection() {
-            const pin = document.getElementById('bmOffPickup');
-            const din = document.getElementById('bmOffDropoff');
             const pnote = document.getElementById('bmOffPickupNote');
             const dnote = document.getElementById('bmOffDropoffNote');
+            const pWrap = document.getElementById('bmOffPickupWrap'), pGB = document.getElementById('bmOffPickupGB');
+            const dWrap = document.getElementById('bmOffDropoffWrap'), dGB = document.getElementById('bmOffDropoffGB');
             document.querySelectorAll('#bmOffDir [data-dir]').forEach(x => x.classList.toggle('active', x.dataset.dir === offDir));
             if (offDir === 'leaving') {
                 offHint.textContent = "We'll pick you up inside the resort and take you to " + OFFSITE_DEST + ".";
-                pin.readOnly = false; pin.classList.remove('bm-locked'); pnote.textContent = '';
-                pin.placeholder = 'e.g. Captiva 99 (your unit)';
-                if (pin.value === OFFSITE_DEST) pin.value = '';
-                din.value = OFFSITE_DEST; din.readOnly = true; din.classList.add('bm-locked'); dnote.textContent = COMING_SOON;
+                pWrap.hidden = false; pGB.hidden = true; pnote.textContent = '';
+                dWrap.hidden = true; dGB.hidden = false; dnote.textContent = COMING_SOON;
+                offDropoffPicker.reset();
             } else {
                 offHint.textContent = "We'll pick you up at " + OFFSITE_DEST + " and bring you back to the resort.";
-                pin.value = OFFSITE_DEST; pin.readOnly = true; pin.classList.add('bm-locked'); pnote.textContent = COMING_SOON;
-                din.readOnly = false; din.classList.remove('bm-locked'); dnote.textContent = '';
-                din.placeholder = 'e.g. Captiva 99 (your unit)';
-                if (din.value === OFFSITE_DEST) din.value = '';
+                pWrap.hidden = true; pGB.hidden = false; pnote.textContent = COMING_SOON;
+                dWrap.hidden = false; dGB.hidden = true; dnote.textContent = '';
+                offPickupPicker.reset();
             }
-            const t = document.getElementById('bmOffTime');
-            offWindows = offsiteWindows(offDir, isGibsonRider());
-            t.min = offWindows[0][0];
-            t.max = offWindows[offWindows.length - 1][1];
-            document.getElementById('bmOffTimeNote').textContent = '(' + windowsLabel(offWindows) + ')';
-            if (t.value && !timeInWindows(t.value, offWindows)) t.value = '';
+            fillOffsiteTimes();
         }
         document.getElementById('bmOffDir').addEventListener('click', e => {
             const b = e.target.closest('[data-dir]');
@@ -1967,10 +2217,10 @@
         }
 
         function handleBooking() {
-            const pickup = document.getElementById('bmPickup').value.trim();
-            const dropoff = document.getElementById('bmDropoff').value.trim();
+            const pickup = pickupPicker.read();
+            const dropoff = dropoffPicker.read();
             const party = parseInt(document.getElementById('bmParty').value, 10);
-            if (!pickup || !dropoff) { setMsg(bookMsg, 'Please enter both pick-up and drop-off locations.', 'error'); return; }
+            if (!pickup || !dropoff) { setMsg(bookMsg, 'Please choose both a pick-up and a drop-off location.', 'error'); return; }
             if (!(party >= 1 && party <= SUNLINE_CONFIG.maxParty)) {
                 setMsg(bookMsg, 'Party size must be between 1 and ' + SUNLINE_CONFIG.maxParty + '.', 'error'); return;
             }
@@ -1979,18 +2229,16 @@
         bookBtn.addEventListener('click', handleBooking);
 
         function handleOffsiteBooking() {
-            const pickup = document.getElementById('bmOffPickup').value.trim();
-            const dropoff = document.getElementById('bmOffDropoff').value.trim();
+            const riderLoc = (offDir === 'leaving') ? offPickupPicker.read() : offDropoffPicker.read();
             const party = parseInt(document.getElementById('bmOffParty').value, 10);
             const time = document.getElementById('bmOffTime').value;
-            if (!pickup || !dropoff) { setMsg(offMsg, 'Please enter both pick-up and drop-off locations.', 'error'); return; }
+            if (!riderLoc) { setMsg(offMsg, 'Please choose your resort location.', 'error'); return; }
             if (!(party >= 1 && party <= SUNLINE_CONFIG.maxParty)) {
                 setMsg(offMsg, 'Party size must be between 1 and ' + SUNLINE_CONFIG.maxParty + '.', 'error'); return;
             }
             if (!time) { setMsg(offMsg, 'Please choose your desired pick-up time.', 'error'); return; }
-            if (!timeInWindows(time, offWindows)) {
-                setMsg(offMsg, 'Pick-up time must be within ' + windowsLabel(offWindows) + '.', 'error'); return;
-            }
+            const pickup = (offDir === 'leaving') ? riderLoc : OFFSITE_DEST;
+            const dropoff = (offDir === 'leaving') ? OFFSITE_DEST : riderLoc;
             showConfirm({ serviceType: 'off-site', direction: offDir, pickup: pickup, dropoff: dropoff, party: String(party), requestedTime: formatTime12(time) }, 'offsite');
         }
         offBookBtn.addEventListener('click', handleOffsiteBooking);
