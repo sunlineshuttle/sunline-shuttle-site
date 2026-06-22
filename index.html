@@ -1591,15 +1591,22 @@
         const PLACE_GROUPS = [
             ['Common', [['Beach', 'Beach Access'], ['Racquet Club / Clubhouse', 'Racquet Club / Clubhouse'], ['Club Pool', 'Club Pool']]],
             ['High-rises', [['Summit', 'Summit'], ['Tides', 'Tides'], ['Beach Manor', 'Beach Manor']]],
-            ['Villas — pick unit next', [['Tennis Villa', '@tennis'], ['Grand Villa', '@grand'], ['Sierra Dunes', '@sierra'], ['Captiva', '@captiva']]],
+            ['Villas — pick unit next', [['Tennis Villa (Wimbledon)', '@tennis-wimbledon'], ['Tennis Villa (Forest Hill)', '@tennis-forest'], ['Tennis Villa (Kensington)', '@tennis-kensington'], ['Grand Villa', '@grand'], ['Sierra Dunes', '@sierra'], ['Captiva', '@captiva']]],
             ['Other', [['Blue Dunes Grill', 'Blue Dunes Grill'], ['Ocean Club', 'Ocean Club'], ['Guest Services / Guest Registration', 'Guest Services / Guest Registration']]]
         ];
         function communityUnits(key) {
-            const arr = key === '@tennis' ? TENNIS : key === '@grand' ? GRAND_VILLA : key === '@sierra' ? SIERRA : key === '@captiva' ? CAPTIVA : [];
+            let arr;
+            if (key === '@tennis-wimbledon') arr = TENNIS.filter(function (s) { return /Wimbledon/.test(s); });
+            else if (key === '@tennis-forest') arr = TENNIS.filter(function (s) { return /Forest Hill/.test(s); });
+            else if (key === '@tennis-kensington') arr = TENNIS.filter(function (s) { return /Kensington/.test(s); });
+            else if (key === '@grand') arr = GRAND_VILLA;
+            else if (key === '@sierra') arr = SIERRA;
+            else if (key === '@captiva') arr = CAPTIVA;
+            else arr = [];
             return arr.map(function (full) {
                 let short = full;
                 if (key === '@grand') short = full.replace(/^Grand Villa\s*[–-]?\s*/, '');
-                else if (key === '@tennis') short = full.replace(/^Tennis Villa\s*/, '');
+                else if (key.indexOf('@tennis') === 0) short = full.replace(/^Tennis Villa\s*/, '').replace(/\s*[–-].*$/, '');
                 else if (key === '@sierra') short = full.replace(/^Sierra Dunes\s*/, '');
                 else short = full.replace(/^Captiva\s*/, '');
                 return [full, short || full];
