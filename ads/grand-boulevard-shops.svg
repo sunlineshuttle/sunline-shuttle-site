@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <defs>
+    <linearGradient id="gs" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e4f6e"/>
+      <stop offset="0.55" stop-color="#18a999"/>
+      <stop offset="1" stop-color="#7ed0c4"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#gs)"/>
+  <circle cx="640" cy="240" r="240" fill="#ffffff" opacity="0.10"/>
+  <circle cx="140" cy="840" r="180" fill="#ffffff" opacity="0.06"/>
+  <rect x="60" y="64" width="300" height="46" rx="23" fill="#ffffff"/>
+  <text x="210" y="95" fill="#0e4f6e" font-size="22" font-weight="800" letter-spacing="1.5" text-anchor="middle">WHERE TO SHOP</text>
+  <text x="400" y="365" font-size="200" text-anchor="middle">🛍️</text>
+  <text x="60" y="540" fill="#ffffff" font-size="74" font-weight="800">Shop at</text>
+  <text x="60" y="616" fill="#d8f3ee" font-size="62" font-weight="800">Grand Boulevard</text>
+  <text x="60" y="700" fill="#ffffff" font-size="33" font-weight="500">Boutiques, beach gear, gifts &amp; more —</text>
+  <text x="60" y="744" fill="#ffffff" font-size="33" font-weight="500">explore every shop nearby.</text>
+  <rect x="60" y="838" width="280" height="76" rx="38" fill="#ffffff"/>
+  <text x="200" y="887" fill="#0e4f6e" font-size="30" font-weight="800" text-anchor="middle">Browse shops →</text>
+</svg>
