@@ -625,6 +625,8 @@
             display: grid; place-items: center;
         }
         .bm-step[data-bm-step="success"] { text-align: center; }
+        .bm-conf { display: inline-block; margin: 4px auto 0; padding: 8px 16px; border-radius: 8px; background: rgba(20,128,128,0.1); color: var(--navy); font-weight: 800; font-size: 1.05rem; letter-spacing: 0.02em; }
+        .bm-conf .lbl { font-weight: 600; opacity: 0.7; margin-right: 6px; }
         .bm-step[hidden] { display: none; }
 
         /* divider + Grand Boulevard promo header above the ad */
@@ -1127,6 +1129,7 @@
                 <button type="button" class="bm-choice-btn" data-service="on-site">On-site &mdash; within the resort</button>
                 <button type="button" class="bm-choice-btn" data-service="off-site">Grand Boulevard &mdash; leaving/returning to the resort</button>
             </div>
+            <p class="bm-msg" id="bmServiceMsg" hidden></p>
             <p style="margin-top:18px;padding:12px 14px;border-radius:8px;background:rgba(246,183,60,0.18);color:var(--navy);font-size:1rem;font-weight:700;line-height:1.5;text-align:center">Visiting Grand Boulevard? View the <a href="https://grandboulevard.com/directory/map/#/" target="_blank" rel="noopener" style="color:var(--teal2);font-weight:800;text-decoration:underline">official interactive map</a>.</p>
         </div>
 
@@ -1137,8 +1140,10 @@
             <p class="bm-sub" id="bmVerifySub">Enter the phone number on your pass to get started.</p>
             <label class="bm-label" for="bmPhone">Phone number</label>
             <input class="bm-input" id="bmPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(555) 555-1212">
-            <label class="bm-label" for="bmName">Name <span class="bm-optional">(optional)</span></label>
-            <input class="bm-input" id="bmName" type="text" autocomplete="name" placeholder="Your name">
+            <label class="bm-label" for="bmFirstName">First name</label>
+            <input class="bm-input" id="bmFirstName" type="text" autocomplete="given-name" placeholder="First name">
+            <label class="bm-label" for="bmLastName">Last name</label>
+            <input class="bm-input" id="bmLastName" type="text" autocomplete="family-name" placeholder="Last name">
             <p class="bm-msg" id="bmVerifyMsg" hidden></p>
             <button type="button" class="btn btn-primary btn-block" id="bmVerifyBtn">Verify</button>
             <p class="bm-fine">We use your number only to confirm an active pass. We never share it.</p>
@@ -1228,6 +1233,7 @@
         <div class="bm-step" data-bm-step="success" hidden>
             <h2 class="bm-title">Ride requested!</h2>
             <p class="bm-sub">Dispatch has your request. You'll get a confirmation text with a live tracking link shortly.</p>
+            <p class="bm-conf" id="bmConfNum" hidden></p>
 
             <hr class="bm-ad-divider">
 
@@ -1486,25 +1492,21 @@
         ownerRegisterWebhook: "https://hook.us2.make.com/64igletr4cr5vfm2udly1bitj293qs7u",
         dispatchTextNumber: "(850) 808-7959",
         maxParty: 14,
-        adminNumbers: ["0000000000"]
+        adminNumbers: ["0000000000"],
+        // Booking hours per service in resort-local (Central) time, 24h "HH:MM".
+        // null = always available (no time gate). close < open = overnight window.
+        // Optional days:[0..6] (0=Sun) restricts to certain weekdays.
+        // To enable, e.g.: "on-site": { open: "08:00", close: "22:00" }
+        serviceHours: {
+            "on-site": null,
+            "off-site": null
+        }
     };
 
     // Event ads run before the standard ads. Each shows until its showUntil time
-    // (Central) passes, then the next one takes over. Images are 800x1000 in /ads.
-    const SUNLINE_EVENT_ADS = [
-        {
-            img: "ads/event-big-blvd-bash.svg",
-            url: "https://grandboulevard.com/event/big-blvd-bash-summer-dance-party/2026-06-23/",
-            alt: "Big BLVD Bash Summer Dance Party, free live music at Grand Park, Tue June 23, 6-8 PM",
-            showUntil: "2026-06-23T20:00:00-05:00"
-        },
-        {
-            img: "ads/event-bands-on-blvd.svg",
-            url: "https://grandboulevard.com/event/bands-on-the-blvd-summer-music-series/2026-06-25/",
-            alt: "Bands on the BLVD Summer Music Series, free live music at Grand Park, Thu June 25, 6-8 PM",
-            showUntil: "2026-06-25T20:00:00-05:00"
-        }
-    ];
+    // (Central) passes, then the standard ads take over. Images are 800x1000 in /ads.
+    // To add one: { img: "ads/your-event.svg", url: "https://…", alt: "…", showUntil: "2026-07-04T20:00:00-05:00" }
+    const SUNLINE_EVENT_ADS = [];
 
     // Standard ads, shown after the current event ad.
     const SUNLINE_ADS = [
@@ -1592,7 +1594,7 @@
             ['Common', [['Beach', 'Beach Access'], ['Racquet Club / Clubhouse', 'Racquet Club / Clubhouse'], ['Club Pool', 'Club Pool']]],
             ['High-rises', [['Summit', 'Summit'], ['Tides', 'Tides'], ['Beach Manor', 'Beach Manor']]],
             ['Villas — pick unit next', [['Tennis Villa (Wimbledon)', '@tennis-wimbledon'], ['Tennis Villa (Forest Hill)', '@tennis-forest'], ['Tennis Villa (Kensington)', '@tennis-kensington'], ['Grand Villa', '@grand'], ['Sierra Dunes', '@sierra'], ['Captiva', '@captiva']]],
-            ['Other', [['Blue Dunes Grill', 'Blue Dunes Grill'], ['Ocean Club', 'Ocean Club'], ['Guest Services / Guest Registration', 'Guest Services / Guest Registration']]]
+            ['Other', [['Blue Dunes Grill', 'Blue Dunes Grill'], ['Ocean Club', 'Ocean Club'], ['Mini Golf', 'Mini Golf'], ['Guest Services / Guest Registration', 'Guest Services / Guest Registration']]]
         ];
         function communityUnits(key) {
             let arr;
@@ -1658,10 +1660,11 @@
         const bookMsg = document.getElementById('bmBookMsg');
         const confirmBtn = document.getElementById('bmConfirmBtn');
         const confirmMsg = document.getElementById('bmConfirmMsg');
-        let rider = { status: null, name: '' };
+        let rider = { status: null, name: '', firstName: '', lastName: '' };
         let serviceChoice = 'on-site';
         let secondaryPrompted = false;
         let pendingBooking = null;
+        let submitting = false;
         let payHistory = [];
         let CATALOG = null;
 
@@ -1783,6 +1786,7 @@
             overlay.hidden = false;
             document.body.style.overflow = 'hidden';
             secondaryPrompted = false;
+            clearMsg(serviceMsg);
             showStep('service');
         };
         window.closeBookingModal = function () {
@@ -1830,7 +1834,7 @@
         }
 
         function goToBookingStep() {
-            const greet = rider.name ? 'Welcome back, ' + rider.name + '! ' : 'Welcome back! ';
+            const greet = rider.firstName ? 'Welcome back, ' + rider.firstName + '! ' : 'Welcome back! ';
             if (serviceChoice === 'off-site') {
                 document.getElementById('bmOffGreeting').textContent = greet;
                 applySponsor('bmOffSponsor');
@@ -1845,9 +1849,10 @@
         }
 
         function proceedAfterVerify(data) {
-            const name = (document.getElementById('bmName').value || '').trim();
+            const first = (document.getElementById('bmFirstName').value || '').trim();
+            const last = (document.getElementById('bmLastName').value || '').trim();
             const info = readRiderClass(data);
-            rider = { status: 'verified', name: name, class: info.gibson ? 'gibson' : '', company: info.company };
+            rider = { status: 'verified', name: (first + ' ' + last).trim(), firstName: first, lastName: last, class: info.gibson ? 'gibson' : '', company: info.company };
             if (rider.class === 'gibson' && readNeedsSecondary(data) && !secondaryPrompted) {
                 secondaryPrompted = true;
                 clearMsg(secMsg);
@@ -1863,6 +1868,9 @@
             const d = normalize(phoneInput.value);
             if ((SUNLINE_CONFIG.adminNumbers || []).indexOf(d) !== -1) { clearMsg(verifyMsg); openDispatch(); return; }
             if (d.length !== 10) { setMsg(verifyMsg, 'Please enter a 10-digit phone number.', 'error'); return; }
+            const first = (document.getElementById('bmFirstName').value || '').trim();
+            const last = (document.getElementById('bmLastName').value || '').trim();
+            if (!first || !last) { setMsg(verifyMsg, 'Please enter your first and last name.', 'error'); return; }
             clearMsg(verifyMsg);
             const webhook = serviceChoice === 'off-site' ? SUNLINE_CONFIG.verifyOffsiteWebhook : SUNLINE_CONFIG.verifyWebhook;
             verifyBtn.disabled = true; verifyBtn.textContent = 'Verifying…';
@@ -1870,7 +1878,7 @@
                 const res = await fetch(webhook, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams({ phone: d, phoneFull: '+1' + d })
+                    body: new URLSearchParams({ phone: d, phoneFull: '+1' + d, firstName: first, lastName: last })
                 });
                 const data = await res.json().catch(() => ({}));
                 const approved = !!data && (data.approved === true || String(data.approved).toLowerCase() === 'true');
@@ -2113,6 +2121,7 @@
         const offBookBtn = document.getElementById('bmOffBookBtn');
         const offHint = document.getElementById('bmOffHint');
 
+        const serviceMsg = document.getElementById('bmServiceMsg');
         function goToVerify() {
             document.getElementById('bmVerifySub').textContent = serviceChoice === 'off-site'
                 ? 'Enter the phone number you used to pay for your off-site ride.'
@@ -2122,12 +2131,17 @@
         }
         overlay.addEventListener('click', e => {
             const svc = e.target.closest('[data-service]');
-            if (svc) { serviceChoice = svc.dataset.service; goToVerify(); return; }
+            if (svc) {
+                const service = svc.dataset.service;
+                if (!serviceOpen(service).open) { setMsg(serviceMsg, closedMessage(service), 'error'); return; }
+                clearMsg(serviceMsg);
+                serviceChoice = service; goToVerify(); return;
+            }
             const go = e.target.closest('[data-go]');
             if (!go) return;
             const dest = go.dataset.go;
             if (dest === 'verify') { goToVerify(); }
-            else if (dest === 'service') { showStep('service'); }
+            else if (dest === 'service') { clearMsg(serviceMsg); showStep('service'); }
         });
 
         const OFFSITE_DEST = 'Grand Boulevard';
@@ -2190,9 +2204,62 @@
             return h + ':' + p[1] + ' ' + ampm;
         }
 
+        // Current resort-local (America/Chicago) time, so the gate ignores the
+        // visitor's device timezone. Returns { minutes: 0-1439, day: 0(Sun)-6(Sat) }.
+        function resortNow() {
+            const parts = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'America/Chicago', hour12: false,
+                weekday: 'short', hour: '2-digit', minute: '2-digit'
+            }).formatToParts(new Date());
+            const get = t => (parts.find(p => p.type === t) || {}).value;
+            let h = parseInt(get('hour'), 10); if (h === 24) h = 0;
+            const days = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+            return { minutes: h * 60 + parseInt(get('minute'), 10), day: days[get('weekday')] };
+        }
+        function hhmmToMin(s) { const p = String(s).split(':'); return parseInt(p[0], 10) * 60 + parseInt(p[1], 10); }
+        // Is `service` ('on-site' | 'off-site') bookable right now? null config = always open.
+        function serviceOpen(service) {
+            const cfg = (SUNLINE_CONFIG.serviceHours || {})[service];
+            if (!cfg) return { open: true };
+            const now = resortNow();
+            if (cfg.days && cfg.days.indexOf(now.day) === -1) return { open: false, cfg: cfg };
+            const o = hhmmToMin(cfg.open), c = hhmmToMin(cfg.close);
+            const inWin = (o <= c) ? (now.minutes >= o && now.minutes < c)
+                                   : (now.minutes >= o || now.minutes < c);
+            return inWin ? { open: true } : { open: false, cfg: cfg };
+        }
+        function closedMessage(service) {
+            const r = serviceOpen(service);
+            if (r.open) return '';
+            const name = service === 'off-site' ? 'Grand Boulevard rides' : 'On-site rides';
+            return name + ' can be booked ' + formatTime12(r.cfg.open) + ' – ' + formatTime12(r.cfg.close)
+                + ' (Central). Please check back during those hours.';
+        }
+
+        function readConfNumber(data) {
+            if (!data || typeof data !== 'object') return '';
+            const raw = data.tripID != null ? data.tripID
+                : (data.tripId != null ? data.tripId
+                : (data.confirmation != null ? data.confirmation : ''));
+            const s = String(raw).trim();
+            return (s && s.toLowerCase() !== 'null') ? s : '';
+        }
+        function showConfNumber(num) {
+            const el = document.getElementById('bmConfNum');
+            el.textContent = '';
+            if (num) {
+                const l = document.createElement('span'); l.className = 'lbl'; l.textContent = 'Confirmation #';
+                el.appendChild(l); el.appendChild(document.createTextNode(num));
+                el.hidden = false;
+            } else { el.hidden = true; }
+        }
         async function submitRide(fields, msgEl, btn) {
+            if (submitting) return;
+            submitting = true;
             const d = normalize(phoneInput.value);
-            const name = (document.getElementById('bmName').value || '').trim();
+            const first = (document.getElementById('bmFirstName').value || '').trim();
+            const last = (document.getElementById('bmLastName').value || '').trim();
+            const name = (first + ' ' + last).trim();
             const requestedAt = new Date().toLocaleString('en-US', {
                 timeZone: 'America/Chicago',
                 month: 'short', day: 'numeric', year: 'numeric',
@@ -2208,6 +2275,8 @@
                     body: new URLSearchParams(Object.assign({
                         phone: d,
                         phoneFull: '+1' + d,
+                        firstName: first,
+                        lastName: last,
                         name: name,
                         riderType: rider.status || '',
                         company: rider.company || '',
@@ -2215,15 +2284,19 @@
                     }, fields))
                 });
                 if (!res.ok) throw new Error('bad status');
+                showConfNumber(readConfNumber(await res.json().catch(() => null)));
+                pendingBooking = null;
                 showStep('success');
             } catch (err) {
                 setMsg(msgEl, 'We couldn’t send your request. Please text it to ' + SUNLINE_CONFIG.dispatchTextNumber + '.', 'error');
             } finally {
                 btn.disabled = false; btn.textContent = label;
+                submitting = false;
             }
         }
 
         function handleBooking() {
+            if (!serviceOpen('on-site').open) { setMsg(bookMsg, closedMessage('on-site'), 'error'); return; }
             const pickup = pickupPicker.read();
             const dropoff = dropoffPicker.read();
             const party = parseInt(document.getElementById('bmParty').value, 10);
@@ -2236,6 +2309,7 @@
         bookBtn.addEventListener('click', handleBooking);
 
         function handleOffsiteBooking() {
+            if (!serviceOpen('off-site').open) { setMsg(offMsg, closedMessage('off-site'), 'error'); return; }
             const riderLoc = (offDir === 'leaving') ? offPickupPicker.read() : offDropoffPicker.read();
             const party = parseInt(document.getElementById('bmOffParty').value, 10);
             const time = document.getElementById('bmOffTime').value;
