@@ -116,6 +116,13 @@
 
         .site-alert[hidden] { display: none; }
 
+        /* Flash the operating-hours banner when booking is attempted off-hours */
+        @keyframes siteAlertFlash {
+            0%, 100% { background: var(--sun);  color: var(--navy); }
+            50%      { background: var(--navy); color: var(--sun);  }
+        }
+        .site-alert.is-flashing { animation: siteAlertFlash 0.45s ease-in-out 3; }
+
         .site-alert-inner {
             max-width: 1120px;
             margin: 0 auto;
@@ -602,6 +609,7 @@
         .bm-sponsor[hidden] { display: none; }
         .bm-skip { display: block; width: 100%; margin-top: 10px; padding: 8px; background: none; border: 0; color: var(--teal2); font-weight: 700; font-size: 0.9rem; cursor: pointer; }
         .bm-skip:hover { text-decoration: underline; }
+        .bm-notyou { display: inline-block; margin: -4px 0 12px; padding: 0; background: none; border: 0; color: var(--teal2); font-weight: 700; font-size: 0.85rem; cursor: pointer; text-decoration: underline; }
         .bm-ac-wrap { position: relative; }
         .bm-ac-list { position: absolute; top: calc(100% + 2px); left: 0; right: 0; z-index: 30; background: white; border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 8px 20px rgba(18,48,71,0.16); max-height: 240px; overflow-y: auto; }
         .bm-ac-list[hidden] { display: none; }
@@ -611,6 +619,8 @@
         .bm-locpick { display: flex; flex-direction: column; gap: 8px; }
         .bm-locpick[hidden] { display: none; }
         .bm-loc-unit[hidden] { display: none; }
+        .bm-timepick { display: flex; gap: 10px; }
+        .bm-timepick > select { flex: 1; min-width: 0; }
         select.bm-input { appearance: auto; -webkit-appearance: menulist; }
 
         .bm-msg { margin-top: 14px; padding: 10px 12px; border-radius: 6px; font-size: 0.88rem; line-height: 1.5; }
@@ -748,7 +758,7 @@
 
 <div class="site-alert" data-site-alert>
     <div class="site-alert-inner">
-        <span>Operating Daily: 10 A.M - 8 P.M</span>
+        <span>Operating Daily: 9:30 A.M - 8 P.M</span>
         <button type="button" data-site-alert-close aria-label="Dismiss alert">&times;</button>
     </div>
 </div>
@@ -783,7 +793,7 @@
                     <div class="sec-head">
                         <h2>Pricing</h2>
                         <h3>Renters:</h3>
-                        <p><strong>One pass allows two phone numbers to request rides for your <span class="term-tooltip" tabindex="0" data-tooltip="Each group is limited to 14 people.">group</span>.</strong> Choose the day pass that matches your stay. Upon your first ride request, your pass will be activated and offer unlimited rides during operating hours within the resort for the duration of your pass.</p><br> <em>Make sure both your primary and secondary phone numbers are accurate for verification purposes.</em> <br>
+                        <p><strong>One pass allows two phone numbers to request rides for your <span class="term-tooltip" tabindex="0" data-tooltip="Each group is limited to 13 people.">group</span>.</strong> Choose the day pass that matches your stay. Upon your first ride request, your pass will be activated and offer unlimited rides during operating hours within the resort for the duration of your pass.</p><br> <em>Make sure both your primary and secondary phone numbers are accurate for verification purposes.</em> <br>
                     </div>
                     <div class="card">
                         <h3>Before You Pay</h3>
@@ -929,7 +939,7 @@
                     <div class="sec-head">
                         <h2>Pricing</h2>
                         <h3>One-Way Ride:</h3>
-                        <p><strong>Covers your entire <span class="term-tooltip" tabindex="0" data-tooltip="Each group is limited to 14 people.">group</span> for a single one-way trip.</strong> For guests staying for a short time, or anyone who wants to try the service before purchasing a longer pass, a One-Way Ride is a convenient option.</p>
+                        <p><strong>Covers your entire <span class="term-tooltip" tabindex="0" data-tooltip="Each group is limited to 13 people.">group</span> for a single one-way trip.</strong> For guests staying for a short time, or anyone who wants to try the service before purchasing a longer pass, a One-Way Ride is a convenient option.</p>
                     </div>
                     <div class="card">
                         <h3>Before You Pay</h3>
@@ -980,13 +990,13 @@
                     <div class="card">
                         <table style="width:100%;border-collapse:collapse;">
                             <tbody>
-                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Monday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 8:00 PM</td></tr>
-                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Tuesday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 8:00 PM</td></tr>
-                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Wednesday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 8:00 PM</td></tr>
-                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Thursday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 8:00 PM</td></tr>
-                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Friday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 8:00 PM</td></tr>
-                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Saturday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">10:00 AM - 8:00 PM</td></tr>
-                                <tr><td style="padding:10px 0;color:var(--muted)">Sunday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);text-align:right">10:00 AM - 8:00 PM</td></tr>
+                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Monday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">9:30 AM - 8:00 PM</td></tr>
+                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Tuesday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">9:30 AM - 8:00 PM</td></tr>
+                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Wednesday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">9:30 AM - 8:00 PM</td></tr>
+                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Thursday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">9:30 AM - 8:00 PM</td></tr>
+                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Friday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">9:30 AM - 8:00 PM</td></tr>
+                                <tr><td style="padding:10px 0;color:var(--muted);border-bottom:1px solid var(--line)">Saturday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);text-align:right">9:30 AM - 8:00 PM</td></tr>
+                                <tr><td style="padding:10px 0;color:var(--muted)">Sunday</td><td style="padding:10px 0;font-weight:700;color:var(--navy);text-align:right">9:30 AM - 8:00 PM</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1030,7 +1040,7 @@
             </details>
             <details>
                 <summary>Are the rates per person or per group?</summary>
-                <p>Per <span class="term-tooltip" tabindex="0" data-tooltip="Each group is limited to 14 people.">group</span>. When you purchase a pass, you will be prompted to enter a primary and secondary phone number. The owners of these phone numbers are then able to request rides for both themselves and their group for the duration of their pass.</p>
+                <p>Per <span class="term-tooltip" tabindex="0" data-tooltip="Each group is limited to 13 people.">group</span>. When you purchase a pass, you will be prompted to enter a primary and secondary phone number. The owners of these phone numbers are then able to request rides for both themselves and their group for the duration of their pass.</p>
             </details>
             <details>
                 <summary>Do I need to purchase my pass before arriving?</summary>
@@ -1144,6 +1154,10 @@
             <input class="bm-input" id="bmFirstName" type="text" autocomplete="given-name" placeholder="First name">
             <label class="bm-label" for="bmLastName">Last name</label>
             <input class="bm-input" id="bmLastName" type="text" autocomplete="family-name" placeholder="Last name">
+            <div id="bmVerifyPartyWrap" hidden>
+                <label class="bm-label" for="bmVerifyParty">Number in your party</label>
+                <input class="bm-input" id="bmVerifyParty" type="number" min="1" max="13" value="1">
+            </div>
             <p class="bm-msg" id="bmVerifyMsg" hidden></p>
             <button type="button" class="btn btn-primary btn-block" id="bmVerifyBtn">Verify</button>
             <p class="bm-fine">We use your number only to confirm an active pass. We never share it.</p>
@@ -1166,6 +1180,7 @@
             <button type="button" class="bm-step-back" data-go="verify">&larr; Back</button>
             <h2 class="bm-title">On-site ride</h2>
             <p class="bm-sub" id="bmOnGreeting">Pick-up and drop-off within the resort.</p>
+            <button type="button" class="bm-notyou" id="bmForgetOn" hidden>Not you? Use a different number</button>
             <p class="bm-sponsor" id="bmOnSponsor" hidden></p>
             <label class="bm-label" for="bmPickupPlace">Pick-up location</label>
             <div class="bm-locpick">
@@ -1179,7 +1194,7 @@
             </div>
             <p class="bm-fine" style="margin-top:8px">Don't see your spot? Text us at (850) 808-7959.</p>
             <label class="bm-label" for="bmParty">Number in your party</label>
-            <input class="bm-input" id="bmParty" type="number" min="1" max="14" value="1">
+            <input class="bm-input" id="bmParty" type="number" min="1" max="13" value="1">
             <p class="bm-msg" id="bmBookMsg" hidden></p>
             <button type="button" class="btn btn-primary btn-block" id="bmBookBtn">Book a Ride</button>
         </div>
@@ -1189,6 +1204,7 @@
             <button type="button" class="bm-step-back" data-go="verify">&larr; Back</button>
             <h2 class="bm-title">Grand Boulevard ride</h2>
             <p class="bm-sub" id="bmOffGreeting">A one-way ride to or from the resort.</p>
+            <button type="button" class="bm-notyou" id="bmForgetOff" hidden>Not you? Use a different number</button>
             <p class="bm-sponsor" id="bmOffSponsor" hidden></p>
 
             <label class="bm-label">Direction</label>
@@ -1210,10 +1226,14 @@
                 <select class="bm-input bm-loc-unit" id="bmOffDropoffUnit" hidden></select>
             </div>
             <div class="bm-input bm-locked" id="bmOffDropoffGB" hidden>Grand Boulevard</div>
-            <label class="bm-label" for="bmOffParty">Number in your party</label>
-            <input class="bm-input" id="bmOffParty" type="number" min="1" max="14" value="1">
-            <label class="bm-label" for="bmOffTime">Desired pick-up time</label>
-            <select class="bm-input" id="bmOffTime"></select>
+            <label class="bm-label" id="bmOffDateLabel" for="bmOffDate" hidden>Pick-up date</label>
+            <select class="bm-input" id="bmOffDate" hidden></select>
+            <label class="bm-label" for="bmOffHour">Desired pick-up time</label>
+            <div class="bm-timepick">
+                <select class="bm-input" id="bmOffHour"></select>
+                <select class="bm-input" id="bmOffMin"></select>
+            </div>
+            <p class="bm-fine" id="bmOffTimeNote" hidden></p>
 
             <p class="bm-msg" id="bmOffMsg" hidden></p>
             <button type="button" class="btn btn-primary btn-block" id="bmOffBookBtn">Book a Ride</button>
@@ -1241,9 +1261,9 @@
             <div class="bm-ad-head">
                 <p class="bm-ad-headline">Dining, shopping, and so much more at Grand Boulevard!</p>
                 <div class="bm-ad-sched">
-                    <strong>Rides available at the top of every hour</strong>
-                    <span><b>To Grand Boulevard:</b> 5:00, 6:00, 7:00, 8:00 P.M</span>
-                    <span><b>Back to the Resort:</b> ~5:10, ~6:10, ~7:10, ~8:10, ~9:00 P.M</span>
+                    <strong>Pick your own pick-up time</strong>
+                    <span><b>To Grand Boulevard:</b> 6:00 – 8:00 P.M</span>
+                    <span><b>Back to the Resort:</b> 7:00 – 9:00 P.M</span>
                 </div>
             </div>
 
@@ -1389,14 +1409,14 @@
             <h2 class="bm-title">Round-Trip Grand Boulevard</h2>
             <p class="bm-info-p">One $6 booking covers your whole group, round trip.</p>
             <p class="bm-info-p">We'll pick you up at your resort and take you to Grand Boulevard. When you're ready to head back, just request your return pickup the same way &mdash; no need to lock in a return time when you book.</p>
-            <p class="bm-info-p">After you pay, come back and verify your number to request your pickup. Grand Boulevard is currently our only off-site stop &mdash; more coming soon. Groups up to 14.</p>
+            <p class="bm-info-p">After you pay, come back and verify your number to request your pickup. Grand Boulevard is currently our only off-site stop &mdash; more coming soon. Groups up to 13.</p>
         </div>
 
         <!-- HOURS INFO -->
         <div class="bm-info" id="bmHoursInfo" hidden>
             <button type="button" class="bm-step-back" id="bmHoursInfoClose">&larr; Back</button>
-            <h2 class="bm-title">Pickup windows <br>(Top of every hour)</h2>
-            <p class="bm-info-p" style="margin-top:4px">To Grand Boulevard &mdash;5:00, 6:00, 7:00, and 8:00 PM<br>Back to the resort &mdash; ~5:10, ~6:10, ~7:10, ~8:10, ~9:00 PM</p>
+            <h2 class="bm-title">Pickup windows</h2>
+            <p class="bm-info-p" style="margin-top:4px">Choose any pick-up time within these windows (at least 15 minutes out):<br>To Grand Boulevard &mdash; 6:00 to 8:00 PM<br>Back to the resort &mdash; 7:00 to 9:00 PM</p>
         </div>
     </div>
 </div>
@@ -1411,7 +1431,7 @@
         <div style="line-height:1.9">
             <span style="color:#d9edf0">(850) 808-7959</span><br>
             <a href="mailto:support@sunlineshuttle.com">support@sunlineshuttle.com</a><br>
-            <span class="footer-copy">Open daily 10:00 AM - 8:00 PM</span>
+            <span class="footer-copy">Open daily 9:30 AM - 8:00 PM</span>
         </div>
         <div style="line-height:2;font-size:0.88rem">
             <a href="#" onclick="openBookingModal(); return false;">Book a Ride</a><br>
@@ -1487,11 +1507,12 @@
         verifyWebhook: "https://hook.us2.make.com/g9yi8fb7n2lek45dx886bnbrkpcaypgk",
         verifyOffsiteWebhook: "https://hook.us2.make.com/uzsncyls0np4k5phinsuhc7pybe5u7wv",
         dispatchWebhook: "https://hook.us2.make.com/67er22nuis6m3wngxar1lmaf4he9d84u",
+        dispatchOffsiteWebhook: "https://hook.us2.make.com/aakhzfjs6rojvti1t4trdteponslmh1b",
         dispatchFeedWebhook: "",
         secondarySaveWebhook: "https://hook.us2.make.com/nc54xhbabra2gqdkn3xjavodbflcsg4u",
         ownerRegisterWebhook: "https://hook.us2.make.com/64igletr4cr5vfm2udly1bitj293qs7u",
         dispatchTextNumber: "(850) 808-7959",
-        maxParty: 14,
+        maxParty: 13,
         adminNumbers: ["0000000000"],
         // Booking hours per service in resort-local (Central) time, 24h "HH:MM".
         // null = always available (no time gate). close < open = overnight window.
@@ -1500,7 +1521,11 @@
         serviceHours: {
             "on-site": null,
             "off-site": null
-        }
+        },
+        // Global gate: the booking wizard only opens during these resort-local
+        // (Central) hours. Outside the window the operating-hours banner flashes
+        // instead of the wizard opening. Set to null to disable the gate.
+        bookingWindow: { open: "09:00", close: "21:00" }
     };
 
     // Event ads run before the standard ads. Each shows until its showUntil time
@@ -1661,7 +1686,23 @@
         const confirmBtn = document.getElementById('bmConfirmBtn');
         const confirmMsg = document.getElementById('bmConfirmMsg');
         let rider = { status: null, name: '', firstName: '', lastName: '' };
+
+        /* ---- Remember a verified rider on this device (no account / password) ---- */
+        const RIDER_KEY = 'sunlineRider';
+        function loadSavedRider() {
+            try {
+                const o = JSON.parse(localStorage.getItem(RIDER_KEY) || 'null');
+                if (o && o.phone && o.firstName && o.lastName) return o;
+            } catch (e) {}
+            return null;
+        }
+        function saveRider(phone, firstName, lastName) {
+            try { localStorage.setItem(RIDER_KEY, JSON.stringify({ phone: phone, firstName: firstName, lastName: lastName })); } catch (e) {}
+        }
+        function clearSavedRider() { try { localStorage.removeItem(RIDER_KEY); } catch (e) {} }
+
         let serviceChoice = 'on-site';
+        let autoVerified = false; // true only when a remembered rider was verified silently
         let secondaryPrompted = false;
         let pendingBooking = null;
         let submitting = false;
@@ -1782,7 +1823,36 @@
 
         phoneInput.addEventListener('input', () => { phoneInput.value = formatPhone(phoneInput.value); });
 
+        // Is the booking wizard allowed to open right now? (resort-local hours)
+        function withinBookingWindow() {
+            const w = SUNLINE_CONFIG.bookingWindow;
+            if (!w) return true;
+            const now = resortNow().minutes;
+            const o = hhmmToMin(w.open), c = hhmmToMin(w.close);
+            return (o <= c) ? (now >= o && now <= c) : (now >= o || now <= c);
+        }
+        // Off-hours: draw the eye to the operating-hours banner instead of opening.
+        function flashOperatingHours() {
+            const banner = document.querySelector('[data-site-alert]');
+            if (!banner) return;
+            banner.hidden = false; // show it even if previously dismissed
+            // Only scroll if the banner isn't already fully visible, and keep it clear of
+            // the sticky header so the flash is never hidden behind it.
+            const header = document.querySelector('header');
+            const headerH = header ? header.offsetHeight : 0;
+            const rect = banner.getBoundingClientRect();
+            if (rect.top < headerH || rect.bottom > window.innerHeight) {
+                const target = window.scrollY + rect.top - headerH - 8;
+                window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+            }
+            banner.classList.remove('is-flashing');
+            void banner.offsetWidth; // restart the animation
+            banner.classList.add('is-flashing');
+            setTimeout(() => banner.classList.remove('is-flashing'), 1400);
+        }
+
         window.openBookingModal = function () {
+            if (!withinBookingWindow()) { flashOperatingHours(); return; }
             overlay.hidden = false;
             document.body.style.overflow = 'hidden';
             secondaryPrompted = false;
@@ -1836,7 +1906,10 @@
         function goToBookingStep() {
             const greet = rider.firstName ? 'Welcome back, ' + rider.firstName + '! ' : 'Welcome back! ';
             if (serviceChoice === 'off-site') {
-                document.getElementById('bmOffGreeting').textContent = greet;
+                const n = parseInt(document.getElementById('bmVerifyParty').value, 10) || 1;
+                document.getElementById('bmOffGreeting').textContent = rider.firstName
+                    ? 'Welcome back, ' + rider.firstName + ', party of ' + n + '.'
+                    : 'Welcome back! Party of ' + n + '.';
                 applySponsor('bmOffSponsor');
                 applyOffsiteDirection();
                 showStep('offsite');
@@ -1846,6 +1919,7 @@
                 showStep('booking');
                 pickupPicker.reset(); dropoffPicker.reset();
             }
+            showForgetForBooking();
         }
 
         function proceedAfterVerify(data) {
@@ -1853,6 +1927,7 @@
             const last = (document.getElementById('bmLastName').value || '').trim();
             const info = readRiderClass(data);
             rider = { status: 'verified', name: (first + ' ' + last).trim(), firstName: first, lastName: last, class: info.gibson ? 'gibson' : '', company: info.company };
+            saveRider(normalize(phoneInput.value), first, last);
             if (rider.class === 'gibson' && readNeedsSecondary(data) && !secondaryPrompted) {
                 secondaryPrompted = true;
                 clearMsg(secMsg);
@@ -1871,6 +1946,10 @@
             const first = (document.getElementById('bmFirstName').value || '').trim();
             const last = (document.getElementById('bmLastName').value || '').trim();
             if (!first || !last) { setMsg(verifyMsg, 'Please enter your first and last name.', 'error'); return; }
+            if (serviceChoice === 'off-site') {
+                const p = parseInt(document.getElementById('bmVerifyParty').value, 10);
+                if (!(p >= 1 && p <= SUNLINE_CONFIG.maxParty)) { setMsg(verifyMsg, 'Party size must be between 1 and ' + SUNLINE_CONFIG.maxParty + '.', 'error'); return; }
+            }
             clearMsg(verifyMsg);
             const webhook = serviceChoice === 'off-site' ? SUNLINE_CONFIG.verifyOffsiteWebhook : SUNLINE_CONFIG.verifyWebhook;
             verifyBtn.disabled = true; verifyBtn.textContent = 'Verifying…';
@@ -1893,8 +1972,8 @@
                 verifyBtn.disabled = false; verifyBtn.textContent = 'Verify';
             }
         }
-        verifyBtn.addEventListener('click', handleVerify);
-        phoneInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); handleVerify(); } });
+        verifyBtn.addEventListener('click', () => { autoVerified = false; handleVerify(); });
+        phoneInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); autoVerified = false; handleVerify(); } });
 
         const secPhoneInput = document.getElementById('bmSecPhone');
         const secMsg = document.getElementById('bmSecMsg');
@@ -2122,51 +2201,169 @@
         const offHint = document.getElementById('bmOffHint');
 
         const serviceMsg = document.getElementById('bmServiceMsg');
-        function goToVerify() {
-            document.getElementById('bmVerifySub').textContent = serviceChoice === 'off-site'
+        const forgetOn = document.getElementById('bmForgetOn');
+        const forgetOff = document.getElementById('bmForgetOff');
+        function hideForgetLinks() { forgetOn.hidden = true; forgetOff.hidden = true; }
+        // Only offer "Not you?" on the booking screen a remembered rider was sent to.
+        function showForgetForBooking() {
+            if (!autoVerified) { hideForgetLinks(); return; }
+            forgetOn.hidden = (serviceChoice === 'off-site');
+            forgetOff.hidden = (serviceChoice !== 'off-site');
+        }
+        function prefillFromSaved(saved) {
+            phoneInput.value = formatPhone(saved.phone);
+            document.getElementById('bmFirstName').value = saved.firstName;
+            document.getElementById('bmLastName').value = saved.lastName;
+        }
+        // auto = true when arriving from service selection (silently re-verify a known
+        // rider and skip straight to booking). false when the user pressed Back, so we
+        // just show the prefilled screen and let them edit — no auto-verify loop.
+        function goToVerify(auto) {
+            const offsite = serviceChoice === 'off-site';
+            document.getElementById('bmVerifySub').textContent = offsite
                 ? 'Enter the phone number you used to pay for your off-site ride.'
                 : 'Enter the phone number on your pass to get started.';
+            // Off-site collects party size here; on-site collects it on its booking screen.
+            document.getElementById('bmVerifyPartyWrap').hidden = !offsite;
+            const saved = loadSavedRider();
+            hideForgetLinks();
+            showStep('verify');
+            // Off-site never auto-verifies — always let the rider review the prefilled details
+            // and tap Verify themselves. On-site still auto-verifies a remembered rider.
+            if (saved && auto && !offsite) { prefillFromSaved(saved); autoVerified = true; handleVerify(); return; }
+            if (saved) prefillFromSaved(saved); // prefilled screen, rider reviews then taps Verify
+            autoVerified = false;
+            setTimeout(() => phoneInput.focus(), 50);
+        }
+        // "Not you?" — forget the remembered rider and send them to a clean verify screen.
+        function forgetRider() {
+            clearSavedRider();
+            autoVerified = false;
+            rider = { status: null, name: '', firstName: '', lastName: '' };
+            phoneInput.value = '';
+            document.getElementById('bmFirstName').value = '';
+            document.getElementById('bmLastName').value = '';
+            hideForgetLinks();
+            clearMsg(verifyMsg);
             showStep('verify');
             setTimeout(() => phoneInput.focus(), 50);
         }
+        forgetOn.addEventListener('click', forgetRider);
+        forgetOff.addEventListener('click', forgetRider);
         overlay.addEventListener('click', e => {
             const svc = e.target.closest('[data-service]');
             if (svc) {
                 const service = svc.dataset.service;
                 if (!serviceOpen(service).open) { setMsg(serviceMsg, closedMessage(service), 'error'); return; }
                 clearMsg(serviceMsg);
-                serviceChoice = service; goToVerify(); return;
+                serviceChoice = service; goToVerify(true); return;
             }
             const go = e.target.closest('[data-go]');
             if (!go) return;
             const dest = go.dataset.go;
-            if (dest === 'verify') { goToVerify(); }
+            if (dest === 'verify') { goToVerify(false); }
             else if (dest === 'service') { clearMsg(serviceMsg); showStep('service'); }
         });
 
         const OFFSITE_DEST = 'Grand Boulevard';
         const COMING_SOON = '(more options coming soon)';
         // Pick-up times by direction. Should match the schedule on the success screen.
-        const OFFSITE_TIMES = {
-            standard: {
-                leaving:   ['17:00', '18:00', '19:00', '20:00'],           // resort -> Grand Boulevard
-                returning: ['17:10', '18:10', '19:10', '20:10', '21:00']   // Grand Boulevard -> resort
-            },
-            // Gibson Beach Rentals: top of the hour, 12 PM to 9 PM.
-            gibson: {
-                leaving:   ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'],
-                returning: ['12:10', '13:10', '14:10', '15:10', '16:10', '17:10', '18:10', '19:10', '20:10', '21:00']
-            }
+        // Off-site pickup windows (resort-local, inclusive) as 24h hours. Riders pick any
+        // hour:minute within the window; minutes are quarter-hours. Same windows for all
+        // riders — Gibson riders additionally get to choose a date up to a week ahead.
+        const OFFSITE_WINDOWS = {
+            leaving:   { startHour: 18, endHour: 20 },  // resort -> Grand Boulevard, 6–8 PM
+            returning: { startHour: 19, endHour: 21 }   // Grand Boulevard -> resort, 7–9 PM
         };
+        const OFFSITE_MINUTES = [0, 15, 30, 45];
+        const OFFSITE_BUFFER_MIN = 15;   // earliest pickup = now + 15 min (today only)
+        const OFFSITE_ADVANCE_DAYS = 7;  // Gibson riders may book this many days ahead
         function isGibsonRider() { return !!(rider && rider.class === 'gibson'); }
-        function fillOffsiteTimes() {
-            const sel = document.getElementById('bmOffTime');
-            const set = isGibsonRider() ? OFFSITE_TIMES.gibson : OFFSITE_TIMES.standard;
-            const times = set[offDir] || [];
-            const prev = sel.value;
-            sel.innerHTML = '<option value="" disabled selected>Select a time…</option>' +
-                times.map(x => '<option value="' + x + '">' + formatTime12(x) + '</option>').join('');
-            if (prev && times.indexOf(prev) !== -1) sel.value = prev;
+
+        const offHourSel = document.getElementById('bmOffHour');
+        const offMinSel = document.getElementById('bmOffMin');
+        const offDateSel = document.getElementById('bmOffDate');
+        const offDateLabel = document.getElementById('bmOffDateLabel');
+        const offTimeNote = document.getElementById('bmOffTimeNote');
+
+        // --- Resort-local (America/Chicago) calendar dates for the advance picker ---
+        function resortYMD() {
+            const parts = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+            const g = t => (parts.find(p => p.type === t) || {}).value;
+            return { y: +g('year'), m: +g('month'), d: +g('day') };
+        }
+        function resortDateAt(offset) { const t = resortYMD(); return new Date(Date.UTC(t.y, t.m - 1, t.d + offset)); }
+        function resortDateValue(offset) { return resortDateAt(offset).toISOString().slice(0, 10); }
+        function resortDateLabel(offset) {
+            const lbl = new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: 'short', month: 'short', day: 'numeric' }).format(resortDateAt(offset));
+            if (offset === 0) return 'Today (' + lbl + ')';
+            if (offset === 1) return 'Tomorrow (' + lbl + ')';
+            return lbl;
+        }
+        function offsiteDateLabelFor(value) {
+            for (let i = 0; i <= OFFSITE_ADVANCE_DAYS; i++) { if (resortDateValue(i) === value) return resortDateLabel(i); }
+            return value;
+        }
+
+        function fillOffsiteDates() {
+            const gib = isGibsonRider();
+            offDateSel.hidden = !gib; offDateLabel.hidden = !gib;
+            if (!gib) { offDateSel.innerHTML = ''; return; }
+            const prev = offDateSel.value;
+            let html = '';
+            for (let i = 0; i <= OFFSITE_ADVANCE_DAYS; i++) {
+                html += '<option value="' + resortDateValue(i) + '">' + escHtml(resortDateLabel(i)) + '</option>';
+            }
+            offDateSel.innerHTML = html;
+            if (prev && Array.prototype.some.call(offDateSel.options, o => o.value === prev)) offDateSel.value = prev;
+        }
+
+        function offsiteSelectedDate() { return (isGibsonRider() && offDateSel.value) ? offDateSel.value : resortDateValue(0); }
+        function offsiteIsToday() { return offsiteSelectedDate() === resortDateValue(0); }
+        // earliest selectable minute-of-day for the chosen date (-1 = no lower bound)
+        function offsiteEarliestMin() { return offsiteIsToday() ? (resortNow().minutes + OFFSITE_BUFFER_MIN) : -1; }
+
+        function offsiteValidMinutesFor(hour) {
+            const win = OFFSITE_WINDOWS[offDir];
+            const startMin = win.startHour * 60, endMin = win.endHour * 60, earliest = offsiteEarliestMin();
+            return OFFSITE_MINUTES.filter(m => { const t = hour * 60 + m; return t >= startMin && t <= endMin && t >= earliest; });
+        }
+
+        function fillOffsiteMinutes() {
+            const hour = parseInt(offHourSel.value, 10);
+            const prev = offMinSel.value;
+            if (isNaN(hour)) { offMinSel.innerHTML = '<option value="" disabled selected>Min</option>'; offMinSel.disabled = true; return; }
+            const mins = offsiteValidMinutesFor(hour);
+            offMinSel.disabled = false;
+            offMinSel.innerHTML = '<option value="" disabled selected>Min</option>' +
+                mins.map(m => { const mm = m < 10 ? '0' + m : '' + m; return '<option value="' + mm + '">:' + mm + '</option>'; }).join('');
+            if (prev && mins.indexOf(parseInt(prev, 10)) !== -1) offMinSel.value = prev;
+        }
+
+        function formatHour12(h) { const ap = h >= 12 ? 'PM' : 'AM'; let hh = h % 12; if (hh === 0) hh = 12; return hh + ' ' + ap; }
+
+        function rebuildOffsiteTime() {
+            fillOffsiteDates();
+            const win = OFFSITE_WINDOWS[offDir];
+            const prevHour = offHourSel.value;
+            const hours = [];
+            for (let h = win.startHour; h <= win.endHour; h++) { if (offsiteValidMinutesFor(h).length) hours.push(h); }
+            if (!hours.length) {
+                offHourSel.innerHTML = '<option value="" disabled selected>Hour</option>';
+                offHourSel.disabled = true;
+                fillOffsiteMinutes();
+                offTimeNote.hidden = false;
+                offTimeNote.textContent = offsiteIsToday()
+                    ? 'No more ' + (offDir === 'returning' ? 'return' : 'Grand Boulevard') + ' pickups available today — ' + (isGibsonRider() ? 'pick another date above.' : 'please check back tomorrow.')
+                    : 'No pickups available for this date.';
+                return;
+            }
+            offTimeNote.hidden = true;
+            offHourSel.disabled = false;
+            offHourSel.innerHTML = '<option value="" disabled selected>Hour</option>' +
+                hours.map(h => '<option value="' + h + '">' + formatHour12(h) + '</option>').join('');
+            if (prevHour && hours.indexOf(parseInt(prevHour, 10)) !== -1) offHourSel.value = prevHour;
+            fillOffsiteMinutes();
         }
         function applyOffsiteDirection() {
             const pnote = document.getElementById('bmOffPickupNote');
@@ -2185,7 +2382,7 @@
                 dWrap.hidden = false; dGB.hidden = true; dnote.textContent = '';
                 offPickupPicker.reset();
             }
-            fillOffsiteTimes();
+            rebuildOffsiteTime();
         }
         document.getElementById('bmOffDir').addEventListener('click', e => {
             const b = e.target.closest('[data-dir]');
@@ -2193,6 +2390,8 @@
             offDir = b.dataset.dir;
             applyOffsiteDirection();
         });
+        offHourSel.addEventListener('change', fillOffsiteMinutes);
+        offDateSel.addEventListener('change', rebuildOffsiteTime);
         applyOffsiteDirection();
 
         function formatTime12(t) {
@@ -2268,8 +2467,11 @@
             clearMsg(msgEl);
             const label = btn.textContent;
             btn.disabled = true; btn.textContent = 'Sending…';
+            const dispatchUrl = (fields.serviceType === 'off-site')
+                ? SUNLINE_CONFIG.dispatchOffsiteWebhook
+                : SUNLINE_CONFIG.dispatchWebhook;
             try {
-                const res = await fetch(SUNLINE_CONFIG.dispatchWebhook, {
+                const res = await fetch(dispatchUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: new URLSearchParams(Object.assign({
@@ -2284,7 +2486,21 @@
                     }, fields))
                 });
                 if (!res.ok) throw new Error('bad status');
-                showConfNumber(readConfNumber(await res.json().catch(() => null)));
+                const data = await res.json().catch(() => null);
+                // A dispatch scenario can reject a booking (e.g. the off-site slot filled
+                // up) by returning 200 with {"ok":false,"message":…}. Never show success.
+                if (data && (data.ok === false || String(data.ok).toLowerCase() === 'false')) {
+                    const rmsg = data.message || 'That pick-up time just filled up — please choose another.';
+                    if (fields.serviceType === 'off-site') {
+                        rebuildOffsiteTime();           // refresh available times
+                        showStep('offsite');
+                        setMsg(offMsg, rmsg, 'error');  // ask them to re-pick a time
+                    } else {
+                        setMsg(msgEl, rmsg, 'error');   // stay on confirm
+                    }
+                    return;
+                }
+                showConfNumber(readConfNumber(data));
                 pendingBooking = null;
                 showStep('success');
             } catch (err) {
@@ -2311,16 +2527,29 @@
         function handleOffsiteBooking() {
             if (!serviceOpen('off-site').open) { setMsg(offMsg, closedMessage('off-site'), 'error'); return; }
             const riderLoc = (offDir === 'leaving') ? offPickupPicker.read() : offDropoffPicker.read();
-            const party = parseInt(document.getElementById('bmOffParty').value, 10);
-            const time = document.getElementById('bmOffTime').value;
+            const party = parseInt(document.getElementById('bmVerifyParty').value, 10);
+            const hourV = offHourSel.value, minV = offMinSel.value;
             if (!riderLoc) { setMsg(offMsg, 'Please choose your resort location.', 'error'); return; }
             if (!(party >= 1 && party <= SUNLINE_CONFIG.maxParty)) {
                 setMsg(offMsg, 'Party size must be between 1 and ' + SUNLINE_CONFIG.maxParty + '.', 'error'); return;
             }
-            if (!time) { setMsg(offMsg, 'Please choose your desired pick-up time.', 'error'); return; }
+            if (hourV === '' || minV === '') { setMsg(offMsg, 'Please choose your desired pick-up time.', 'error'); return; }
+            const hour = parseInt(hourV, 10), t = hour * 60 + parseInt(minV, 10);
+            const win = OFFSITE_WINDOWS[offDir];
+            // Re-check against the live window + buffer in case time has passed since selection.
+            if (t < win.startHour * 60 || t > win.endHour * 60 || t < offsiteEarliestMin()) {
+                setMsg(offMsg, 'That pick-up time is no longer available. Please choose another.', 'error');
+                rebuildOffsiteTime(); return;
+            }
+            const time24 = hourV + ':' + minV;
+            const dateVal = offsiteSelectedDate();
             const pickup = (offDir === 'leaving') ? riderLoc : OFFSITE_DEST;
             const dropoff = (offDir === 'leaving') ? OFFSITE_DEST : riderLoc;
-            showConfirm({ serviceType: 'off-site', direction: offDir, pickup: pickup, dropoff: dropoff, party: String(party), requestedTime: formatTime12(time) }, 'offsite');
+            showConfirm({
+                serviceType: 'off-site', direction: offDir, pickup: pickup, dropoff: dropoff,
+                party: String(party), requestedTime: formatTime12(time24),
+                requestedDate: dateVal, requestedDateLabel: offsiteDateLabelFor(dateVal)
+            }, 'offsite');
         }
         offBookBtn.addEventListener('click', handleOffsiteBooking);
 
@@ -2340,6 +2569,7 @@
             row('Group size', fields.party + (n === 1 ? ' person' : ' people'));
             if (fields.serviceType === 'off-site') {
                 row('Direction', fields.direction === 'returning' ? 'Returning to the resort' : 'Leaving the resort');
+                if (fields.requestedDate && fields.requestedDate !== resortDateValue(0)) row('Pick-up date', fields.requestedDateLabel || fields.requestedDate);
                 row('Pick-up time', fields.requestedTime);
             } else {
                 row('Pick-up time', 'As soon as possible');
