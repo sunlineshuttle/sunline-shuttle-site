@@ -563,6 +563,7 @@
         .bm-title { color: var(--navy); font-size: 1.5rem; line-height: 1.15; margin-bottom: 6px; }
         .bm-sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 18px; }
         .bm-label { display: block; color: var(--navy); font-weight: 700; font-size: 0.85rem; margin: 12px 0 5px; }
+        .bm-label[hidden] { display: none; }
         .bm-optional { font-weight: 400; color: var(--muted); font-size: 0.8rem; }
         .bm-step-back {
             background: none; border: 0; padding: 0; margin-bottom: 10px;
@@ -620,6 +621,7 @@
         .bm-locpick[hidden] { display: none; }
         .bm-loc-unit[hidden] { display: none; }
         .bm-timepick { display: flex; gap: 10px; }
+        .bm-timepick[hidden] { display: none; }
         .bm-timepick > select { flex: 1; min-width: 0; }
         select.bm-input { appearance: auto; -webkit-appearance: menulist; }
 
@@ -686,12 +688,12 @@
         .bm-summary-row .val { display: block; color: var(--navy); font-size: 0.98rem; font-weight: 700; margin-top: 2px; word-break: break-word; }
 
         .bm-pay[hidden] { display: none; }
-        .bm-pay .pass-option { background: white; border: 1px solid var(--line); padding: 11px 14px; gap: 2px; }
-        .bm-pay .pass-option:hover { background: var(--sand); }
-        .bm-pay .pass-option strong { color: var(--navy); font-size: 0.92rem; }
-        .bm-pay .pass-option .pass-price { color: var(--teal2); font-size: 1rem; }
-        .bm-pay .bm-pass-desc { font-size: 0.78rem; line-height: 1.3; }
-        .bm-pay .pass-option .btn { margin-top: 6px; min-height: 34px; padding: 6px 12px; font-size: 0.84rem; }
+        .bm-pay .pass-option, .bm-step .pass-option { background: white; border: 1px solid var(--line); padding: 11px 14px; gap: 2px; }
+        .bm-pay .pass-option:hover, .bm-step .pass-option:hover { background: var(--sand); }
+        .bm-pay .pass-option strong, .bm-step .pass-option strong { color: var(--navy); font-size: 0.92rem; }
+        .bm-pay .pass-option .pass-price, .bm-step .pass-option .pass-price { color: var(--teal2); font-size: 1rem; }
+        .bm-pay .bm-pass-desc, .bm-step .bm-pass-desc { font-size: 0.78rem; line-height: 1.3; }
+        .bm-pay .pass-option .btn, .bm-step .pass-option .btn { margin-top: 6px; min-height: 34px; padding: 6px 12px; font-size: 0.84rem; }
 
         /* payment wizard screens */
         .bm-pay-screen[hidden] { display: none; }
@@ -971,6 +973,12 @@
                             <span class="pass-price">$6.00</span>
                             <a class="btn btn-primary" href="https://buy.stripe.com/00waEY0bR3pN6Wc36B7kc0q" target="_blank" rel="noopener">Pay via Stripe</a>
                         </div>
+                        <div class="pass-option" style="grid-column: 1 / -1;">
+                            <strong>Round-Trip Baytown</strong>
+                            <span class="pass-price">$15.00</span>
+                            <span class="bm-pass-desc" style="color:#d9edf0">Tuesdays &amp; Thursdays only</span>
+                            <a class="btn btn-primary" href="https://buy.stripe.com/eVqcN6gaP9Ob3K022x7kc0r" target="_blank" rel="noopener">Pay via Stripe</a>
+                        </div>
                     </div>
                 </aside>
             </div>
@@ -1137,7 +1145,7 @@
             <p class="bm-sub">Where are you headed?</p>
             <div class="bm-choice">
                 <button type="button" class="bm-choice-btn" data-service="on-site">On-site &mdash; within the resort</button>
-                <button type="button" class="bm-choice-btn" data-service="off-site">Grand Boulevard &mdash; leaving/returning to the resort</button>
+                <button type="button" class="bm-choice-btn" data-service="off-site">Off-site &mdash; Grand Boulevard &amp; Baytown</button>
             </div>
             <p class="bm-msg" id="bmServiceMsg" hidden></p>
             <p style="margin-top:18px;padding:12px 14px;border-radius:8px;background:rgba(246,183,60,0.18);color:var(--navy);font-size:1rem;font-weight:700;line-height:1.5;text-align:center">Visiting Grand Boulevard? View the <a href="https://grandboulevard.com/directory/map/#/" target="_blank" rel="noopener" style="color:var(--teal2);font-weight:800;text-decoration:underline">official interactive map</a>.</p>
@@ -1195,6 +1203,13 @@
             <p class="bm-fine" style="margin-top:8px">Don't see your spot? Text us at (850) 808-7959.</p>
             <label class="bm-label" for="bmParty">Number in your party</label>
             <input class="bm-input" id="bmParty" type="number" min="1" max="13" value="1">
+            <p id="bmOnEveningNote" style="margin:12px 0 0;padding:10px 12px;border-radius:8px;background:rgba(246,183,60,0.25);color:var(--navy);font-weight:700;font-size:0.9rem;line-height:1.45" hidden>After 6:00 PM our shuttle also makes off-site runs, so please choose a pick-up time at least 10 minutes out.</p>
+            <label class="bm-label" id="bmOnHourLabel" for="bmOnHour" hidden>Desired pick-up time</label>
+            <div class="bm-timepick" id="bmOnTimeWrap" hidden>
+                <select class="bm-input" id="bmOnHour"></select>
+                <select class="bm-input" id="bmOnMin"></select>
+            </div>
+            <p class="bm-fine" id="bmOnTimeNote" hidden></p>
             <p class="bm-msg" id="bmBookMsg" hidden></p>
             <button type="button" class="btn btn-primary btn-block" id="bmBookBtn">Book a Ride</button>
         </div>
@@ -1202,10 +1217,17 @@
         <!-- STEP: OFF-SITE BOOKING -->
         <div class="bm-step" data-bm-step="offsite" hidden>
             <button type="button" class="bm-step-back" data-go="verify">&larr; Back</button>
-            <h2 class="bm-title">Grand Boulevard ride</h2>
+            <h2 class="bm-title" id="bmOffTitle">Grand Boulevard ride</h2>
             <p class="bm-sub" id="bmOffGreeting">A one-way ride to or from the resort.</p>
             <button type="button" class="bm-notyou" id="bmForgetOff" hidden>Not you? Use a different number</button>
             <p class="bm-sponsor" id="bmOffSponsor" hidden></p>
+
+            <label class="bm-label">Destination</label>
+            <div class="bm-seg" id="bmOffDest">
+                <button type="button" data-dest="gb" class="active">Grand Boulevard</button>
+                <button type="button" data-dest="baytown">Baytown</button>
+            </div>
+            <p class="bm-fine" id="bmOffDestNote" style="margin-top:8px" hidden></p>
 
             <label class="bm-label">Direction</label>
             <div class="bm-seg" id="bmOffDir">
@@ -1239,6 +1261,17 @@
             <button type="button" class="btn btn-primary btn-block" id="bmOffBookBtn">Book a Ride</button>
         </div>
 
+        <!-- STEP: BAYTOWN PASS (rider booked Baytown without the pass) -->
+        <div class="bm-step" data-bm-step="baypass" hidden>
+            <button type="button" class="bm-step-back" id="bmBayBack">&larr; Back</button>
+            <h2 class="bm-title">Baytown Pass needed</h2>
+            <p class="bm-sub">Baytown rides are covered by a <strong>$15 round-trip pass</strong> for your whole group. Pay below, then tap &ldquo;I&rsquo;ve paid&rdquo; and we&rsquo;ll take you straight to your confirmation.</p>
+            <div class="bm-pay-body" id="bmBayBody"></div>
+            <p class="bm-msg" id="bmBayMsg" hidden></p>
+            <button type="button" class="btn btn-primary btn-block" id="bmBayPaidBtn">I&rsquo;ve paid &mdash; continue</button>
+            <p class="bm-fine">Payment opens in a new tab. It can take a minute for a new payment to register &mdash; if it doesn&rsquo;t go through right away, wait a moment and tap again.</p>
+        </div>
+
         <!-- STEP: CONFIRM -->
         <div class="bm-step" data-bm-step="confirm" hidden>
             <button type="button" class="bm-step-back" id="bmConfirmBack">&larr; Back</button>
@@ -1262,8 +1295,9 @@
                 <p class="bm-ad-headline">Dining, shopping, and so much more at Grand Boulevard!</p>
                 <div class="bm-ad-sched">
                     <strong>Pick your own pick-up time</strong>
-                    <span><b>To Grand Boulevard:</b> 6:00 – 8:00 P.M</span>
+                    <span><b>Leaving the Resort:</b> 6:00 – 8:00 P.M</span>
                     <span><b>Back to the Resort:</b> 7:00 – 9:00 P.M</span>
+                    <span><b>Baytown:</b> Tuesdays &amp; Thursdays</span>
                 </div>
             </div>
 
@@ -1406,17 +1440,17 @@
         <!-- OFF-SITE INFO -->
         <div class="bm-info" id="bmOffsiteInfo" hidden>
             <button type="button" class="bm-step-back" id="bmOffsiteInfoClose">&larr; Back</button>
-            <h2 class="bm-title">Round-Trip Grand Boulevard</h2>
-            <p class="bm-info-p">One $6 booking covers your whole group, round trip.</p>
-            <p class="bm-info-p">We'll pick you up at your resort and take you to Grand Boulevard. When you're ready to head back, just request your return pickup the same way &mdash; no need to lock in a return time when you book.</p>
-            <p class="bm-info-p">After you pay, come back and verify your number to request your pickup. Grand Boulevard is currently our only off-site stop &mdash; more coming soon. Groups up to 13.</p>
+            <h2 class="bm-title">Off-site round trips</h2>
+            <p class="bm-info-p">One booking covers your whole group, round trip &mdash; $6 to Grand Boulevard, or $15 to Baytown (Tuesdays &amp; Thursdays).</p>
+            <p class="bm-info-p">We'll pick you up at your resort and take you there. When you're ready to head back, just request your return pickup the same way &mdash; no need to lock in a return time when you book.</p>
+            <p class="bm-info-p">After you pay, come back and verify your number to request your pickup. Groups up to 13.</p>
         </div>
 
         <!-- HOURS INFO -->
         <div class="bm-info" id="bmHoursInfo" hidden>
             <button type="button" class="bm-step-back" id="bmHoursInfoClose">&larr; Back</button>
             <h2 class="bm-title">Pickup windows</h2>
-            <p class="bm-info-p" style="margin-top:4px">Choose any pick-up time within these windows (at least 15 minutes out):<br>To Grand Boulevard &mdash; 6:00 to 8:00 PM<br>Back to the resort &mdash; 7:00 to 9:00 PM</p>
+            <p class="bm-info-p" style="margin-top:4px">Choose any pick-up time within these windows (at least 15 minutes out):<br>Leaving the resort &mdash; 6:00 to 8:00 PM<br>Back to the resort &mdash; 7:00 to 9:00 PM<br><br>Same windows for Grand Boulevard and Baytown. Baytown runs Tuesdays &amp; Thursdays only.</p>
         </div>
     </div>
 </div>
@@ -1857,6 +1891,7 @@
             document.body.style.overflow = 'hidden';
             secondaryPrompted = false;
             clearMsg(serviceMsg);
+            if (offDest !== 'gb') { offDest = 'gb'; applyDestination(); }
             showStep('service');
         };
         window.closeBookingModal = function () {
@@ -1903,6 +1938,13 @@
             return !!data && (data.needsSecondary === true || String(data.needsSecondary).toLowerCase() === 'true');
         }
 
+        // "Baytown Verified" checkbox from the spreadsheet, returned by the verify webhook.
+        function readBaytown(data) {
+            if (!data) return false;
+            const v = data.baytown != null ? data.baytown : data.baytownVerified;
+            return v === true || String(v).toLowerCase() === 'true';
+        }
+
         function goToBookingStep() {
             const greet = rider.firstName ? 'Welcome back, ' + rider.firstName + '! ' : 'Welcome back! ';
             if (serviceChoice === 'off-site') {
@@ -1911,11 +1953,12 @@
                     ? 'Welcome back, ' + rider.firstName + ', party of ' + n + '.'
                     : 'Welcome back! Party of ' + n + '.';
                 applySponsor('bmOffSponsor');
-                applyOffsiteDirection();
+                applyDestination();
                 showStep('offsite');
             } else {
                 document.getElementById('bmOnGreeting').textContent = greet + 'Tell us your on-site trip details.';
                 applySponsor('bmOnSponsor');
+                rebuildOnsiteTime();
                 showStep('booking');
                 pickupPicker.reset(); dropoffPicker.reset();
             }
@@ -1926,7 +1969,7 @@
             const first = (document.getElementById('bmFirstName').value || '').trim();
             const last = (document.getElementById('bmLastName').value || '').trim();
             const info = readRiderClass(data);
-            rider = { status: 'verified', name: (first + ' ' + last).trim(), firstName: first, lastName: last, class: info.gibson ? 'gibson' : '', company: info.company };
+            rider = { status: 'verified', name: (first + ' ' + last).trim(), firstName: first, lastName: last, class: info.gibson ? 'gibson' : '', company: info.company, baytown: readBaytown(data) };
             saveRider(normalize(phoneInput.value), first, last);
             if (rider.class === 'gibson' && readNeedsSecondary(data) && !secondaryPrompted) {
                 secondaryPrompted = true;
@@ -2021,7 +2064,8 @@
                 extended: renters[10] || { price: '$74.00 + $6.00/day', url: '' },
                 monthly: owners[1] || { price: '$150.00', url: '' },
                 oneWay: oneTime[0] || { price: '$3.00', url: '' },
-                offSite: oneTime[1] || { price: '$6.00', url: 'https://buy.stripe.com/00waEY0bR3pN6Wc36B7kc0q' }
+                offSite: oneTime[1] || { price: '$6.00', url: 'https://buy.stripe.com/00waEY0bR3pN6Wc36B7kc0q' },
+                baytown: oneTime[2] || { price: '$15.00', url: '' }
             };
             return CATALOG;
         }
@@ -2156,9 +2200,10 @@
             const cards = [];
             if (type === 'offsite') {
                 learn.hidden = false; learn.dataset.info = 'offsite';
-                title.textContent = 'Grand Boulevard round trip';
+                title.textContent = 'Off-site round trip';
                 sub.textContent = "We couldn't find an active off-site pass for that number. To purchase a pass, please see below:";
                 cards.push(passCard('Round-Trip Grand Boulevard', cat.offSite.price, cat.offSite.url, 'Round trip to and from Grand Boulevard for your whole group.'));
+                cards.push(passCard('Round-Trip Baytown', cat.baytown.price, cat.baytown.url, 'Round trip to and from Baytown for your whole group. Tuesdays & Thursdays only.'));
             } else if (type === 'renter') {
                 learn.hidden = false; learn.dataset.info = 'renter';
                 const days = clampDays(document.getElementById('bmRenterDays').value);
@@ -2196,6 +2241,7 @@
         });
 
         let offDir = 'leaving';
+        let offDest = 'gb'; // 'gb' | 'baytown'
         const offMsg = document.getElementById('bmOffMsg');
         const offBookBtn = document.getElementById('bmOffBookBtn');
         const offHint = document.getElementById('bmOffHint');
@@ -2265,20 +2311,22 @@
             else if (dest === 'service') { clearMsg(serviceMsg); showStep('service'); }
         });
 
-        const OFFSITE_DEST = 'Grand Boulevard';
         const COMING_SOON = '(more options coming soon)';
         // Pick-up times by direction. Should match the schedule on the success screen.
         // Off-site pickup windows (resort-local, inclusive) as 24h hours. Riders pick any
         // hour:minute within the window; minutes are quarter-hours. Same windows for all
-        // riders — Gibson riders additionally get to choose a date up to a week ahead.
+        // riders and both destinations — Gibson riders additionally choose a date ahead.
         const OFFSITE_WINDOWS = {
-            leaving:   { startHour: 18, endHour: 20 },  // resort -> Grand Boulevard, 6–8 PM
-            returning: { startHour: 19, endHour: 21 }   // Grand Boulevard -> resort, 7–9 PM
+            leaving:   { startHour: 18, endHour: 20 },  // resort -> Grand Blvd / Baytown, 6–8 PM
+            returning: { startHour: 19, endHour: 21 }   // back to the resort, 7–9 PM
         };
         const OFFSITE_MINUTES = [0, 15, 30, 45];
         const OFFSITE_BUFFER_MIN = 15;   // earliest pickup = now + 15 min (today only)
         const OFFSITE_ADVANCE_DAYS = 7;  // Gibson riders may book this many days ahead
+        const BAYTOWN_DAYS = [2, 4];     // Baytown runs Tuesdays & Thursdays (resort-local)
         function isGibsonRider() { return !!(rider && rider.class === 'gibson'); }
+        function canBookBaytown() { return isGibsonRider() || !!(rider && rider.baytown); }
+        function offsiteDestName() { return offDest === 'baytown' ? 'Baytown' : 'Grand Boulevard'; }
 
         const offHourSel = document.getElementById('bmOffHour');
         const offMinSel = document.getElementById('bmOffMin');
@@ -2304,6 +2352,13 @@
             for (let i = 0; i <= OFFSITE_ADVANCE_DAYS; i++) { if (resortDateValue(i) === value) return resortDateLabel(i); }
             return value;
         }
+        function offsetForDateValue(value) {
+            for (let i = 0; i <= OFFSITE_ADVANCE_DAYS; i++) { if (resortDateValue(i) === value) return i; }
+            return -1;
+        }
+        function isBaytownOffset(offset) {
+            return offset >= 0 && BAYTOWN_DAYS.indexOf(resortDateAt(offset).getUTCDay()) !== -1;
+        }
 
         function fillOffsiteDates() {
             const gib = isGibsonRider();
@@ -2312,6 +2367,8 @@
             const prev = offDateSel.value;
             let html = '';
             for (let i = 0; i <= OFFSITE_ADVANCE_DAYS; i++) {
+                // Baytown: only the next Tuesday and Thursday (i < 7 keeps exactly one of each).
+                if (offDest === 'baytown' && !(i < 7 && isBaytownOffset(i))) continue;
                 html += '<option value="' + resortDateValue(i) + '">' + escHtml(resortDateLabel(i)) + '</option>';
             }
             offDateSel.innerHTML = html;
@@ -2344,6 +2401,16 @@
 
         function rebuildOffsiteTime() {
             fillOffsiteDates();
+            // Baytown only runs Tue & Thu. Gibson dates are pre-filtered above, so this
+            // only hits guests/owners (locked to today) on a non-Baytown day.
+            if (offDest === 'baytown' && !isBaytownOffset(offsetForDateValue(offsiteSelectedDate()))) {
+                offHourSel.innerHTML = '<option value="" disabled selected>Hour</option>';
+                offHourSel.disabled = true;
+                fillOffsiteMinutes();
+                offTimeNote.hidden = false;
+                offTimeNote.textContent = 'Baytown rides run Tuesdays & Thursdays only — please check back on those days.';
+                return;
+            }
             const win = OFFSITE_WINDOWS[offDir];
             const prevHour = offHourSel.value;
             const hours = [];
@@ -2354,7 +2421,7 @@
                 fillOffsiteMinutes();
                 offTimeNote.hidden = false;
                 offTimeNote.textContent = offsiteIsToday()
-                    ? 'No more ' + (offDir === 'returning' ? 'return' : 'Grand Boulevard') + ' pickups available today — ' + (isGibsonRider() ? 'pick another date above.' : 'please check back tomorrow.')
+                    ? 'No more ' + (offDir === 'returning' ? 'return' : offsiteDestName()) + ' pickups available today — ' + (isGibsonRider() ? 'pick another date above.' : 'please check back tomorrow.')
                     : 'No pickups available for this date.';
                 return;
             }
@@ -2370,19 +2437,36 @@
             const dnote = document.getElementById('bmOffDropoffNote');
             const pWrap = document.getElementById('bmOffPickupWrap'), pGB = document.getElementById('bmOffPickupGB');
             const dWrap = document.getElementById('bmOffDropoffWrap'), dGB = document.getElementById('bmOffDropoffGB');
+            const dest = offsiteDestName();
+            pGB.textContent = dest; dGB.textContent = dest;
             document.querySelectorAll('#bmOffDir [data-dir]').forEach(x => x.classList.toggle('active', x.dataset.dir === offDir));
             if (offDir === 'leaving') {
-                offHint.textContent = "We'll pick you up inside the resort and take you to " + OFFSITE_DEST + ".";
+                offHint.textContent = "We'll pick you up inside the resort and take you to " + dest + ".";
                 pWrap.hidden = false; pGB.hidden = true; pnote.textContent = '';
                 dWrap.hidden = true; dGB.hidden = false; dnote.textContent = COMING_SOON;
                 offDropoffPicker.reset();
             } else {
-                offHint.textContent = "We'll pick you up at " + OFFSITE_DEST + " and bring you back to the resort.";
+                offHint.textContent = "We'll pick you up at " + dest + " and bring you back to the resort.";
                 pWrap.hidden = true; pGB.hidden = false; pnote.textContent = COMING_SOON;
                 dWrap.hidden = false; dGB.hidden = true; dnote.textContent = '';
                 offPickupPicker.reset();
             }
             rebuildOffsiteTime();
+        }
+        // Eligibility note under the destination toggle; also refreshed after a pass purchase.
+        function updateDestNote() {
+            const note = document.getElementById('bmOffDestNote');
+            if (offDest !== 'baytown') { note.hidden = true; note.textContent = ''; return; }
+            note.hidden = false;
+            if (isGibsonRider()) note.textContent = 'Baytown runs Tuesdays & Thursdays — pick your date below.';
+            else if (canBookBaytown()) note.textContent = "Baytown runs Tuesdays & Thursdays. You're Baytown verified ✓";
+            else note.textContent = 'Baytown runs Tuesdays & Thursdays and requires a $15 round-trip pass per group — you can pay right after entering your details.';
+        }
+        function applyDestination() {
+            document.querySelectorAll('#bmOffDest [data-dest]').forEach(x => x.classList.toggle('active', x.dataset.dest === offDest));
+            document.getElementById('bmOffTitle').textContent = offsiteDestName() + ' ride';
+            updateDestNote();
+            applyOffsiteDirection();
         }
         document.getElementById('bmOffDir').addEventListener('click', e => {
             const b = e.target.closest('[data-dir]');
@@ -2390,9 +2474,16 @@
             offDir = b.dataset.dir;
             applyOffsiteDirection();
         });
+        document.getElementById('bmOffDest').addEventListener('click', e => {
+            const b = e.target.closest('[data-dest]');
+            if (!b || b.dataset.dest === offDest) return;
+            offDest = b.dataset.dest;
+            clearMsg(offMsg);
+            applyDestination();
+        });
         offHourSel.addEventListener('change', fillOffsiteMinutes);
         offDateSel.addEventListener('change', rebuildOffsiteTime);
-        applyOffsiteDirection();
+        applyDestination();
 
         function formatTime12(t) {
             if (!t) return '';
@@ -2430,7 +2521,7 @@
         function closedMessage(service) {
             const r = serviceOpen(service);
             if (r.open) return '';
-            const name = service === 'off-site' ? 'Grand Boulevard rides' : 'On-site rides';
+            const name = service === 'off-site' ? 'Off-site rides' : 'On-site rides';
             return name + ' can be booked ' + formatTime12(r.cfg.open) + ' – ' + formatTime12(r.cfg.close)
                 + ' (Central). Please check back during those hours.';
         }
@@ -2511,6 +2602,58 @@
             }
         }
 
+        // After 6 PM the shuttle also makes off-site runs, so on-site riders choose a
+        // pick-up time (same picker style as off-site, 10-minute slots) at least
+        // 10 minutes out instead of ASAP.
+        const ONSITE_EVENING_START_MIN = 18 * 60;   // evening picker starts 6:00 PM
+        const ONSITE_EVENING_END_HOUR = 21;         // last selectable slot 9:00 PM
+        const ONSITE_EVENING_LEAD_MIN = 10;
+        const ONSITE_MINUTES = [0, 10, 20, 30, 40, 50];
+        const onHourSel = document.getElementById('bmOnHour');
+        const onMinSel = document.getElementById('bmOnMin');
+        const onTimeNote = document.getElementById('bmOnTimeNote');
+        function isOnsiteEvening() { return resortNow().minutes >= ONSITE_EVENING_START_MIN; }
+        function onsiteEarliestMin() { return resortNow().minutes + ONSITE_EVENING_LEAD_MIN; }
+        function onsiteValidMinutesFor(hour) {
+            const endMin = ONSITE_EVENING_END_HOUR * 60, earliest = onsiteEarliestMin();
+            return ONSITE_MINUTES.filter(m => { const t = hour * 60 + m; return t >= ONSITE_EVENING_START_MIN && t <= endMin && t >= earliest; });
+        }
+        function fillOnsiteMinutes() {
+            const hour = parseInt(onHourSel.value, 10);
+            const prev = onMinSel.value;
+            if (isNaN(hour)) { onMinSel.innerHTML = '<option value="" disabled selected>Min</option>'; onMinSel.disabled = true; return; }
+            const mins = onsiteValidMinutesFor(hour);
+            onMinSel.disabled = false;
+            onMinSel.innerHTML = '<option value="" disabled selected>Min</option>' +
+                mins.map(m => { const mm = m < 10 ? '0' + m : '' + m; return '<option value="' + mm + '">:' + mm + '</option>'; }).join('');
+            if (prev && mins.indexOf(parseInt(prev, 10)) !== -1) onMinSel.value = prev;
+        }
+        function rebuildOnsiteTime() {
+            const evening = isOnsiteEvening();
+            document.getElementById('bmOnHourLabel').hidden = !evening;
+            document.getElementById('bmOnTimeWrap').hidden = !evening;
+            document.getElementById('bmOnEveningNote').hidden = !evening;
+            onTimeNote.hidden = true;
+            if (!evening) return;
+            const prevHour = onHourSel.value;
+            const hours = [];
+            for (let h = Math.floor(ONSITE_EVENING_START_MIN / 60); h <= ONSITE_EVENING_END_HOUR; h++) { if (onsiteValidMinutesFor(h).length) hours.push(h); }
+            if (!hours.length) {
+                onHourSel.innerHTML = '<option value="" disabled selected>Hour</option>';
+                onHourSel.disabled = true;
+                fillOnsiteMinutes();
+                onTimeNote.hidden = false;
+                onTimeNote.textContent = 'No more on-site pick-up times available tonight — please check back tomorrow.';
+                return;
+            }
+            onHourSel.disabled = false;
+            onHourSel.innerHTML = '<option value="" disabled selected>Hour</option>' +
+                hours.map(h => '<option value="' + h + '">' + formatHour12(h) + '</option>').join('');
+            if (prevHour && hours.indexOf(parseInt(prevHour, 10)) !== -1) onHourSel.value = prevHour;
+            fillOnsiteMinutes();
+        }
+        onHourSel.addEventListener('change', fillOnsiteMinutes);
+
         function handleBooking() {
             if (!serviceOpen('on-site').open) { setMsg(bookMsg, closedMessage('on-site'), 'error'); return; }
             const pickup = pickupPicker.read();
@@ -2520,12 +2663,31 @@
             if (!(party >= 1 && party <= SUNLINE_CONFIG.maxParty)) {
                 setMsg(bookMsg, 'Party size must be between 1 and ' + SUNLINE_CONFIG.maxParty + '.', 'error'); return;
             }
-            showConfirm({ serviceType: 'on-site', direction: '', pickup: pickup, dropoff: dropoff, party: String(party), requestedTime: 'ASAP' }, 'booking');
+            let requestedTime = 'ASAP';
+            if (isOnsiteEvening()) {
+                const hourV = onHourSel.value, minV = onMinSel.value;
+                if (hourV === '' || minV === '') {
+                    rebuildOnsiteTime(); // 6 PM may have passed while the form was open — reveal the picker
+                    setMsg(bookMsg, 'Please choose your desired pick-up time.', 'error'); return;
+                }
+                const t = parseInt(hourV, 10) * 60 + parseInt(minV, 10);
+                // Re-check against the live window + buffer in case time has passed since selection.
+                if (t < ONSITE_EVENING_START_MIN || t > ONSITE_EVENING_END_HOUR * 60 || t < onsiteEarliestMin()) {
+                    setMsg(bookMsg, 'That pick-up time is no longer available. Please choose another.', 'error');
+                    rebuildOnsiteTime(); return;
+                }
+                requestedTime = formatTime12(hourV + ':' + minV);
+            }
+            showConfirm({ serviceType: 'on-site', direction: '', pickup: pickup, dropoff: dropoff, party: String(party), requestedTime: requestedTime }, 'booking');
         }
         bookBtn.addEventListener('click', handleBooking);
 
         function handleOffsiteBooking() {
             if (!serviceOpen('off-site').open) { setMsg(offMsg, closedMessage('off-site'), 'error'); return; }
+            const dateVal = offsiteSelectedDate();
+            if (offDest === 'baytown' && !isBaytownOffset(offsetForDateValue(dateVal))) {
+                setMsg(offMsg, 'Baytown rides run Tuesdays & Thursdays only.', 'error'); return;
+            }
             const riderLoc = (offDir === 'leaving') ? offPickupPicker.read() : offDropoffPicker.read();
             const party = parseInt(document.getElementById('bmVerifyParty').value, 10);
             const hourV = offHourSel.value, minV = offMinSel.value;
@@ -2542,14 +2704,18 @@
                 rebuildOffsiteTime(); return;
             }
             const time24 = hourV + ':' + minV;
-            const dateVal = offsiteSelectedDate();
-            const pickup = (offDir === 'leaving') ? riderLoc : OFFSITE_DEST;
-            const dropoff = (offDir === 'leaving') ? OFFSITE_DEST : riderLoc;
-            showConfirm({
-                serviceType: 'off-site', direction: offDir, pickup: pickup, dropoff: dropoff,
+            const dest = offsiteDestName();
+            const pickup = (offDir === 'leaving') ? riderLoc : dest;
+            const dropoff = (offDir === 'leaving') ? dest : riderLoc;
+            const fields = {
+                serviceType: 'off-site', destination: dest, direction: offDir, pickup: pickup, dropoff: dropoff,
                 party: String(party), requestedTime: formatTime12(time24),
                 requestedDate: dateVal, requestedDateLabel: offsiteDateLabelFor(dateVal)
-            }, 'offsite');
+            };
+            // Baytown needs the $15 pass (Gibson riders are always covered) — collect
+            // payment before the confirmation screen.
+            if (offDest === 'baytown' && !canBookBaytown()) { openBaytownPass(fields); return; }
+            showConfirm(fields, 'offsite');
         }
         offBookBtn.addEventListener('click', handleOffsiteBooking);
 
@@ -2572,7 +2738,7 @@
                 if (fields.requestedDate && fields.requestedDate !== resortDateValue(0)) row('Pick-up date', fields.requestedDateLabel || fields.requestedDate);
                 row('Pick-up time', fields.requestedTime);
             } else {
-                row('Pick-up time', 'As soon as possible');
+                row('Pick-up time', fields.requestedTime === 'ASAP' ? 'As soon as possible' : fields.requestedTime);
             }
             clearMsg(confirmMsg);
             showStep('confirm');
@@ -2582,6 +2748,77 @@
         });
         document.getElementById('bmConfirmBack').addEventListener('click', () => {
             showStep(pendingBooking ? pendingBooking.backStep : 'service');
+        });
+
+        /* ---- BAYTOWN PASS (pay-then-confirm interstitial) ---- */
+        const bayMsg = document.getElementById('bmBayMsg');
+        const bayPaidBtn = document.getElementById('bmBayPaidBtn');
+        const bayStep = overlay.querySelector('[data-bm-step="baypass"]');
+        let bayPendingFields = null;
+        let bayChecking = false;
+
+        function openBaytownPass(fields) {
+            bayPendingFields = fields;
+            const body = document.getElementById('bmBayBody');
+            body.innerHTML = '';
+            const cat = readCatalog();
+            if (cat.baytown.url) {
+                body.appendChild(passCard('Round-Trip Baytown', cat.baytown.price, cat.baytown.url,
+                    'Covers your whole group, round trip, on Baytown days (Tue & Thu).').el);
+            } else {
+                const p = document.createElement('p');
+                p.className = 'bm-fine';
+                p.textContent = 'Online payment for the Baytown pass isn’t available quite yet — text us at '
+                    + SUNLINE_CONFIG.dispatchTextNumber + ' to pay, then tap “I’ve paid” below.';
+                body.appendChild(p);
+            }
+            clearMsg(bayMsg);
+            showStep('baypass');
+        }
+        document.getElementById('bmBayBack').addEventListener('click', () => {
+            bayPendingFields = null;
+            clearMsg(offMsg);
+            showStep('offsite');
+        });
+
+        // Re-run off-site verification and look for the "Baytown Verified" flag. On
+        // success the pass box closes and the stashed booking goes to confirmation.
+        async function recheckBaytown(silent) {
+            if (bayChecking) return;
+            const d = normalize(phoneInput.value);
+            if (d.length !== 10) { if (!silent) setMsg(bayMsg, 'Please go back and verify your number first.', 'error'); return; }
+            const first = (document.getElementById('bmFirstName').value || '').trim();
+            const last = (document.getElementById('bmLastName').value || '').trim();
+            bayChecking = true;
+            const label = bayPaidBtn.textContent;
+            bayPaidBtn.disabled = true; bayPaidBtn.textContent = 'Checking…';
+            try {
+                const res = await fetch(SUNLINE_CONFIG.verifyOffsiteWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ phone: d, phoneFull: '+1' + d, firstName: first, lastName: last })
+                });
+                const data = await res.json().catch(() => ({}));
+                if (readBaytown(data)) {
+                    rider.baytown = true;
+                    updateDestNote();
+                    clearMsg(bayMsg);
+                    if (bayPendingFields) { showConfirm(bayPendingFields, 'offsite'); bayPendingFields = null; }
+                    else showStep('offsite');
+                } else if (!silent) {
+                    setMsg(bayMsg, 'We don’t see your Baytown payment yet — it can take a minute to register. Please try again shortly. Still not verified after a minute or two? Text us at ' + SUNLINE_CONFIG.dispatchTextNumber + ' and we’ll get you sorted.', 'error');
+                }
+            } catch (err) {
+                if (!silent) setMsg(bayMsg, 'We couldn’t check your payment. Please try again, or text us at ' + SUNLINE_CONFIG.dispatchTextNumber + '.', 'error');
+            } finally {
+                bayChecking = false;
+                bayPaidBtn.disabled = false; bayPaidBtn.textContent = label;
+            }
+        }
+        bayPaidBtn.addEventListener('click', () => recheckBaytown(false));
+        // Coming back from the Stripe tab: check quietly so the pass box can close itself.
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && !overlay.hidden && bayStep && !bayStep.hidden) recheckBaytown(true);
         });
 
         /* ---- DISPATCH (admin) ---- */
