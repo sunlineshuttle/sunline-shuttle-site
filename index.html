@@ -2614,9 +2614,19 @@
         const onTimeNote = document.getElementById('bmOnTimeNote');
         function isOnsiteEvening() { return resortNow().minutes >= ONSITE_EVENING_START_MIN; }
         function onsiteEarliestMin() { return resortNow().minutes + ONSITE_EVENING_LEAD_MIN; }
+        // One finer-grained slot alongside the 10-minute grid: the next ":x5" time
+        // that clears the lead (6:01 → 6:15, 6:06 → 6:25). -1 when past the window.
+        function onsiteExtraSlotMin() {
+            let t = Math.ceil(Math.max(onsiteEarliestMin(), ONSITE_EVENING_START_MIN) / 5) * 5;
+            if (t % 10 === 0) t += 5;
+            return t <= ONSITE_EVENING_END_HOUR * 60 ? t : -1;
+        }
         function onsiteValidMinutesFor(hour) {
             const endMin = ONSITE_EVENING_END_HOUR * 60, earliest = onsiteEarliestMin();
-            return ONSITE_MINUTES.filter(m => { const t = hour * 60 + m; return t >= ONSITE_EVENING_START_MIN && t <= endMin && t >= earliest; });
+            const mins = ONSITE_MINUTES.filter(m => { const t = hour * 60 + m; return t >= ONSITE_EVENING_START_MIN && t <= endMin && t >= earliest; });
+            const extra = onsiteExtraSlotMin();
+            if (extra !== -1 && Math.floor(extra / 60) === hour) { mins.push(extra % 60); mins.sort((a, b) => a - b); }
+            return mins;
         }
         function fillOnsiteMinutes() {
             const hour = parseInt(onHourSel.value, 10);
