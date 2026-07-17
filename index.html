@@ -2327,8 +2327,8 @@
         const OFFSITE_MINUTES = [0, 15, 30, 45];
         const OFFSITE_BUFFER_MIN = 15;   // earliest pickup = now + 15 min (today only)
         const OFFSITE_ADVANCE_DAYS = 7;  // Gibson riders may book this many days ahead
-        const BAYTOWN_DAYS = [2, 4];              // Baytowne: Tue & Thu for guests/owners (resort-local)
-        const GIBSON_BAYTOWN_DAYS = [1, 2, 3, 4]; // Gibson riders: Monday–Thursday
+        const BAYTOWN_DAYS = [2, 4];                       // Baytowne: Tue & Thu for guests/owners (resort-local)
+        const GIBSON_BAYTOWN_DAYS = [0, 1, 2, 3, 4, 5, 6]; // Gibson riders: every day
         function isGibsonRider() { return !!(rider && rider.class === 'gibson'); }
         function canBookBaytown() { return isGibsonRider() || !!(rider && rider.baytown); }
         function offsiteDestName() { return offDest === 'baytown' ? 'Baytowne' : 'Grand Boulevard'; }
@@ -2373,7 +2373,7 @@
             const prev = offDateSel.value;
             let html = '';
             for (let i = 0; i <= OFFSITE_ADVANCE_DAYS; i++) {
-                // Baytowne: Gibson picks any Mon–Thu (i < 7 keeps exactly one of each weekday).
+                // Baytowne: Gibson picks any day (i < 7 keeps exactly one of each weekday).
                 if (offDest === 'baytown' && !(i < 7 && isBaytownOffset(i))) continue;
                 html += '<option value="' + resortDateValue(i) + '">' + escHtml(resortDateLabel(i)) + '</option>';
             }
@@ -2467,7 +2467,7 @@
             const note = document.getElementById('bmOffDestNote');
             if (offDest !== 'baytown') { note.hidden = true; note.textContent = ''; return; }
             note.hidden = false;
-            if (isGibsonRider()) note.textContent = 'Baytowne runs Monday–Thursday for Gibson guests — pick your date below.';
+            if (isGibsonRider()) note.textContent = 'Gibson guests can ride to Baytowne any day — pick your date below.';
             else if (canBookBaytown()) note.textContent = "Baytowne runs Tuesdays & Thursdays. You're Baytowne verified ✓";
             else note.textContent = 'Baytowne runs Tuesdays & Thursdays and requires a $15 round-trip pass per group — you can pay right after entering your details.';
         }
@@ -2726,7 +2726,7 @@
             if (!serviceOpen('off-site').open) { setMsg(offMsg, closedMessage('off-site'), 'error'); return; }
             const dateVal = offsiteSelectedDate();
             if (offDest === 'baytown' && !isBaytownOffset(offsetForDateValue(dateVal))) {
-                setMsg(offMsg, isGibsonRider() ? 'Baytowne rides run Monday through Thursday.' : 'Baytowne rides run Tuesdays & Thursdays only.', 'error'); return;
+                setMsg(offMsg, 'Baytowne rides run Tuesdays & Thursdays only.', 'error'); return;
             }
             const riderLoc = (offDir === 'leaving') ? offPickupPicker.read() : offDropoffPicker.read();
             const party = parseInt(document.getElementById('bmVerifyParty').value, 10);
